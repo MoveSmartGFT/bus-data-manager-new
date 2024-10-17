@@ -16,7 +16,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Entity
 @RequiredArgsConstructor
 @Generated
-@Table(name = "stop")
+@Table(name = "STOP")
 public class Stop {
 
     /**

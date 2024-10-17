@@ -20,7 +20,7 @@ import java.util.List;
 @AggregateRoot
 @RequiredArgsConstructor
 @Generated
-@Table(name = "route")
+@Table(name = "ROUTE")
 public class Route {
 
     /**
