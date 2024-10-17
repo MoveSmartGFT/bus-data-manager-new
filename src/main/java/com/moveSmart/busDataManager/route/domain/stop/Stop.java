@@ -17,7 +17,7 @@ import org.jmolecules.ddd.annotation.Identity;
 @Entity
 @RequiredArgsConstructor
 @Generated
-@Table(name = "stop")
+@Table(name = "STOP")
 public class Stop {
 
     /**

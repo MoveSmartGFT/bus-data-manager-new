@@ -27,7 +27,7 @@ public class StopManagementUseCaseImplTest {
     @InjectMocks
     private StopManagementUseCaseImpl stopManagementUseCase;
 
-    Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+    private final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE METHOD

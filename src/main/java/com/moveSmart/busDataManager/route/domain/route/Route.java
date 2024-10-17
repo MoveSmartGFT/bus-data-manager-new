@@ -1,12 +1,15 @@
 package com.moveSmart.busDataManager.route.domain.route;
 
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Generated;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 
@@ -15,11 +18,12 @@ import java.util.List;
 /**
  * Route Aggregate Root
  */
-@Generated
 @Getter
 @AggregateRoot
+@RequiredArgsConstructor
+@Generated
 @Entity
-@Table(name = "route")
+@Table(name = "ROUTE")
 public class Route {
 
     /**
@@ -27,11 +31,13 @@ public class Route {
      */
     @Identity
     @Id
+    @NotNull
     private String id;
 
     /**
      * Name of the route
      */
+    @NotBlank
     private String name;
 
     /**

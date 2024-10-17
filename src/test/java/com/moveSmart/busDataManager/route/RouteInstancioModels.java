@@ -19,9 +19,11 @@ public class RouteInstancioModels {
                                     Instancio.gen().doubles().min(-90.0).max(90.0).get(),
                                     Instancio.gen().doubles().min(-180.0).max(180.0).get()
                             ))
-            .toModel();
+                    .toModel();
 
     public static final Model<Route> ROUTE_MODEL =
             Instancio.of(Route.class)
                     .toModel();
+
 }
+

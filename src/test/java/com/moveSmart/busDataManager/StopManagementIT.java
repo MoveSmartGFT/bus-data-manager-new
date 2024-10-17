@@ -22,7 +22,7 @@ public class StopManagementIT extends EndPointInventory {
     @Autowired
     private ObjectMapper objectMapper;
 
-    Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+    private final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE ENDPOINT
