@@ -1,11 +1,14 @@
 package com.moveSmart.busDataManager.route.domain.route;
 
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Generated;
 import lombok.Getter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ import java.util.List;
 @Generated
 @Getter
 @AggregateRoot
+@Entity
 @Table(name = "route")
 public class Route {
 
@@ -22,6 +26,7 @@ public class Route {
      * Identifier for the route
      */
     @Identity
+    @Id
     private String id;
 
     /**
@@ -32,6 +37,7 @@ public class Route {
     /**
      * List of stops for the route
      */
+    @OneToMany
     private List<Stop> stops;
 
     /**

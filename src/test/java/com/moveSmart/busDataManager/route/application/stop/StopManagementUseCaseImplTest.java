@@ -36,7 +36,7 @@ public class StopManagementUseCaseImplTest {
     @DisplayName("GIVEN a stop to create THEN returns stop object and status 201")
     void testStopCreate() {
         when(stopRepository.existsById(stop.getId())).thenReturn(false);
-        when(stopRepository.insert(stop)).thenReturn(stop);
+        when(stopRepository.save(stop)).thenReturn(stop);
 
         Stop stopCreated = stopManagementUseCase.create(stop);
 

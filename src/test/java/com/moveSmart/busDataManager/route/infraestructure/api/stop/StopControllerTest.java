@@ -36,7 +36,6 @@ public class StopControllerTest {
 
     private ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
-    String routeId = "L1";
     Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
     @BeforeEach
@@ -55,7 +54,7 @@ public class StopControllerTest {
                 .thenReturn(stop);
 
         mockMvc.perform(
-                        post(StopController.STOP_PATH, routeId)
+                        post(StopController.STOP_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(objectMapper.writeValueAsString(stop))
                 )
@@ -70,7 +69,7 @@ public class StopControllerTest {
                 .thenThrow(new EntityAlreadyExistsException("Stop", stop.getId()));
 
         mockMvc.perform(
-                        post(StopController.STOP_PATH, routeId)
+                        post(StopController.STOP_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(objectMapper.writeValueAsString(stop))
                 )
@@ -81,7 +80,7 @@ public class StopControllerTest {
     @DisplayName("WHEN a stop creation request is received WHEN is a bad request THEN returns status 400")
     void testStopCreateBadRequest() throws Exception {
         mockMvc.perform(
-                        post(StopController.STOP_PATH, routeId)
+                        post(StopController.STOP_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content("Stop")
                 )

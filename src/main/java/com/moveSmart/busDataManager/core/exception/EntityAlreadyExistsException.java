@@ -1,7 +1,9 @@
 package com.moveSmart.busDataManager.core.exception;
 
 import lombok.Generated;
+import lombok.Getter;
 
+@Getter
 @Generated
 public class EntityAlreadyExistsException extends RuntimeException {
     private final String objectType;
@@ -13,11 +15,4 @@ public class EntityAlreadyExistsException extends RuntimeException {
         this.id = id;
     }
 
-    public String getObjectType() {
-        return objectType;
-    }
-
-    public String getId() {
-        return id;
-    }
 }
