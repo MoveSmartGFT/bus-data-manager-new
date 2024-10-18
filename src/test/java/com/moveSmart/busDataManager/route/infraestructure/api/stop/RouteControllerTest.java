@@ -38,6 +38,7 @@ public class RouteControllerTest {
 
     private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
+
     @BeforeEach
     void setUp() {
         RouteController routeController = new RouteController(routeManagementUseCase);

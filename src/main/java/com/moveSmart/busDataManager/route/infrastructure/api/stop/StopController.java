@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class StopController {
 
-    public static final String STOP_PATH =
-            RouteController.ROUTE_PATH + "/stops";
-    public static final String STOP_ID_PATH = "/{stopId}";
+    public static final String STOP_PATH = "/api/v1/stops";
 
     private final StopManagementUseCase stopManagementUseCase;
 
@@ -28,4 +26,5 @@ public class StopController {
         log.info("Stop creation is requested");
         return stopManagementUseCase.create(stop);
     }
+
 }
