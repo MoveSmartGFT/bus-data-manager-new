@@ -1,6 +1,7 @@
 package com.moveSmart.busDataManager.route.application.stop;
 
 import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
+import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -25,7 +28,7 @@ public class StopManagementUseCaseImplTest {
     private StopRepository stopRepository;
 
     @InjectMocks
-    private StopManagementUseCaseImpl stopManagementUseCase;
+    private StopManagementUseCaseImpl stopManagementUseCaseImpl;
 
     Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
@@ -33,25 +36,50 @@ public class StopManagementUseCaseImplTest {
     //CREATE METHOD
 
     @Test
-    @DisplayName("GIVEN a stop to create THEN returns stop object and status 201")
+    @DisplayName("GIVEN a stop to create THEN returns stop object")
     void testStopCreate() {
         when(stopRepository.existsById(stop.getId())).thenReturn(false);
         when(stopRepository.insert(stop)).thenReturn(stop);
 
-        Stop stopCreated = stopManagementUseCase.create(stop);
+        Stop stopCreated = stopManagementUseCaseImpl.create(stop);
 
         assertThat(stopCreated).isEqualTo(stop);
     }
 
     @Test
-    @DisplayName("GIVEN a stop to create WHEN already exists THEN returns an exception and status 409")
+    @DisplayName("GIVEN a stop to create WHEN already exists THEN returns an exception")
     void testStopCreateAlreadyExists() {
         when(stopRepository.existsById(stop.getId())).thenReturn(true);
 
-        Throwable throwable = catchThrowable(() -> stopManagementUseCase.create(stop));
+        Throwable throwable = catchThrowable(() -> stopManagementUseCaseImpl.create(stop));
 
         assertThat(throwable)
                 .isInstanceOf(EntityAlreadyExistsException.class)
+                .hasMessageContainingAll("Stop", stop.getId());
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    //GET METHOD
+
+    @Test
+    @DisplayName("")
+    void getStop() {
+        when(stopRepository.findById(stop.getId())).thenReturn(Optional.ofNullable(stop));
+
+        Stop stopRetrieved = stopManagementUseCaseImpl.get(stop.getId());
+
+        assertThat(stopRetrieved).isEqualTo(stop);
+    }
+
+    @Test
+    @DisplayName("GIVEN we try to retrieve a Stop WHEN it does not exist THEN an exception is thrown")
+    void getStopDoesNotExist() {
+        when(stopRepository.findById(stop.getId())).thenReturn(Optional.empty());
+
+        Throwable throwable = catchThrowable(() -> stopManagementUseCaseImpl.get(stop.getId()));
+
+        assertThat(throwable)
+                .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContainingAll("Stop", stop.getId());
     }
 }
