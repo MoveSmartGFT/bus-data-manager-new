@@ -4,6 +4,8 @@ import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,7 @@ public class RouteController {
 
     @GetMapping(ROUTE_ID_PATH+STOPS_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Stop> getStops(@Valid @PathVariable String routeId) {
+    public List<Stop> getStops(@NotBlank @PathVariable String routeId) {
         return routeManagementUseCase.getStops(routeId);
     }
 }

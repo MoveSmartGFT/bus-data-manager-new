@@ -46,7 +46,7 @@ public class RouteControllerTest {
     }
 
     @Test
-    @DisplayName("WHEN a stops retrieval request is received THEN returns stop list object and status 200")
+    @DisplayName("GIVEN a stops retrieval request is received WHEN the route exists THEN returns stop list object and status 200")
     void getStops() throws Exception {
         when(routeManagementUseCase.getStops(any()))
                 .thenReturn(stopList);
@@ -59,15 +59,13 @@ public class RouteControllerTest {
     }
 
     @Test
-    @DisplayName("WHEN a stops retrieval request is received THEN returns status 400")
+    @DisplayName("GIVEN a stops retrieval request is received WHEN the route does not exist THEN returns status 400")
     void getStopsBadRequest() throws Exception {
-        when(routeManagementUseCase.getStops(any()))
-                .thenReturn(stopList);
+        String routeId = null;
 
         mockMvc.perform(
                         get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
                 )
-                .andExpect(status().isBadRequest())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopList)));
+                .andExpect(status().isBadRequest());
     }
 }
