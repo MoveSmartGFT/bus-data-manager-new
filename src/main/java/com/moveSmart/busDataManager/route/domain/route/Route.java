@@ -43,8 +43,9 @@ public class Route {
     /**
      * List of stops for the route
      */
-    @OneToMany
-    private List<Stop> stops;
+//    @OneToMany
+//    private List<Stop> stops;
+    private String stopId;
 
     /**
      * Schedules of the route
