@@ -1,10 +1,9 @@
 package com.moveSmart.busDataManager.route.domain.route;
 
-import com.moveSmart.busDataManager.core.infrastructure.persistence.InsertableRepository;
 import lombok.Generated;
-import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 @Generated
 public interface RouteRepository
-        extends ListCrudRepository<Route, String>, InsertableRepository<Route> {
+        extends JpaRepository<Route, String> {
 }

@@ -5,18 +5,18 @@ import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
+import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class StopManagementUseCaseImpl implements StopManagementUseCase {
 
+    @Resource
     private final StopRepository stopRepository;
-
-    public StopManagementUseCaseImpl(StopRepository stopRepository) {
-        this.stopRepository = stopRepository;
-    }
 
     /**
      * @param stop data
@@ -24,10 +24,17 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
      */
     @Override
     public Stop create(Stop stop) {
-        if (stopRepository.existsById(stop.getId()))
-            throw new EntityAlreadyExistsException(STOP, stop.getId());
+        log.info("Attempting to create Stop with ID: {}", stop.getId());
 
-        return stopRepository.insert(stop);
+        if (stopRepository.existsById(stop.getId())) {
+            log.warn("Stop with ID: {} already exists", stop.getId());
+            throw new EntityAlreadyExistsException(STOP, stop.getId());
+        }
+
+        Stop savedStop = stopRepository.save(stop);
+        log.info("Stop with ID: {} successfully created", stop.getId());
+
+        return savedStop;
     }
 
     /**

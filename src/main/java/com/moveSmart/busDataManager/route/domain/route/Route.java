@@ -1,37 +1,49 @@
 package com.moveSmart.busDataManager.route.domain.route;
 
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Generated;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;
 
 /**
  * Route Aggregate Root
  */
-@Generated
 @Getter
 @AggregateRoot
-@Table(name = "route")
+@RequiredArgsConstructor
+@Generated
+@Entity
+@Table(name = "ROUTE")
 public class Route {
 
     /**
      * Identifier for the route
      */
     @Identity
+    @Id
+    @NotNull
     private String id;
 
     /**
      * Name of the route
      */
+    @NotBlank
     private String name;
 
     /**
      * List of stops for the route
      */
+    @OneToMany
     private List<Stop> stops;
 
     /**

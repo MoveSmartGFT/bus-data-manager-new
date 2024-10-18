@@ -1,26 +1,23 @@
 package com.moveSmart.busDataManager.route.domain.stop;
 
 import com.moveSmart.busDataManager.route.domain.Coordinates;
-import com.moveSmart.busDataManager.route.domain.route.Route;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Entity
 @RequiredArgsConstructor
 @Generated
-@Table(name = "stop")
+@Table(name = "STOP")
 public class Stop {
 
     /**
@@ -42,5 +39,6 @@ public class Stop {
      */
     @Valid
     @NotNull
+    @Embedded
     private Coordinates location;
 }

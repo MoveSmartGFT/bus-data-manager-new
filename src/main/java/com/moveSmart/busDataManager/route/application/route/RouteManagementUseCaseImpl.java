@@ -1,6 +1,7 @@
 package com.moveSmart.busDataManager.route.application.route;
 
 import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
+import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
@@ -18,6 +19,19 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
     public RouteManagementUseCaseImpl(RouteRepository routeRepository) {
         this.routeRepository = routeRepository;
+    }
+
+    /**
+     * @param route data
+     * @return Route
+     */
+
+    @Override
+    public Route create(Route route) {
+        if (routeRepository.existsById(route.getId()))
+            throw new EntityAlreadyExistsException(ROUTE,  route.getId());
+
+        return routeRepository.save(route);
     }
 
     /**

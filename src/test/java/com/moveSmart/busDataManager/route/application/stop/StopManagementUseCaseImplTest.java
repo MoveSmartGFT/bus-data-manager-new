@@ -30,7 +30,7 @@ public class StopManagementUseCaseImplTest {
     @InjectMocks
     private StopManagementUseCaseImpl stopManagementUseCaseImpl;
 
-    Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+    private final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE METHOD
@@ -39,7 +39,7 @@ public class StopManagementUseCaseImplTest {
     @DisplayName("GIVEN a stop to create THEN returns stop object")
     void testStopCreate() {
         when(stopRepository.existsById(stop.getId())).thenReturn(false);
-        when(stopRepository.insert(stop)).thenReturn(stop);
+        when(stopRepository.save(stop)).thenReturn(stop);
 
         Stop stopCreated = stopManagementUseCaseImpl.create(stop);
 
