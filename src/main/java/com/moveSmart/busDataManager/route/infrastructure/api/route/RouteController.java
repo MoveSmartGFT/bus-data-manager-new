@@ -2,9 +2,7 @@ package com.moveSmart.busDataManager.route.infrastructure.api.route;
 
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
-import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
 import jakarta.validation.Valid;
-import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

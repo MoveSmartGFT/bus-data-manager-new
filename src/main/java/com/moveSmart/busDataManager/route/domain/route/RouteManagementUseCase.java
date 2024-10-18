@@ -12,5 +12,5 @@ public interface RouteManagementUseCase {
      * Returns list of Stops belonging to a Route
      * @param routeId Identifier of the Route
      */
-    public List<Stop> getStops(String routeId);
+    List<Stop> getStops(String routeId);
 }

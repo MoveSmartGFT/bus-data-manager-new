@@ -1,6 +1,5 @@
 package com.moveSmart.busDataManager.route.application.route;
 
-import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
 import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;

@@ -8,8 +8,6 @@ import org.instancio.Model;
 
 import java.util.List;
 
-import static org.instancio.Select.field;
-
 @UtilityClass
 public class RouteInstancioModels {
 

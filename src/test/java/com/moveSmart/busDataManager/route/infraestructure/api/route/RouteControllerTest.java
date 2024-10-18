@@ -34,7 +34,7 @@ public class RouteControllerTest {
     @Mock
     private RouteManagementUseCase routeManagementUseCase;
 
-    private ObjectMapper objectMapper = Fixtures.setupObjectMapper();
+    private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
     String routeId = "L1";
     List<Stop> stopList = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
@@ -55,6 +55,19 @@ public class RouteControllerTest {
                         get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
                 )
                 .andExpect(status().isOk())
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopList)));
+    }
+
+    @Test
+    @DisplayName("WHEN a stops retrieval request is received THEN returns status 400")
+    void getStopsBadRequest() throws Exception {
+        when(routeManagementUseCase.getStops(any()))
+                .thenReturn(stopList);
+
+        mockMvc.perform(
+                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
+                )
+                .andExpect(status().isBadRequest())
                 .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopList)));
     }
 }

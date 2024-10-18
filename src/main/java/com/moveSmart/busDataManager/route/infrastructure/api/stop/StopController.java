@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(StopController.STOP_PATH)
 @Slf4j
@@ -34,7 +32,7 @@ public class StopController {
 
     @GetMapping(STOP_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public Stop getStop(@Valid @PathVariable String stopId) {
+    public Stop get(@Valid @PathVariable String stopId) {
         return stopManagementUseCase.get(stopId);
     }
 }
