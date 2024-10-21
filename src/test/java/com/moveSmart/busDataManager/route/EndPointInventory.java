@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @ApplicationModuleTest
 @AutoConfigureMockMvc
@@ -41,4 +42,20 @@ public abstract class EndPointInventory {
                 )
                 .andReturn();
     }
+
+    protected MvcResult getStopRequest(String stopId) throws Exception {
+        return this.mockMvc.perform(
+                        get(StopController.STOP_PATH+StopController.STOP_ID_PATH, stopId)
+                )
+                .andReturn();
+    }
+
+    protected MvcResult getStopIdsRequest(String routeId) throws Exception {
+        return this.mockMvc.perform(
+                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
+                )
+                .andReturn();
+    }
+
+
 }

@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RouteManagementIT extends EndPointInventory {
 
@@ -22,9 +25,6 @@ public class RouteManagementIT extends EndPointInventory {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
-
-
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE ENDPOINT
 
@@ -33,6 +33,9 @@ public class RouteManagementIT extends EndPointInventory {
             "WHEN same route creation request is received THEN returns status 409")
 
     void testRouteCreate() throws Exception {
+        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+
+
         // First route creation request
         MvcResult newRoute = createRouteRequest(route);
 
@@ -60,7 +63,45 @@ public class RouteManagementIT extends EndPointInventory {
         assertThat(result.getId()).isEqualTo(expected.getId());
         assertThat(result.getName()).isEqualTo(expected.getName());
         assertThat(result.getSchedules()).isEqualTo(expected.getSchedules());
-        assertThat(result.getStopId()).isEqualTo(expected.getStopId());
-        //assertThat(result.getStops()).isEqualTo(expected.getStops());
+        assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    //GET STOP IDS ENDPOINT
+
+    @Test
+    @DisplayName("WHEN a Stop Id list retrieval request is received THEN returns the list of Ids of the Stops belonging to the Route and status 200")
+
+    void getStopIds() throws Exception {
+        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+
+        // Route creation request
+        createRouteRequest(route);
+
+        // Stop Id List retrieval request
+        MvcResult stopIds = getStopIdsRequest(route.getId());
+
+        // Verify status and response content
+        assertThat(HttpStatus.valueOf(stopIds.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        List<String> responseBody = objectMapper.readValue(stopIds.getResponse().getContentAsString(), List.class);
+
+        checkStopIds(responseBody, route.getStopIds());
+    }
+
+    void checkStopIds(List<String> result, List<String> expected) {
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("WHEN a Stop Id list retrieval request is received AND the Route does not exist THEN return status 404")
+
+    void getStopIdsRouteNotFound() throws Exception {
+        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+
+        // Stop Id List retrieval request
+        MvcResult stopIds = getStopIdsRequest(route.getId());
+
+        // Verify status 404 (Not found)
+        assertThat(HttpStatus.valueOf(stopIds.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

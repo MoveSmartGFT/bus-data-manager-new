@@ -1,6 +1,7 @@
 package com.moveSmart.busDataManager.route.application.stop;
 
 import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
+import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
@@ -34,5 +35,12 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
         log.info("Stop with ID: {} successfully created", stop.getId());
 
         return savedStop;
+    }
+
+    /**
+     * @see StopManagementUseCase#get(String)
+     */
+    public Stop get(String stopId) {
+        return stopRepository.findById(stopId).orElseThrow(() -> new EntityNotFoundException(STOP, stopId));
     }
 }
