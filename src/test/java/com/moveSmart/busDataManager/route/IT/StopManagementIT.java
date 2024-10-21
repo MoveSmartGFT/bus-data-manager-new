@@ -70,7 +70,7 @@ public class StopManagementIT extends EndPointInventory {
         final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
         //Stop creation request
-        MvcResult newStop = createStopRequest(stop);
+        createStopRequest(stop);
 
         // Stop retrieval request. Should return stop
         MvcResult stopRetrieved = getStopRequest(stop.getId());

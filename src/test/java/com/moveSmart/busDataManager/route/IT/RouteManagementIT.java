@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RouteManagementIT extends EndPointInventory {
 
@@ -75,7 +76,7 @@ public class RouteManagementIT extends EndPointInventory {
         final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
         // Route creation request
-        MvcResult newRoute = createRouteRequest(route);
+        createRouteRequest(route);
 
         // Stop Id List retrieval request
         MvcResult stopIds = getStopIdsRequest(route.getId());
@@ -83,6 +84,12 @@ public class RouteManagementIT extends EndPointInventory {
         // Verify status and response content
         assertThat(HttpStatus.valueOf(stopIds.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         List<String> responseBody = objectMapper.readValue(stopIds.getResponse().getContentAsString(), List.class);
+
+        checkStopIds(responseBody, route.getStopIds());
+    }
+
+    void checkStopIds(List<String> result, List<String> expected) {
+        assertEquals(expected, result);
     }
 
     @Test
