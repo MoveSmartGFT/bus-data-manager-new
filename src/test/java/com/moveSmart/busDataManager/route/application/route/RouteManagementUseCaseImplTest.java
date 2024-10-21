@@ -4,7 +4,6 @@ import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -38,9 +37,9 @@ public class RouteManagementUseCaseImplTest {
     void getStops() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.ofNullable(route));
 
-        List<Stop> stopsRetrieved = routeManagementUseCaseImpl.getStops(route.getId());
+        List<String> stopsRetrieved = routeManagementUseCaseImpl.getStopIds(route.getId());
 
-        assertThat(stopsRetrieved).isEqualTo(route.getStops());
+        assertThat(stopsRetrieved).isEqualTo(route.getStopIds());
     }
 
     @Test
@@ -48,7 +47,7 @@ public class RouteManagementUseCaseImplTest {
     void getStopsRouteDoesNotExist() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
 
-        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.getStops(route.getId()));
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.getStopIds(route.getId()));
 
         assertThat(throwable)
                 .isInstanceOf(EntityNotFoundException.class)

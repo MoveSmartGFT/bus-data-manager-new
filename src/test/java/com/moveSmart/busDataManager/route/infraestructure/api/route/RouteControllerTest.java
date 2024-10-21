@@ -2,9 +2,7 @@ package com.moveSmart.busDataManager.route.infraestructure.api.route;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moveSmart.busDataManager.core.Fixtures;
-import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
@@ -37,7 +35,7 @@ public class RouteControllerTest {
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
     String routeId = "L1";
-    List<Stop> stopList = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
+    List<String> stopIdList = Instancio.createList(String.class);
 
     @BeforeEach
     void setUp() {
@@ -48,13 +46,13 @@ public class RouteControllerTest {
     @Test
     @DisplayName("GIVEN a stops retrieval request is received WHEN the route exists THEN returns stop list object and status 200")
     void getStops() throws Exception {
-        when(routeManagementUseCase.getStops(any()))
-                .thenReturn(stopList);
+        when(routeManagementUseCase.getStopIds(any()))
+                .thenReturn(stopIdList);
 
         mockMvc.perform(
                         get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
                 )
                 .andExpect(status().isOk())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopList)));
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopIdList)));
     }
 }

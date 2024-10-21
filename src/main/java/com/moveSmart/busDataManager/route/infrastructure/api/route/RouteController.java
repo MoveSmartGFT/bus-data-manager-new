@@ -2,7 +2,6 @@ package com.moveSmart.busDataManager.route.infrastructure.api.route;
 
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class RouteController {
 
     @GetMapping(ROUTE_ID_PATH+STOPS_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Stop> getStops(@PathVariable String routeId) {
-        return routeManagementUseCase.getStops(routeId);
+    public List<String> getStopIds(@PathVariable String routeId) {
+        return routeManagementUseCase.getStopIds(routeId);
     }
 }
