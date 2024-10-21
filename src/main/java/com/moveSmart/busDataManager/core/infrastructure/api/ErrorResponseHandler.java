@@ -1,6 +1,7 @@
 package com.moveSmart.busDataManager.core.infrastructure.api;
 
 import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
+import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,18 @@ public class ErrorResponseHandler extends ResponseEntityExceptionHandler {
                 new String[] {ex.getObjectType(), ex.getId()},
                 request);
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundException (
+            EntityNotFoundException ex, WebRequest request) {
+        ProblemDetail body = createProblemDetail(
+                ex,
+                HttpStatus.NOT_FOUND,
+                "Entity not found",
+                null,
+                new String[] {ex.getObjectType(), ex.getId()},
+                request);
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }

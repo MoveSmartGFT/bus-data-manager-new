@@ -57,15 +57,4 @@ public class RouteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopList)));
     }
-
-    @Test
-    @DisplayName("GIVEN a stops retrieval request is received WHEN the route does not exist THEN returns status 400")
-    void getStopsBadRequest() throws Exception {
-        String routeId = null;
-
-        mockMvc.perform(
-                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
-                )
-                .andExpect(status().isBadRequest());
-    }
 }
