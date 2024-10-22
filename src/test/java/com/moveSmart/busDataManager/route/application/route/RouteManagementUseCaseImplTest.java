@@ -1,5 +1,6 @@
 package com.moveSmart.busDataManager.route.application.route;
 
+import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
 import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
@@ -31,6 +32,33 @@ public class RouteManagementUseCaseImplTest {
     private RouteManagementUseCaseImpl routeManagementUseCaseImpl;
 
     Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+
+    //-----------------------------------------------------------------------------------------------------------------
+    //CREATE METHOD
+
+    @Test
+    @DisplayName("GIVEN a route to create THEN returns route object and status 201")
+
+    void testRouteCreate() {
+        when(routeRepository.existsById(route.getId())).thenReturn(false);
+        when(routeRepository.save(route)).thenReturn(route);
+
+        Route routeCreated = routeManagementUseCaseImpl.create(route);
+
+        assertThat(routeCreated).isEqualTo(route);
+    }
+
+    @Test
+    @DisplayName("GIVEN a route to create WHEN already exists THEN returns an exception and status 409")
+    void testStopCreateAlreadyExists() {
+        when(routeRepository.existsById(route.getId())).thenReturn(true);
+
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.create(route));
+
+        assertThat(throwable)
+                .isInstanceOf(EntityAlreadyExistsException.class)
+                .hasMessageContainingAll("Route", route.getId());
+    }
 
     @Test
     @DisplayName("GIVEN we try to retrieve a stop list WHEN the route exists THEN returns stop list")
