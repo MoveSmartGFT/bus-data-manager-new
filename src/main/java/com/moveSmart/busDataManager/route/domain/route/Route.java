@@ -1,11 +1,9 @@
 package com.moveSmart.busDataManager.route.domain.route;
 
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Generated;
 import lombok.Getter;
@@ -43,9 +41,7 @@ public class Route {
     /**
      * List of stops for the route
      */
-//    @OneToMany
-//    private List<Stop> stops;
-    private String stopId;
+    private List<String> stopIds;
 
     /**
      * Schedules of the route

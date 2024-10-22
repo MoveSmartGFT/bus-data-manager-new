@@ -1,11 +1,14 @@
 package com.moveSmart.busDataManager.route.application.route;
 
+import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -28,5 +31,15 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
             throw new EntityAlreadyExistsException(ROUTE,  route.getId());
 
         return routeRepository.save(route);
+    }
+
+    /**
+     * Get
+     * @see RouteManagementUseCase#getStopIds(String)
+     */
+    public List<String> getStopIds(String routeId) {
+        Route route = routeRepository.findById(routeId).orElseThrow(() -> new EntityNotFoundException(ROUTE, routeId));
+
+        return route.getStopIds();
     }
 }

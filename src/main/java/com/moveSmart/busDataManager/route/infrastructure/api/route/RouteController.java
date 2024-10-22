@@ -9,14 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(RouteController.ROUTE_PATH)
 @Slf4j
 @RequiredArgsConstructor
-
 public class RouteController {
     public static final String ROUTE_PATH = "/api/v1/routes";
     public static final String ROUTE_ID_PATH = "/{routeId}";
+    public static final String STOPS_PATH = "/stops";
 
     private final RouteManagementUseCase routeManagementUseCase;
 
@@ -27,4 +29,9 @@ public class RouteController {
         return routeManagementUseCase.create(route);
     }
 
+    @GetMapping(ROUTE_ID_PATH+STOPS_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<String> getStopIds(@PathVariable String routeId) {
+        return routeManagementUseCase.getStopIds(routeId);
+    }
 }

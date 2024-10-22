@@ -1,4 +1,4 @@
-package com.moveSmart.busDataManager.route.infraestructure.api.stop;
+package com.moveSmart.busDataManager.route.infraestructure.api.route;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moveSmart.busDataManager.core.Fixtures;
@@ -19,9 +19,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +41,8 @@ public class RouteControllerTest {
 
     private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
+    String routeId = "L1";
+    List<String> stopIdList = Instancio.createList(String.class);
 
     @BeforeEach
     void setUp() {
@@ -79,12 +84,28 @@ public class RouteControllerTest {
 
     @Test
     @DisplayName("WHEN a route creation request is received WHEN is a bad request THEN returns status 400")
-    void testStopCreateBadRequest() throws Exception {
+    void testRouteCreateBadRequest() throws Exception {
         mockMvc.perform(
                         post(RouteController.ROUTE_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content("Route")
                 )
                 .andExpect(status().isBadRequest());
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    //GET STOPS ENDPOINT
+
+    @Test
+    @DisplayName("GIVEN a stops retrieval request is received WHEN the route exists THEN returns stop list object and status 200")
+    void getStops() throws Exception {
+        when(routeManagementUseCase.getStopIds(any()))
+                .thenReturn(stopIdList);
+
+        mockMvc.perform(
+                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
+                )
+                .andExpect(status().isOk())
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopIdList)));
     }
 }
