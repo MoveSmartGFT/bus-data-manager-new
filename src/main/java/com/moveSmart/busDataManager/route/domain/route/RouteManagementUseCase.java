@@ -1,5 +1,7 @@
 package com.moveSmart.busDataManager.route.domain.route;
 
+import com.moveSmart.busDataManager.route.domain.stop.Stop;
+
 import java.util.List;
 
 public interface RouteManagementUseCase {
@@ -18,4 +20,7 @@ public interface RouteManagementUseCase {
      * @param routeId Identifier of the Route
      */
     List<String> getStopIds(String routeId);
+
+    Route get(String routeId);
+
 }

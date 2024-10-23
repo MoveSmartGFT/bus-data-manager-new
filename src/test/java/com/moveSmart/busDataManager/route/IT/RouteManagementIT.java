@@ -5,8 +5,6 @@ import com.moveSmart.busDataManager.route.EndPointInventory;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
-import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,6 +83,26 @@ public class RouteManagementIT extends EndPointInventory {
     //GET STOP IDS ENDPOINT
 
     @Test
+    @DisplayName("WHEN a Route retrieval request is received AND said Route exists THEN return the Route and status 200")
+    void getRout() throws Exception {
+        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+        createRouteRequest(route);
+        MvcResult routeRetrieved = getRouteRequest(route.getId());
+
+        assertThat(HttpStatus.valueOf(routeRetrieved.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Route responseBody = objectMapper.readValue(routeRetrieved.getResponse().getContentAsString(), Route.class);
+        checkRoutes(responseBody, route);
+    }
+
+    @Test
+    @DisplayName("WHEN a Stop retrieval request is received AND said Stop does not exist THEN returns status 404")
+    void getRouteDoesNotExist() throws Exception {
+        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+        MvcResult routeNotFound = getStopRequest(route.getId());
+        assertThat(HttpStatus.valueOf(routeNotFound.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
     @DisplayName("WHEN a Stop Id list retrieval request is received THEN returns the list of Ids of the Stops belonging to the Route and status 200")
     void getStopIds() throws Exception {
 
@@ -99,7 +117,6 @@ public class RouteManagementIT extends EndPointInventory {
         List<String> responseBody = objectMapper.readValue(stopIds.getResponse().getContentAsString(), List.class);
         checkStopIds(responseBody, route.getStopIds());
     }
-
 
     void checkStopIds(List<String> result, List<String> expected) {
         assertEquals(expected, result);

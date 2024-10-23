@@ -43,6 +43,13 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     }
 
     /**
+     * @see RouteManagementUseCase#get(String)
+     */
+    public Route get(String routeId) {
+        return routeRepository.findById(routeId).orElseThrow(() -> new EntityNotFoundException(ROUTE, routeId));
+    }
+
+    /**
      * Get
      * @see RouteManagementUseCase#getStopIds(String)
      */
