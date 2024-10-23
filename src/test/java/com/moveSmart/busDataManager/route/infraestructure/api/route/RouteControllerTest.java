@@ -6,6 +6,7 @@ import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
+import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
@@ -38,11 +39,12 @@ public class RouteControllerTest {
     private RouteManagementUseCase routeManagementUseCase;
 
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
-
-    private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
-
     String routeId = "L1";
     List<String> stopIdList = Instancio.createList(String.class);
+    List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
+
+    private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
+
 
     @BeforeEach
     void setUp() {

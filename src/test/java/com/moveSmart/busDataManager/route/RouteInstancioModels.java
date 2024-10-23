@@ -8,6 +8,7 @@ import org.instancio.Instancio;
 import org.instancio.Model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.instancio.Select.field;
 
@@ -23,9 +24,12 @@ public class RouteInstancioModels {
                             ))
                     .toModel();
 
-    public static final Model<Route> ROUTE_MODEL =
-            Instancio.of(Route.class)
-                    .toModel();
+    public static Model<Route> ROUTE_MODEL (List<Stop> stops) {
+        List<String> stopIds = stops.stream().map(Stop::getId).collect(Collectors.toList());
+        return Instancio.of(Route.class)
+                .set(field(Route::getStopIds), stopIds)
+                .toModel();
+    }
 
     public static final Model<List<Stop>> STOP_LIST_MODEL =
             Instancio.ofList(Stop.class)

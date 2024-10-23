@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * Route Aggregate Root
  */
 @Getter
+@Setter
 @AggregateRoot
 @RequiredArgsConstructor
 @Generated
@@ -47,4 +49,8 @@ public class Route {
      * Schedules of the route
      */
     private List<String> schedules;
+
+
 }
+
+
