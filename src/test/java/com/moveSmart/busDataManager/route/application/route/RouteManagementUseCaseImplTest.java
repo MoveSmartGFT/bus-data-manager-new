@@ -6,6 +6,7 @@ import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +31,14 @@ public class RouteManagementUseCaseImplTest {
     @Mock
     private RouteRepository routeRepository;
 
+    @Mock
+    private StopRepository stopRepository;
+
     @InjectMocks
     private RouteManagementUseCaseImpl routeManagementUseCaseImpl;
+    List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
 
-    Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+    Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE METHOD
@@ -41,13 +47,19 @@ public class RouteManagementUseCaseImplTest {
     @DisplayName("GIVEN a route to create THEN returns route object and status 201")
 
     void testRouteCreate() {
+        Route route = new Route();
+        route.setStopIds(Arrays.asList("Stop_1", "Stop_2"));
+
         when(routeRepository.existsById(route.getId())).thenReturn(false);
+        when(stopRepository.existsById("Stop_1")).thenReturn(true);
+        when(stopRepository.existsById("Stop_2")).thenReturn(true);
         when(routeRepository.save(route)).thenReturn(route);
 
         Route routeCreated = routeManagementUseCaseImpl.create(route);
 
         assertThat(routeCreated).isEqualTo(route);
     }
+
 
     @Test
     @DisplayName("GIVEN a route to create WHEN already exists THEN returns an exception and status 409")
@@ -59,6 +71,21 @@ public class RouteManagementUseCaseImplTest {
         assertThat(throwable)
                 .isInstanceOf(EntityAlreadyExistsException.class)
                 .hasMessageContainingAll("Route", route.getId());
+    }
+
+    @Test
+    @DisplayName("GIVEN a route with non-existing stops WHEN creating THEN returns an exception and status 409")
+    void testStopCreateWithNonExistingStops() {
+        String nonExistingStopId = "NoStop";
+        route.setStopIds(List.of(nonExistingStopId));
+        when(routeRepository.existsById(route.getId())).thenReturn(false);
+        when(stopRepository.existsById(nonExistingStopId)).thenReturn(false);
+
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.create(route));
+
+        assertThat(throwable)
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContainingAll("Stop", nonExistingStopId);
     }
 
     //-----------------------------------------------------------------------------------------------------------------
