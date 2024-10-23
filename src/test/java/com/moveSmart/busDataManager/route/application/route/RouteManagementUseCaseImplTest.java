@@ -5,6 +5,7 @@ import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
+import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -57,6 +58,31 @@ public class RouteManagementUseCaseImplTest {
 
         assertThat(throwable)
                 .isInstanceOf(EntityAlreadyExistsException.class)
+                .hasMessageContainingAll("Route", route.getId());
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    //GET METHOD
+
+    @Test
+    @DisplayName("GIVEN we try to get a Route WHEN it exist THEN a Route is received")
+    void getStop() {
+        when(routeRepository.findById(route.getId())).thenReturn(Optional.ofNullable(route));
+
+        Route routeRetrieved = routeManagementUseCaseImpl.get(route.getId());
+
+        assertThat(routeRetrieved).isEqualTo(route);
+    }
+
+    @Test
+    @DisplayName("GIVEN we try to retrieve a Route WHEN it does not exist THEN an exception is thrown")
+    void getStopDoesNotExist() {
+        when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
+
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.get(route.getId()));
+
+        assertThat(throwable)
+                .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContainingAll("Route", route.getId());
     }
 
