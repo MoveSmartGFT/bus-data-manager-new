@@ -34,6 +34,11 @@ public class RouteInstancioModels {
     public static final Model<List<Stop>> STOP_LIST_MODEL =
             Instancio.ofList(Stop.class)
                     .size(30)
+                    .supply(field(Stop::getLocation),
+                            () -> Coordinates.of(
+                                    Instancio.gen().doubles().min(-90.0).max(90.0).get(),
+                                    Instancio.gen().doubles().min(-180.0).max(180.0).get()
+                            ))
                     .toModel();
 
 }

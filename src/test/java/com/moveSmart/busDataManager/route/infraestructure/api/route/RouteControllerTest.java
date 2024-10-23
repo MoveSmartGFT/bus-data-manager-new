@@ -9,7 +9,6 @@ import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
-import com.moveSmart.busDataManager.route.infrastructure.api.stop.StopController;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -102,7 +101,7 @@ public class RouteControllerTest {
 
     @Test
     @DisplayName("GIVEN a route retrieval request is received WHEN the route exists THEN returns route object and status 200")
-    void getStop() throws Exception {
+    void getRoute() throws Exception {
         when(routeManagementUseCase.get(any()))
                 .thenReturn(route);
 

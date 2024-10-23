@@ -5,6 +5,8 @@ import com.moveSmart.busDataManager.route.EndPointInventory;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
+import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,42 +37,26 @@ public class RouteManagementIT extends EndPointInventory {
     @DisplayName("WHEN a route creation request is received THEN returns route object and status 201 AND" +
             "WHEN same route creation request is received THEN returns status 409")
     void testRouteCreate() throws Exception {
-        // 1. Generar una lista de paradas válidas usando Instancio
+
         List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
-
-        // 2. Persistir las paradas en la base de datos
-        stops.forEach(stop -> stopRepository.save(stop)); // Asegurarse de que las paradas estén en la base de datos
-
-        // 3. Crear una ruta utilizando los IDs de esas paradas ya persistidas
+        stops.forEach(stop -> stopRepository.save(stop));
         final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
 
-        // 4. Primer request de creación de ruta
         MvcResult newRoute = createRouteRequest(route);
-
-        // 5. Verificar que el estado de respuesta es 201 CREATED
         assertThat(HttpStatus.valueOf(newRoute.getResponse().getStatus())).isEqualTo(HttpStatus.CREATED);
 
-        // 6. Parsear el cuerpo de la respuesta para obtener el objeto Route
         Route responseBody = objectMapper.readValue(newRoute.getResponse().getContentAsString(), Route.class);
-
-        // 7. Verificar que la ruta en la respuesta coincide con la ruta creada
         checkRoutes(responseBody, route);
 
-        // 8. Verificar que la ruta ha sido guardada en el repositorio
         assertThat(routeRepository.findById(route.getId()).isPresent()).isTrue();
         checkRoutes(routeRepository.findById(route.getId()).get(), route);
 
-        // 9. Hacer un segundo request para crear la misma ruta (esto debería dar conflicto 409)
         MvcResult routeConflict = createRouteRequest(route);
 
-        // 10. Verificar que el estado de respuesta es 409 CONFLICT
         assertThat(HttpStatus.valueOf(routeConflict.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
-
-        // 11. Verificar que la ruta sigue existiendo en el repositorio después del conflicto
         assertThat(routeRepository.findById(route.getId()).isPresent()).isTrue();
         checkRoutes(routeRepository.findById(route.getId()).get(), route);
     }
-
 
     void checkRoutes(Route result, Route expected) {
         assertThat(result.getId()).isEqualTo(expected.getId());
@@ -84,8 +70,11 @@ public class RouteManagementIT extends EndPointInventory {
 
     @Test
     @DisplayName("WHEN a Route retrieval request is received AND said Route exists THEN return the Route and status 200")
-    void getRout() throws Exception {
-        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+    void getRoute() throws Exception {
+        List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
+        stops.forEach(stop -> stopRepository.save(stop));
+        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
+
         createRouteRequest(route);
         MvcResult routeRetrieved = getRouteRequest(route.getId());
 
@@ -97,7 +86,9 @@ public class RouteManagementIT extends EndPointInventory {
     @Test
     @DisplayName("WHEN a Stop retrieval request is received AND said Stop does not exist THEN returns status 404")
     void getRouteDoesNotExist() throws Exception {
-        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+        List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
+        final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
+
         MvcResult routeNotFound = getStopRequest(route.getId());
         assertThat(HttpStatus.valueOf(routeNotFound.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
     }
