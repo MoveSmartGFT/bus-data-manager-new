@@ -59,49 +59,47 @@ public class RouteManagementIT extends EndPointInventory {
         checkRoutes(routeRepository.findById(route.getId()).get(), route);
     }
 
-    void checkRoutes(Route result, Route expected) {
-        assertThat(result.getId()).isEqualTo(expected.getId());
-        assertThat(result.getName()).isEqualTo(expected.getName());
-        assertThat(result.getSchedules()).isEqualTo(expected.getSchedules());
-        assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
-    }
-
     //-----------------------------------------------------------------------------------------------------------------
     //GET STOP IDS ENDPOINT
 
     @Test
     @DisplayName("WHEN a Stop Id list retrieval request is received THEN returns the list of Ids of the Stops belonging to the Route and status 200")
-
-    void getStopIds() throws Exception {
+    void testGetStopIds() throws Exception {
         final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
         // Route creation request
         createRouteRequest(route);
 
         // Stop Id List retrieval request
-        MvcResult stopIds = getStopIdsRequest(route.getId());
+        MvcResult stopIds = getStopIdsByRouteIdRequest(route.getId());
 
         // Verify status and response content
         assertThat(HttpStatus.valueOf(stopIds.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         List<String> responseBody = objectMapper.readValue(stopIds.getResponse().getContentAsString(), List.class);
 
-        checkStopIds(responseBody, route.getStopIds());
-    }
-
-    void checkStopIds(List<String> result, List<String> expected) {
-        assertEquals(expected, result);
+        assertEquals(responseBody, route.getStopIds());
     }
 
     @Test
     @DisplayName("WHEN a Stop Id list retrieval request is received AND the Route does not exist THEN return status 404")
 
-    void getStopIdsRouteNotFound() throws Exception {
+    void testGetStopIdsRouteNotFound() throws Exception {
         final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
         // Stop Id List retrieval request
-        MvcResult stopIds = getStopIdsRequest(route.getId());
+        MvcResult stopIds = getStopIdsByRouteIdRequest(route.getId());
 
         // Verify status 404 (Not found)
         assertThat(HttpStatus.valueOf(stopIds.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    // SUPPORT METHODS
+
+    void checkRoutes(Route result, Route expected) {
+        assertThat(result.getId()).isEqualTo(expected.getId());
+        assertThat(result.getName()).isEqualTo(expected.getName());
+        assertThat(result.getSchedules()).isEqualTo(expected.getSchedules());
+        assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
     }
 }

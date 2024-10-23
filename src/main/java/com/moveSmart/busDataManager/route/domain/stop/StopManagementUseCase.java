@@ -17,4 +17,11 @@ public interface StopManagementUseCase {
      * @return Stop
      */
     Stop get(String stopId);
+
+    /**
+     * Updates a Stop
+     * @param stop new stop
+     * @return Stop
+     */
+    Stop update(Stop stop);
 }

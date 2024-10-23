@@ -2,8 +2,8 @@ package com.moveSmart.busDataManager.route.infrastructure.api.stop;
 
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
+import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,8 +30,16 @@ public class StopController {
 
     @GetMapping(STOP_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public Stop get(@NotBlank @PathVariable String stopId) {
+    public Stop get(@PathVariable String stopId) {
         log.info("Requested stop with id {}", stopId);
         return stopManagementUseCase.get(stopId);
+    }
+
+    @PutMapping(STOP_ID_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public Stop update(@PathVariable String stopId,
+                       @Valid @RequestBody UpdateStopRequest stopRequest) {
+        log.info("Requested update stop with id {}", stopId);
+        return stopManagementUseCase.update(stopRequest.toStop(stopId));
     }
 }
