@@ -41,8 +41,8 @@ public class RouteControllerTest {
 
     private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
-    String routeId = "L1";
-    List<String> stopIdList = Instancio.createList(String.class);
+    final String routeId = "L1";
+    final List<String> stopIdList = Instancio.createList(String.class);
 
     @BeforeEach
     void setUp() {

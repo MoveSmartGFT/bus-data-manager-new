@@ -31,7 +31,7 @@ public class RouteManagementUseCaseImplTest {
     @InjectMocks
     private RouteManagementUseCaseImpl routeManagementUseCaseImpl;
 
-    Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+    final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE METHOD
