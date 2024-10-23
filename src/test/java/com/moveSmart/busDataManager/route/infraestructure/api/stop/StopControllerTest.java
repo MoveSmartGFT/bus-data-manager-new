@@ -6,7 +6,6 @@ import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
-import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
 import com.moveSmart.busDataManager.route.infrastructure.api.stop.StopController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.javacrumbs.jsonunit.core.Option;

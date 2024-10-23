@@ -41,6 +41,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
      * @see StopManagementUseCase#get(String)
      */
     public Stop get(String stopId) {
+        log.info("Returning stop by id: {}", stopId);
+
         return stopRepository.findById(stopId).orElseThrow(() -> new EntityNotFoundException(STOP, stopId));
     }
 }

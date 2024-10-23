@@ -27,17 +27,25 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
     @Override
     public Route create(Route route) {
-        if (routeRepository.existsById(route.getId()))
-            throw new EntityAlreadyExistsException(ROUTE,  route.getId());
+        log.info("Attempting to create Route with ID: {}", route.getId());
 
-        return routeRepository.save(route);
+        if (routeRepository.existsById(route.getId())) {
+            log.warn("Route with ID: {} already exists", route.getId());
+            throw new EntityAlreadyExistsException(ROUTE, route.getId());
+        }
+
+        Route savedRoute = routeRepository.save(route);
+        log.info("Route with ID: {} successfully created", route.getId());
+
+        return savedRoute;
     }
 
     /**
      * Get
-     * @see RouteManagementUseCase#getStopIds(String)
+     * @see RouteManagementUseCase#getStopIdsByRouteId(String)
      */
-    public List<String> getStopIds(String routeId) {
+    public List<String> getStopIdsByRouteId(String routeId) {
+        log.info("Returning stopsIds from routeId: {}", routeId);
         Route route = routeRepository.findById(routeId).orElseThrow(() -> new EntityNotFoundException(ROUTE, routeId));
 
         return route.getStopIds();

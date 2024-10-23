@@ -31,7 +31,8 @@ public class RouteController {
 
     @GetMapping(ROUTE_ID_PATH+STOPS_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public List<String> getStopIds(@PathVariable String routeId) {
-        return routeManagementUseCase.getStopIds(routeId);
+    public List<String> getStopIdsByRouteId(@PathVariable String routeId) {
+        log.info("Requested stopIds from routeId {}", routeId);
+        return routeManagementUseCase.getStopIdsByRouteId(routeId);
     }
 }

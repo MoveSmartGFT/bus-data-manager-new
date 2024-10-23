@@ -60,12 +60,15 @@ public class RouteManagementUseCaseImplTest {
                 .hasMessageContainingAll("Route", route.getId());
     }
 
+    //-----------------------------------------------------------------------------------------------------------------
+    //GET METHOD
+
     @Test
     @DisplayName("GIVEN we try to retrieve a stop list WHEN the route exists THEN returns stop list")
     void getStops() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.ofNullable(route));
 
-        List<String> stopsRetrieved = routeManagementUseCaseImpl.getStopIds(route.getId());
+        List<String> stopsRetrieved = routeManagementUseCaseImpl.getStopIdsByRouteId(route.getId());
 
         assertThat(stopsRetrieved).isEqualTo(route.getStopIds());
     }
@@ -75,7 +78,7 @@ public class RouteManagementUseCaseImplTest {
     void getStopsRouteDoesNotExist() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
 
-        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.getStopIds(route.getId()));
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.getStopIdsByRouteId(route.getId()));
 
         assertThat(throwable)
                 .isInstanceOf(EntityNotFoundException.class)

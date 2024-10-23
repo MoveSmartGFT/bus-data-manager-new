@@ -2,10 +2,8 @@ package com.moveSmart.busDataManager.route.infrastructure.api.stop;
 
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
-import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,6 +31,7 @@ public class StopController {
     @GetMapping(STOP_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
     public Stop get(@NotBlank @PathVariable String stopId) {
+        log.info("Requested stop with id {}", stopId);
         return stopManagementUseCase.get(stopId);
     }
 }

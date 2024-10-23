@@ -99,7 +99,7 @@ public class RouteControllerTest {
     @Test
     @DisplayName("GIVEN a stops retrieval request is received WHEN the route exists THEN returns stop list object and status 200")
     void getStops() throws Exception {
-        when(routeManagementUseCase.getStopIds(any()))
+        when(routeManagementUseCase.getStopIdsByRouteId(any()))
                 .thenReturn(stopIdList);
 
         mockMvc.perform(

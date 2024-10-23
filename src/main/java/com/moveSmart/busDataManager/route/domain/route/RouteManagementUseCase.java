@@ -11,11 +11,11 @@ public interface RouteManagementUseCase {
      * @param route data
      * @return Route
      */
-    Route create (Route route);
+    Route create(Route route);
 
     /**
      * Returns list of Ids of the Stops belonging to a Route
      * @param routeId Identifier of the Route
      */
-    List<String> getStopIds(String routeId);
+    List<String> getStopIdsByRouteId(String routeId);
 }

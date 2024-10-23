@@ -31,5 +31,4 @@ public class RouteInstancioModels {
             Instancio.ofList(Stop.class)
                     .size(30)
                     .toModel();
-
 }
