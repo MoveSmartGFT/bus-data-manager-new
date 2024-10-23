@@ -34,12 +34,8 @@ public class RouteInstancioModels {
                             ))
                     .toModel();
 
-    public static Model<Route> ROUTE_MODEL (List<Stop> stops) {
-        List<String> stopIds = stops.stream().map(Stop::getId).collect(Collectors.toList());
-        return Instancio.of(Route.class)
-                .set(field(Route::getStopIds), stopIds)
+    public static final Model<Route> ROUTE_MODEL = Instancio.of(Route.class)
                 .toModel();
-    }
 
     public static final Model<List<Stop>> STOP_LIST_MODEL =
             Instancio.ofList(Stop.class)
@@ -50,4 +46,11 @@ public class RouteInstancioModels {
                                     Instancio.gen().doubles().min(-180.0).max(180.0).get()
                             ))
                     .toModel();
+
+    public static Model<Route> getRouteModelWithStops (List<Stop> stops) {
+        List<String> stopIds = stops.stream().map(Stop::getId).collect(Collectors.toList());
+        return Instancio.of(Route.class)
+                .set(field(Route::getStopIds), stopIds)
+                .toModel();
+    }
 }

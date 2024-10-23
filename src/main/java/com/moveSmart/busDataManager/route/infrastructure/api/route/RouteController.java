@@ -2,7 +2,6 @@ package com.moveSmart.busDataManager.route.infrastructure.api.route;
 
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

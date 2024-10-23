@@ -65,14 +65,6 @@ public abstract class EndPointInventory {
                 .andReturn();
     }
 
-    protected MvcResult getStopIdsByRouteIdRequest(String routeId) throws Exception {
-    protected MvcResult getStopRequest(String stopId) throws Exception {
-        return this.mockMvc.perform(
-                        get(StopController.STOP_PATH+StopController.STOP_ID_PATH, stopId)
-                )
-                .andReturn();
-    }
-
     protected MvcResult getRouteRequest(String routeId) throws Exception {
         return this.mockMvc.perform(
                         get(RouteController.ROUTE_PATH+StopController.STOP_ID_PATH, routeId)
@@ -80,7 +72,7 @@ public abstract class EndPointInventory {
                 .andReturn();
     }
 
-    protected MvcResult getStopIdsRequest(String routeId) throws Exception {
+    protected MvcResult getStopIdsByRouteIdRequest(String routeId) throws Exception {
         return this.mockMvc.perform(
                         get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
                 )

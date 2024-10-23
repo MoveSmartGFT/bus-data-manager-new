@@ -3,11 +3,9 @@ package com.moveSmart.busDataManager.route.infraestructure.api.route;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moveSmart.busDataManager.core.Fixtures;
 import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
-import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
@@ -42,15 +40,7 @@ public class RouteControllerTest {
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
     private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
-
-    final String routeId = "L1";
-    final List<String> stopIdList = Instancio.createList(String.class);
-    String routeId = "L1";
-    List<String> stopIdList = Instancio.createList(String.class);
-    List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
-
-    private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
-
+    private final List<String> stopIdList = Instancio.createList(String.class);
 
     @BeforeEach
     void setUp() {
@@ -59,7 +49,7 @@ public class RouteControllerTest {
     }
 
     //-----------------------------------------------------------------------------------------------------------------
-    //CREATE ENDPOINT
+    // CREATE ENDPOINT
 
     @Test
     @DisplayName("WHEN a route creation request is received THEN returns route object and status 201")
@@ -102,32 +92,7 @@ public class RouteControllerTest {
     }
 
     //-----------------------------------------------------------------------------------------------------------------
-    //GET STOPS ENDPOINT
-
-    @Test
-    @DisplayName("GIVEN a route retrieval request is received WHEN the route exists THEN returns route object and status 200")
-    void getRoute() throws Exception {
-        when(routeManagementUseCase.get(any()))
-                .thenReturn(route);
-
-        mockMvc.perform(
-                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, route.getId())
-                )
-                .andExpect(status().isOk())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(route)));
-    }
-
-    @Test
-    @DisplayName("GIVEN a route retrieval request is received WHEN the route does not exist THEN returns status 404")
-    void getRouteDoesNotExist() throws Exception {
-        when(routeManagementUseCase.get(any()))
-                .thenThrow(new EntityNotFoundException("Route", route.getId()));
-
-        mockMvc.perform(
-                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, route.getId())
-                )
-                .andExpect(status().isNotFound());
-    }
+    // GET STOPS ENDPOINT
 
     @Test
     @DisplayName("GIVEN a stops retrieval request is received WHEN the route exists THEN returns stop list object and status 200")
@@ -136,7 +101,7 @@ public class RouteControllerTest {
                 .thenReturn(stopIdList);
 
         mockMvc.perform(
-                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
+                        get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, route.getId())
                 )
                 .andExpect(status().isOk())
                 .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopIdList)));

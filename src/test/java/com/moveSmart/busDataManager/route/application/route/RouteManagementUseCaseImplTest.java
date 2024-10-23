@@ -5,7 +5,6 @@ import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -36,10 +35,8 @@ public class RouteManagementUseCaseImplTest {
 
     @InjectMocks
     private RouteManagementUseCaseImpl routeManagementUseCaseImpl;
-    List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
 
-    Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
-    final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+    private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE METHOD
@@ -95,7 +92,7 @@ public class RouteManagementUseCaseImplTest {
     @Test
     @DisplayName("GIVEN we try to get a Route WHEN it exist THEN a Route is received")
     void getStop() {
-        when(routeRepository.findById(route.getId())).thenReturn(Optional.ofNullable(route));
+        when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
 
         Route routeRetrieved = routeManagementUseCaseImpl.get(route.getId());
 
@@ -120,7 +117,7 @@ public class RouteManagementUseCaseImplTest {
     @Test
     @DisplayName("GIVEN we try to retrieve a stop list WHEN the route exists THEN returns stop list")
     void getStops() {
-        when(routeRepository.findById(route.getId())).thenReturn(Optional.ofNullable(route));
+        when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
 
         List<String> stopsRetrieved = routeManagementUseCaseImpl.getStopIdsByRouteId(route.getId());
 
