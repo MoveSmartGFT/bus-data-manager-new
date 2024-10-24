@@ -61,7 +61,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN a route to create WHEN already exists THEN returns an exception and status 409")
-    void testStopCreateAlreadyExists() {
+    void testRouteCreateAlreadyExists() {
         when(routeRepository.existsById(route.getId())).thenReturn(true);
 
         Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.create(route));
@@ -73,7 +73,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN a route with non-existing stops WHEN creating THEN returns an exception and status 409")
-    void testStopCreateWithNonExistingStops() {
+    void testRouteCreateWithNonExistingStops() {
         String nonExistingStopId = "NoStop";
         route.setStopIds(List.of(nonExistingStopId));
         when(routeRepository.existsById(route.getId())).thenReturn(false);
@@ -91,7 +91,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN we try to get a Route WHEN it exist THEN a Route is received")
-    void getStop() {
+    void testGetRoute() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
 
         Route routeRetrieved = routeManagementUseCaseImpl.get(route.getId());
@@ -101,7 +101,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN we try to retrieve a Route WHEN it does not exist THEN an exception is thrown")
-    void getStopDoesNotExist() {
+    void testGetRouteDoesNotExist() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
 
         Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.get(route.getId()));
@@ -116,7 +116,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN we try to retrieve a stop list WHEN the route exists THEN returns stop list")
-    void getStops() {
+    void testGetStopIdsByRouteId() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
 
         List<String> stopsRetrieved = routeManagementUseCaseImpl.getStopIdsByRouteId(route.getId());
@@ -126,7 +126,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN we try to retrieve a stop list WHEN route does not exist THEN returns an exception")
-    void getStopsRouteDoesNotExist() {
+    void testGetStopIdsByRouteIdDoesNotExist() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
 
         Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.getStopIdsByRouteId(route.getId()));
