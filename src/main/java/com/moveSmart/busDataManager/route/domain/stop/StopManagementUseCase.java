@@ -12,9 +12,16 @@ public interface StopManagementUseCase {
     Stop create(Stop stop);
 
     /**
-     * Retrieves a Stop using its Id
+     * Retrieves a Stop using its id
      * @param stopId Stop identifier
      * @return Stop
      */
     Stop get(String stopId);
+
+    /**
+     * Updates a Stop
+     * @param stop new stop
+     * @return Stop
+     */
+    Stop update(Stop stop);
 }

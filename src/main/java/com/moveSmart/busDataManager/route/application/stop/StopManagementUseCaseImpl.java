@@ -24,15 +24,15 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
      */
     @Override
     public Stop create(Stop stop) {
-        log.info("Attempting to create Stop with ID: {}", stop.getId());
+        log.info("Attempting to create Stop with id: {}", stop.getId());
 
         if (stopRepository.existsById(stop.getId())) {
-            log.warn("Stop with ID: {} already exists", stop.getId());
+            log.warn("Stop with id: {} already exists", stop.getId());
             throw new EntityAlreadyExistsException(STOP, stop.getId());
         }
 
         Stop savedStop = stopRepository.save(stop);
-        log.info("Stop with ID: {} successfully created", stop.getId());
+        log.info("Stop with id: {} successfully created", stop.getId());
 
         return savedStop;
     }
@@ -41,6 +41,20 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
      * @see StopManagementUseCase#get(String)
      */
     public Stop get(String stopId) {
+        log.info("Searching stop with id: {}", stopId);
+
         return stopRepository.findById(stopId).orElseThrow(() -> new EntityNotFoundException(STOP, stopId));
+    }
+
+    /**
+     * @see StopManagementUseCase#update(Stop)
+     */
+    public Stop update(Stop stop) {
+        log.info("Attempting to update Stop with id: {}", stop.getId());
+
+        get(stop.getId());
+
+        log.info("Found Stop with id: {}", stop.getId());
+        return stopRepository.save(stop);
     }
 }

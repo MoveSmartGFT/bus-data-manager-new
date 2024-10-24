@@ -2,7 +2,6 @@ package com.moveSmart.busDataManager.route.infrastructure.api.route;
 
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +32,9 @@ public class RouteController {
 
     @GetMapping(ROUTE_ID_PATH+STOPS_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public List<String> getStopIds(@PathVariable String routeId) {
-        return routeManagementUseCase.getStopIds(routeId);
+    public List<String> getStopIdsByRouteId(@PathVariable String routeId) {
+        log.info("Requested stopIds from routeId {}", routeId);
+        return routeManagementUseCase.getStopIdsByRouteId(routeId);
     }
 
     @GetMapping(ROUTE_ID_PATH)

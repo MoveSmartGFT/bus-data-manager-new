@@ -5,7 +5,6 @@ import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -36,9 +35,8 @@ public class RouteManagementUseCaseImplTest {
 
     @InjectMocks
     private RouteManagementUseCaseImpl routeManagementUseCaseImpl;
-    List<Stop> stops = Instancio.create(RouteInstancioModels.STOP_LIST_MODEL);
 
-    Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL(stops));
+    private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE METHOD
@@ -63,7 +61,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN a route to create WHEN already exists THEN returns an exception and status 409")
-    void testStopCreateAlreadyExists() {
+    void testRouteCreateAlreadyExists() {
         when(routeRepository.existsById(route.getId())).thenReturn(true);
 
         Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.create(route));
@@ -75,7 +73,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN a route with non-existing stops WHEN creating THEN returns an exception and status 409")
-    void testStopCreateWithNonExistingStops() {
+    void testRouteCreateWithNonExistingStops() {
         String nonExistingStopId = "NoStop";
         route.setStopIds(List.of(nonExistingStopId));
         when(routeRepository.existsById(route.getId())).thenReturn(false);
@@ -93,8 +91,8 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN we try to get a Route WHEN it exist THEN a Route is received")
-    void getStop() {
-        when(routeRepository.findById(route.getId())).thenReturn(Optional.ofNullable(route));
+    void testGetRoute() {
+        when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
 
         Route routeRetrieved = routeManagementUseCaseImpl.get(route.getId());
 
@@ -103,7 +101,7 @@ public class RouteManagementUseCaseImplTest {
 
     @Test
     @DisplayName("GIVEN we try to retrieve a Route WHEN it does not exist THEN an exception is thrown")
-    void getStopDoesNotExist() {
+    void testGetRouteDoesNotExist() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
 
         Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.get(route.getId()));
@@ -113,22 +111,25 @@ public class RouteManagementUseCaseImplTest {
                 .hasMessageContainingAll("Route", route.getId());
     }
 
+    //-----------------------------------------------------------------------------------------------------------------
+    //GET METHOD
+
     @Test
     @DisplayName("GIVEN we try to retrieve a stop list WHEN the route exists THEN returns stop list")
-    void getStops() {
-        when(routeRepository.findById(route.getId())).thenReturn(Optional.ofNullable(route));
+    void testGetStopIdsByRouteId() {
+        when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
 
-        List<String> stopsRetrieved = routeManagementUseCaseImpl.getStopIds(route.getId());
+        List<String> stopsRetrieved = routeManagementUseCaseImpl.getStopIdsByRouteId(route.getId());
 
         assertThat(stopsRetrieved).isEqualTo(route.getStopIds());
     }
 
     @Test
     @DisplayName("GIVEN we try to retrieve a stop list WHEN route does not exist THEN returns an exception")
-    void getStopsRouteDoesNotExist() {
+    void testGetStopIdsByRouteIdDoesNotExist() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
 
-        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.getStopIds(route.getId()));
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.getStopIdsByRouteId(route.getId()));
 
         assertThat(throwable)
                 .isInstanceOf(EntityNotFoundException.class)

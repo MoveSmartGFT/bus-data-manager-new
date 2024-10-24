@@ -41,7 +41,7 @@ public class Route {
     private String name;
 
     /**
-     * List of stops for the route
+     * List of stopIds for the route
      */
     private List<String> stopIds;
 
