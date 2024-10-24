@@ -3,6 +3,7 @@ package com.moveSmart.busDataManager.route;
 import com.moveSmart.busDataManager.route.domain.Coordinates;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
 import lombok.experimental.UtilityClass;
 import org.instancio.Instancio;
@@ -37,6 +38,9 @@ public class RouteInstancioModels {
     public static final Model<Route> ROUTE_MODEL = Instancio.of(Route.class)
                 .toModel();
 
+    public static final Model<UpdateRouteRequest> UPDATE_ROUTE_REQUEST_MODEL = Instancio.of(UpdateRouteRequest.class)
+            .toModel();
+
     public static final Model<List<Stop>> STOP_LIST_MODEL =
             Instancio.ofList(Stop.class)
                     .size(30)
@@ -47,10 +51,15 @@ public class RouteInstancioModels {
                             ))
                     .toModel();
 
-    public static Model<Route> getRouteModelWithStops (List<Stop> stops) {
-        List<String> stopIds = stops.stream().map(Stop::getId).collect(Collectors.toList());
+    public static Model<Route> getRouteModelWithStops (List<String> stopIds) {
         return Instancio.of(Route.class)
                 .set(field(Route::getStopIds), stopIds)
+                .toModel();
+    }
+
+    public static Model<UpdateRouteRequest> getUpdateRouteRequestModelWithStops (List<String> stopIds) {
+        return Instancio.of(UpdateRouteRequest.class)
+                .set(field(UpdateRouteRequest::stopIds), stopIds)
                 .toModel();
     }
 }

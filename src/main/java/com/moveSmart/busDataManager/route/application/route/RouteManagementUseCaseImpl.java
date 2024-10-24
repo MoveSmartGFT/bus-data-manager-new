@@ -36,13 +36,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
             throw new EntityAlreadyExistsException(ROUTE, route.getId());
         }
 
-        List<String> stopIds = route.getStopIds();
-        for (String stopId : stopIds) {
-            if (!stopRepository.existsById(stopId)) {
-                log.warn("Stop with id: {} does not exists", stopId);
-                throw new EntityNotFoundException("Stop", stopId);
-            }
-        }
+        doesStopExists(route.getStopIds());
 
         Route savedRoute = routeRepository.save(route);
         log.info("Route with ID: {} successfully created", route.getId());
@@ -66,5 +60,28 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
         Route route = routeRepository.findById(routeId).orElseThrow(() -> new EntityNotFoundException(ROUTE, routeId));
 
         return route.getStopIds();
+    }
+
+    /**
+     * @see RouteManagementUseCase#update(Route)
+     */
+    public Route update(Route route) {
+        log.info("Attempting to update Route with id: {}", route.getId());
+
+        get(route.getId());
+
+        doesStopExists(route.getStopIds());
+
+        log.info("Found Route with id: {}", route.getId());
+        return routeRepository.save(route);
+    }
+
+    private void doesStopExists(List<String> stopIds) {
+        for (String stopId : stopIds) {
+            if (!stopRepository.existsById(stopId)) {
+                log.warn("Stop with id: {} does not exists", stopId);
+                throw new EntityNotFoundException("Stop", stopId);
+            }
+        }
     }
 }

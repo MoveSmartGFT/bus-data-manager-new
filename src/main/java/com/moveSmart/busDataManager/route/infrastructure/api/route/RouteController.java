@@ -2,6 +2,9 @@ package com.moveSmart.busDataManager.route.infrastructure.api.route;
 
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
+import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
+import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +45,14 @@ public class RouteController {
     public Route get(@NotBlank @PathVariable String routeId) {
         return routeManagementUseCase.get(routeId);
     }
+
+    @PutMapping(ROUTE_ID_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public Route update(@PathVariable String routeId,
+                       @Valid @RequestBody UpdateRouteRequest routeRequest) {
+        log.info("Requested update route with id {}", routeId);
+        return routeManagementUseCase.update(routeRequest.toRoute(routeId));
+    }
+
 }
 

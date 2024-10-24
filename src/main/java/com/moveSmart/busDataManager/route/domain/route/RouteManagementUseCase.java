@@ -24,4 +24,11 @@ public interface RouteManagementUseCase {
      * @param routeId Identifier of the Route
      */
     List<String> getStopIdsByRouteId(String routeId);
+
+    /**
+     * Updates a Route
+     * @param route new route
+     * @return Route
+     */
+    Route update(Route route);
 }
