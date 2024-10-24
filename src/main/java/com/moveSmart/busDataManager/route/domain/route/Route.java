@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 
@@ -18,9 +15,9 @@ import java.util.List;
  * Route Aggregate Root
  */
 @Getter
-@Setter
 @AggregateRoot
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Generated
 @Entity
 @Table(name = "ROUTE")
@@ -49,8 +46,6 @@ public class Route {
      * Schedules of the route
      */
     private List<String> schedules;
-
-
 }
 
 

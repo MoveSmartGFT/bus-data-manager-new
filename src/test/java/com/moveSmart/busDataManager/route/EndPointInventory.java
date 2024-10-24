@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
+import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.moveSmart.busDataManager.route.infrastructure.api.stop.StopController;
 import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,15 @@ public abstract class EndPointInventory {
     protected MvcResult getStopIdsByRouteIdRequest(String routeId) throws Exception {
         return this.mockMvc.perform(
                         get(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
+                )
+                .andReturn();
+    }
+
+    protected MvcResult updateRouteRequest(String routeId, UpdateRouteRequest route) throws Exception {
+        return this.mockMvc.perform(
+                        put(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, routeId)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(objectMapper.writeValueAsString(route))
                 )
                 .andReturn();
     }
