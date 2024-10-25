@@ -8,6 +8,7 @@ import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
+import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -27,6 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -134,5 +136,52 @@ public class RouteControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stopIdList)));
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    // UPDATE ENDPOINT
+
+    @Test
+    @DisplayName("GIVEN a route update request is received WHEN the route exists THEN returns route object updated and status 200")
+    void testUpdate() throws Exception {
+        UpdateRouteRequest newRoute = Instancio.create(RouteInstancioModels.UPDATE_ROUTE_REQUEST_MODEL);
+
+        when(routeManagementUseCase.update(any()))
+                .thenReturn(route);
+
+        mockMvc.perform(
+                        put(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, route.getId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(objectMapper.writeValueAsString(newRoute))
+                )
+                .andExpect(status().isOk())
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(route)));
+    }
+
+    @Test
+    @DisplayName("GIVEN a route update request is received WHEN the route or a stop does not exist THEN returns status 404")
+    void testUpdateRouteDoesNotExist() throws Exception {
+        UpdateRouteRequest newRoute = Instancio.create(RouteInstancioModels.UPDATE_ROUTE_REQUEST_MODEL);
+
+        when(routeManagementUseCase.update(any()))
+                .thenThrow(new EntityNotFoundException("Route", route.getId()));
+
+        mockMvc.perform(
+                        put(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, route.getId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(objectMapper.writeValueAsString(newRoute))
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("GIVEN a route update request is received WHEN is a bad request THEN returns status 400")
+    void testUpdateRouteBadRequest() throws Exception {
+        mockMvc.perform(
+                        put(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, route.getId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(objectMapper.writeValueAsString("Route"))
+                )
+                .andExpect(status().isBadRequest());
     }
 }

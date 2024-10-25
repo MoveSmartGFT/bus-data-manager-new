@@ -6,6 +6,7 @@ import com.moveSmart.busDataManager.route.EndPointInventory;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
+import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +38,7 @@ public class RouteManagementIT extends EndPointInventory {
         final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
         createStopRequest(stop);
 
-        final Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop)));
+        final Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
 
         MvcResult newRoute = createRouteRequest(route);
 
@@ -66,7 +67,7 @@ public class RouteManagementIT extends EndPointInventory {
         final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
         createStopRequest(stop);
 
-        final Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop)));
+        final Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
         createRouteRequest(route);
 
         MvcResult routeRetrieved = getRouteRequest(route.getId());
@@ -91,7 +92,7 @@ public class RouteManagementIT extends EndPointInventory {
         final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
         createStopRequest(stop);
 
-        final Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop)));
+        final Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
         createRouteRequest(route);
 
         MvcResult stopIds = getStopIdsByRouteIdRequest(route.getId());
@@ -110,6 +111,40 @@ public class RouteManagementIT extends EndPointInventory {
         MvcResult stopIds = getStopIdsByRouteIdRequest(route.getId());
 
         assertThat(HttpStatus.valueOf(stopIds.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    // UPDATE ENDPOINT
+
+    @Test
+    @DisplayName("WHEN a Route update request is received AND Route exists THEN return the Route and status 200")
+    void testUpdateStop() throws Exception {
+        final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+        createStopRequest(stop);
+
+        final Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
+        createRouteRequest(route);
+
+        final UpdateRouteRequest routeRequest = Instancio.create(RouteInstancioModels.getUpdateRouteRequestModelWithStops(List.of(stop.getId())));
+
+        MvcResult updatedRoute = updateRouteRequest(route.getId(), routeRequest);
+
+        assertThat(HttpStatus.valueOf(updatedRoute.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Route responseBody = objectMapper.readValue(updatedRoute.getResponse().getContentAsString(), Route.class);
+        checkRoutes(responseBody, responseBody);
+    }
+
+    @Test
+    @DisplayName("WHEN a Route update request is received AND Route does not exist THEN returns status 404")
+    void testUpdateStopDoesNotExist() throws Exception {
+        final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+        createStopRequest(stop);
+
+        final UpdateRouteRequest routeRequest = Instancio.create(RouteInstancioModels.getUpdateRouteRequestModelWithStops(List.of(stop.getId())));
+
+        MvcResult updatedRoute = updateRouteRequest("Route1", routeRequest);
+
+        assertThat(HttpStatus.valueOf(updatedRoute.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     //-----------------------------------------------------------------------------------------------------------------

@@ -157,7 +157,7 @@ public class StopControllerTest {
     }
 
     @Test
-    @DisplayName("GIVEN a stop update request is received WHEN the stop does not exist THEN returns status 404")
+    @DisplayName("GIVEN a stop update request is received WHEN is a bad request THEN returns status 400")
     void testUpdateStopBadRequest() throws Exception {
         mockMvc.perform(
                         put(StopController.STOP_PATH+StopController.STOP_ID_PATH, stop.getId())
