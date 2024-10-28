@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moveSmart.busDataManager.route.EndPointInventory;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
+import com.moveSmart.busDataManager.route.domain.schedule.Schedule;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
+import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +33,7 @@ public class RouteManagementIT extends EndPointInventory {
 
     //-----------------------------------------------------------------------------------------------------------------
     //CREATE ENDPOINT
-
+    @Transactional
     @Test
     @DisplayName("WHEN a route creation request is received THEN returns route object and status 201 AND" +
             "WHEN same route creation request is received THEN returns status 409")
@@ -153,7 +156,21 @@ public class RouteManagementIT extends EndPointInventory {
     void checkRoutes(Route result, Route expected) {
         assertThat(result.getId()).isEqualTo(expected.getId());
         assertThat(result.getName()).isEqualTo(expected.getName());
-        assertThat(result.getSchedules()).isEqualTo(expected.getSchedules());
         assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
+
+        List<Schedule> truncatedExpectedSchedules = truncateScheduleTimestamps(expected.getSchedules());
+        List<Schedule> truncatedResultSchedules = truncateScheduleTimestamps(result.getSchedules());
+
+        assertThat(truncatedResultSchedules).isEqualTo(truncatedExpectedSchedules);
+    }
+
+    private List<Schedule> truncateScheduleTimestamps(List<Schedule> schedules) {
+        return schedules.stream()
+                .map(schedule -> new Schedule(
+                        schedule.typeOfDay(),
+                        schedule.startTime().truncatedTo(ChronoUnit.MILLIS),
+                        schedule.endTime().truncatedTo(ChronoUnit.MILLIS),
+                        schedule.frequencyInMinutes()))
+                .toList();
     }
 }

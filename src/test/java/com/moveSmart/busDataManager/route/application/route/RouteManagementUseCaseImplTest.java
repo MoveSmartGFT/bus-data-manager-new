@@ -5,6 +5,7 @@ import com.moveSmart.busDataManager.core.exception.EntityNotFoundException;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
+import com.moveSmart.busDataManager.route.domain.schedule.Schedule;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +49,7 @@ public class RouteManagementUseCaseImplTest {
     void testRouteCreate() {
         when(routeRepository.existsById(route.getId())).thenReturn(false);
         when(stopRepository.existsById(any())).thenReturn(true);
-        when(routeRepository.save(route)).thenReturn(route);
+        when(routeRepository.save(any(Route.class))).thenReturn(route);
 
         Route routeCreated = routeManagementUseCaseImpl.create(route);
 
@@ -81,6 +83,22 @@ public class RouteManagementUseCaseImplTest {
         assertThat(throwable)
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContainingAll("Stop", nonExistingStopId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a route with invalid schedule WHEN creating THEN returns an exception")
+    void testRouteCreateWithInvalidSchedule() {
+        Schedule invalidSchedule = new Schedule(null, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 15);
+        Route routeWithInvalidSchedule = new Route(route.getId(), route.getName(), route.getStopIds(), List.of(invalidSchedule));
+
+        when(routeRepository.existsById(routeWithInvalidSchedule.getId())).thenReturn(false);
+        when(stopRepository.existsById(any())).thenReturn(true);
+
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.create(routeWithInvalidSchedule));
+
+        assertThat(throwable)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid typeOfDay format. Expected 'WEEKDAY' or 'WEEKEND'.");
     }
 
     //-----------------------------------------------------------------------------------------------------------------
