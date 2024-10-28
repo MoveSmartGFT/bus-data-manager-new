@@ -5,6 +5,8 @@ import com.moveSmart.busDataManager.core.exception.EntityAlreadyExistsException;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.domain.route.RouteManagementUseCase;
 import com.moveSmart.busDataManager.route.domain.route.RouteRepository;
+import com.moveSmart.busDataManager.route.domain.schedule.Schedule;
+import com.moveSmart.busDataManager.route.domain.schedule.TypeOfDay;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,11 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
         doesStopExists(route.getStopIds());
 
-        Route savedRoute = routeRepository.save(route);
+        List<Schedule> validatedSchedules = validateSchedules(route.getSchedules());
+
+        Route validatedRoute = new Route(route.getId(), route.getName(), route.getStopIds(), validatedSchedules);
+
+        Route savedRoute = routeRepository.save(validatedRoute);
         log.info("Route with ID: {} successfully created", route.getId());
 
         return savedRoute;
@@ -83,5 +89,20 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
                 throw new EntityNotFoundException("Stop", stopId);
             }
         }
+    }
+
+    private List<Schedule> validateSchedules(List<Schedule> schedules) {
+        return schedules.stream()
+                .map(this::validateSchedule)
+                .toList();
+    }
+
+    private Schedule validateSchedule(Schedule schedule) {
+        TypeOfDay typeOfDay = schedule.typeOfDay();
+
+        if (typeOfDay != TypeOfDay.WEEKDAY && typeOfDay != TypeOfDay.WEEKEND) {
+            throw new IllegalArgumentException("Invalid typeOfDay format. Expected 'WEEKDAY' or 'WEEKEND'.");
+        }
+        return schedule;
     }
 }

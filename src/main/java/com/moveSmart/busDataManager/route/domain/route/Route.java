@@ -1,10 +1,9 @@
 package com.moveSmart.busDataManager.route.domain.route;
 
+import com.moveSmart.busDataManager.route.domain.schedule.Schedule;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.*;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
@@ -45,7 +44,9 @@ public class Route {
     /**
      * Schedules of the route
      */
-    private List<String> schedules;
+    @NotNull
+    @ElementCollection
+    private List<Schedule> schedules;
 }
 
 
