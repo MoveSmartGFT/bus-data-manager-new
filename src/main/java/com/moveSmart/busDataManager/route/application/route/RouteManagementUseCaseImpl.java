@@ -54,6 +54,8 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
      * @see RouteManagementUseCase#get(String)
      */
     public Route get(String routeId) {
+        log.info("Searching route with id: {}", routeId);
+
         return routeRepository.findById(routeId).orElseThrow(() -> new EntityNotFoundException(ROUTE, routeId));
     }
 
@@ -61,6 +63,8 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
      * @see RouteManagementUseCase#getAll()
      */
     public List<Route> getAll() {
+        log.info("Retrieving all routes");
+
         return routeRepository.findAll();
     }
 

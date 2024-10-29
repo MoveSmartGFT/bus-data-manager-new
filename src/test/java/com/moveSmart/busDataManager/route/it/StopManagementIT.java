@@ -1,5 +1,6 @@
 package com.moveSmart.busDataManager.route.it;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StopManagementIT extends EndPointStopInventory {
@@ -19,24 +22,35 @@ public class StopManagementIT extends EndPointStopInventory {
 
     @Test
     void stopIT() throws Exception {
-        StopRequest stopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
+        StopRequest firstStopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
+        StopRequest secondStopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
-        MvcResult createStopResponse = createStopRequest(stopRequest);
+        MvcResult createStopResponse = createStopRequest(firstStopRequest);
         assertThat(HttpStatus.valueOf(createStopResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CREATED);
         Stop createdStop = objectMapper.readValue(createStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(createdStop, stopRequest);
+        checkStop(createdStop, firstStopRequest);
 
         MvcResult retrieveStopResponse = getStopRequest(createdStop.getId());
         assertThat(HttpStatus.valueOf(retrieveStopResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Stop retrievedStop = objectMapper.readValue(retrieveStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(retrievedStop, stopRequest);
+        checkStop(retrievedStop, firstStopRequest);
 
-        MvcResult stopConflictResponse = createStopRequest(stopRequest);
+        MvcResult stopConflictResponse = createStopRequest(firstStopRequest);
         assertThat(HttpStatus.valueOf(stopConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
         MvcResult stopRetrievedPostConflictResponse = getStopRequest(createdStop.getId());
         assertThat(HttpStatus.valueOf(stopRetrievedPostConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Stop retrievedStopPostConflict = objectMapper.readValue(retrieveStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(retrievedStopPostConflict, stopRequest);
+        checkStop(retrievedStopPostConflict, firstStopRequest);
+
+        MvcResult createSecondStopResponse = createStopRequest(secondStopRequest);
+        assertThat(HttpStatus.valueOf(createSecondStopResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CREATED);
+
+        MvcResult retrieveAllStopsResponse = getAllStopsRequest();
+        assertThat(HttpStatus.valueOf(retrieveAllStopsResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        List<Stop> retrievedAllStops = objectMapper.readValue(retrieveAllStopsResponse.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertThat(retrievedAllStops).hasSize(2);
+        checkStop(retrievedAllStops.get(0), firstStopRequest);
+        checkStop(retrievedAllStops.get(1), secondStopRequest);
 
         Stop notSavedStop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
@@ -54,7 +68,7 @@ public class StopManagementIT extends EndPointStopInventory {
         Stop retrievedStopUpdated = objectMapper.readValue(stopRetrievedUpdatedResponse.getResponse().getContentAsString(), Stop.class);
         checkStop(retrievedStopUpdated, updateStopRequest);
 
-        MvcResult updateStopNotFoundResponse = updateStopRequest("Stop1", stopRequest);
+        MvcResult updateStopNotFoundResponse = updateStopRequest("Stop1", firstStopRequest);
         assertThat(HttpStatus.valueOf(updateStopNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
