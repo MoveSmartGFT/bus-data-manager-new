@@ -1,4 +1,4 @@
-package com.moveSmart.busDataManager.route.IT;
+package com.moveSmart.busDataManager.route.it;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
