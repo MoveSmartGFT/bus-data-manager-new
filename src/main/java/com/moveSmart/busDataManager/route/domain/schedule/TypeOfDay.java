@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public enum TypeOfDay {
     WEEKDAY,
-    WEEKEND;
+    WEEKEND
 }

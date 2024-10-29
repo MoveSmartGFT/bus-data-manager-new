@@ -3,7 +3,6 @@ package com.moveSmart.busDataManager.route.domain.schedule;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.Generated;
-import lombok.Getter;
 import org.jmolecules.ddd.types.ValueObject;
 
 import java.time.LocalDateTime;
