@@ -30,10 +30,7 @@ public class GetAllRoutesManagementUseCaseImplTest {
     @Test
     @DisplayName("GIVEN we try to get all Routes THEN all routes are retrieved")
     void testGetAllRoutes() {
-        Route route1 = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
-        Route route2 = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
-        Route route3 = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
-        List<Route> routeList = List.of(route1, route2, route3);
+        List<Route> routeList = Instancio.ofList(RouteInstancioModels.ROUTE_MODEL).create();
 
         when(routeRepository.findAll()).thenReturn(routeList);
 
