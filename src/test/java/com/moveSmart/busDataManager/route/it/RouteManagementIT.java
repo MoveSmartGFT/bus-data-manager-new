@@ -2,7 +2,6 @@ package com.moveSmart.busDataManager.route.it;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moveSmart.busDataManager.route.EndPointInventory;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.route.Route;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
@@ -20,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RouteManagementIT extends EndPointInventory {
+public class RouteManagementIT extends EndPointRouteInventory {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -30,48 +29,60 @@ public class RouteManagementIT extends EndPointInventory {
     void routeIT() throws Exception {
         StopRequest stopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
         Stop stop = objectMapper.readValue(createStopRequest(stopRequest).getResponse().getContentAsString(), Stop.class);
-        Route route = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
+        Route firstRoute = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
+        Route secondRoute = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
 
-        MvcResult createRouteResponse = createRouteRequest(route);
+        MvcResult createRouteResponse = createRouteRequest(firstRoute);
         assertThat(HttpStatus.valueOf(createRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CREATED);
         Route createdRoute = objectMapper.readValue(createRouteResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(createdRoute, route);
+        checkRoutes(createdRoute, firstRoute);
 
-        MvcResult retrieveRouteResponse = getRouteRequest(route.getId());
+        MvcResult retrieveRouteResponse = getRouteRequest(firstRoute.getId());
         assertThat(HttpStatus.valueOf(retrieveRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Route retrievedRoute = objectMapper.readValue(retrieveRouteResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(retrievedRoute, route);
+        checkRoutes(retrievedRoute, firstRoute);
 
-        MvcResult routeConflictResponse = createRouteRequest(route);
+        MvcResult routeConflictResponse = createRouteRequest(firstRoute);
         assertThat(HttpStatus.valueOf(routeConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
-        MvcResult routeRetrievedPostConflictResponse = getRouteRequest(route.getId());
+        MvcResult routeRetrievedPostConflictResponse = getRouteRequest(firstRoute.getId());
         assertThat(HttpStatus.valueOf(routeRetrievedPostConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Route retrievedRoutePostConflict = objectMapper.readValue(routeRetrievedPostConflictResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(retrievedRoutePostConflict, route);
+        checkRoutes(retrievedRoutePostConflict, firstRoute);
+
+        MvcResult createSecondRouteResponse = createRouteRequest(secondRoute);
+        assertThat(HttpStatus.valueOf(createSecondRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CREATED);
+
+        MvcResult retrieveAllRoutesResponse = getAllRoutesRequest();
+        assertThat(HttpStatus.valueOf(retrieveAllRoutesResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        List<Route> retrievedAllRoutes = objectMapper.readValue(retrieveAllRoutesResponse.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertThat(retrievedAllRoutes).hasSize(2);
+        checkRoutes(retrievedAllRoutes.get(0), firstRoute);
+        checkRoutes(retrievedAllRoutes.get(1), secondRoute);
+
 
         Route notSavedRoute = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(stop.getId())));
 
         MvcResult routeNotFoundResponse = getStopRequest(notSavedRoute.getId());
         assertThat(HttpStatus.valueOf(routeNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
 
-        MvcResult retrieveStopIdsResponse = getStopIdsByRouteIdRequest(route.getId());
+        MvcResult retrieveStopIdsResponse = getStopIdsByRouteIdRequest(firstRoute.getId());
         assertThat(HttpStatus.valueOf(retrieveStopIdsResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         List<String> retrievedStopIds = objectMapper.readValue(retrieveStopIdsResponse.getResponse().getContentAsString(), new TypeReference<>() {});
-        assertEquals(retrievedStopIds, route.getStopIds());
+        assertEquals(retrievedStopIds, firstRoute.getStopIds());
 
         MvcResult stopIdsRouteDoesNotExistResponse = getStopIdsByRouteIdRequest(notSavedRoute.getId());
         assertThat(HttpStatus.valueOf(stopIdsRouteDoesNotExistResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
 
         UpdateRouteRequest routeRequest = Instancio.create(RouteInstancioModels.getUpdateRouteRequestModelWithStops(List.of(stop.getId())));
 
-        MvcResult updateRouteResponse = updateRouteRequest(route.getId(), routeRequest);
+        MvcResult updateRouteResponse = updateRouteRequest(firstRoute.getId(), routeRequest);
         assertThat(HttpStatus.valueOf(updateRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Route updatedRoute = objectMapper.readValue(updateRouteResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(updatedRoute, routeRequest.toRoute(route.getId()));
-        MvcResult routeRetrievedUpdatedResponse = getRouteRequest(route.getId());
+        checkRoutes(updatedRoute, routeRequest.toRoute(firstRoute.getId()));
+        MvcResult routeRetrievedUpdatedResponse = getRouteRequest(firstRoute.getId());
         assertThat(HttpStatus.valueOf(routeRetrievedUpdatedResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Route retrievedRouteUpdated = objectMapper.readValue(routeRetrievedUpdatedResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(retrievedRouteUpdated, routeRequest.toRoute(route.getId()));
+        checkRoutes(retrievedRouteUpdated, routeRequest.toRoute(firstRoute.getId()));
 
         MvcResult updatedRouteNotFoundResponse = updateRouteRequest("Route1", routeRequest);
         assertThat(HttpStatus.valueOf(updatedRouteNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
