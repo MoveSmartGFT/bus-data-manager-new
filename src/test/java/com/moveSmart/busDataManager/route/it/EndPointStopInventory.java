@@ -38,6 +38,13 @@ public abstract class EndPointStopInventory {
                 .andReturn();
     }
 
+    protected MvcResult getAllStopsRequest() throws Exception {
+        return this.mockMvc.perform(
+                        get(StopController.STOP_PATH)
+                )
+                .andReturn();
+    }
+
     protected MvcResult updateStopRequest(String stopId, StopRequest stop) throws Exception {
         return this.mockMvc.perform(
                         put(StopController.STOP_PATH+StopController.STOP_ID_PATH, stopId)

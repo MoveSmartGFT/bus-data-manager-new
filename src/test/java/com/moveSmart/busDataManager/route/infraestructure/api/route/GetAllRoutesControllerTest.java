@@ -60,7 +60,7 @@ public class GetAllRoutesControllerTest {
     }
 
     @Test
-    @DisplayName("GIVEN all route retrieval request is received THEN returns route empty list and status 200")
+    @DisplayName("GIVEN all route retrieval request is received WHEN there are not routes THEN returns route empty list and status 200")
     void testGetAllRoutesEmpty() throws Exception {
         when(routeManagementUseCase.getAll())
                 .thenReturn(List.of());

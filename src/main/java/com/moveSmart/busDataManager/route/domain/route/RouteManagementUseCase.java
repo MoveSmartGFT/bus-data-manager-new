@@ -16,17 +16,20 @@ public interface RouteManagementUseCase {
     /**
      * Retrieves a Route using its id
      * @param routeId Identifier of the Route
+     * @return Route
      */
     Route get(String routeId);
 
     /**
      * Retrieves all Routes
+     * @return list of routes
      */
     List<Route> getAll();
 
     /**
      * Returns list of Ids of the Stops belonging to a Route
      * @param routeId Identifier of the Route
+     * @return list of routeIds
      */
     List<String> getStopIdsByRouteId(String routeId);
 

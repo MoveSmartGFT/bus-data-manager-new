@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -46,6 +48,15 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
         log.info("Searching stop with id: {}", stopId);
 
         return stopRepository.findById(stopId).orElseThrow(() -> new EntityNotFoundException(STOP, stopId));
+    }
+
+    /**
+     * @see StopManagementUseCase#getAll()
+     */
+    public List<Stop> getAll() {
+        log.info("Retrieving all stops");
+
+        return stopRepository.findAll();
     }
 
     /**
