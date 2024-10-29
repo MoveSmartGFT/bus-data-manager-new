@@ -20,6 +20,11 @@ public interface RouteManagementUseCase {
     Route get(String routeId);
 
     /**
+     * Retrieves all Routes
+     */
+    List<Route> getAll();
+
+    /**
      * Returns list of Ids of the Stops belonging to a Route
      * @param routeId Identifier of the Route
      */

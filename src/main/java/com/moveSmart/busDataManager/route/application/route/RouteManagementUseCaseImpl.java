@@ -58,6 +58,13 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     }
 
     /**
+     * @see RouteManagementUseCase#getAll()
+     */
+    public List<Route> getAll() {
+        return routeRepository.findAll();
+    }
+
+    /**
      * Get
      * @see RouteManagementUseCase#getStopIdsByRouteId(String)
      */

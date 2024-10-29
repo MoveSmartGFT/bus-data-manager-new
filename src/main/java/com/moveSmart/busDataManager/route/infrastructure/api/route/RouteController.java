@@ -44,6 +44,12 @@ public class RouteController {
         return routeManagementUseCase.get(routeId);
     }
 
+    @GetMapping()
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<Route> getAll() {
+        return routeManagementUseCase.getAll();
+    }
+
     @PutMapping(ROUTE_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
     public Route update(@PathVariable String routeId,

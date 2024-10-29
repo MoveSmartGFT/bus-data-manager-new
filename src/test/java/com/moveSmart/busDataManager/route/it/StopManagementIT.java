@@ -1,7 +1,6 @@
 package com.moveSmart.busDataManager.route.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moveSmart.busDataManager.route.EndPointInventory;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.StopRequest;
@@ -13,7 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StopManagementIT extends EndPointInventory {
+public class StopManagementIT extends EndPointStopInventory {
 
     @Autowired
     private ObjectMapper objectMapper;
