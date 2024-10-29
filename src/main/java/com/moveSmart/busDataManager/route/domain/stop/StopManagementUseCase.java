@@ -1,15 +1,17 @@
 package com.moveSmart.busDataManager.route.domain.stop;
 
+import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.StopRequest;
+
 public interface StopManagementUseCase {
 
     String STOP = "Stop";
 
     /**
      * Creates a new Stop
-     * @param stop data
+     * @param stopRequest data
      * @return Stop
      */
-    Stop create(Stop stop);
+    Stop create(StopRequest stopRequest);
 
     /**
      * Retrieves a Stop using its id
