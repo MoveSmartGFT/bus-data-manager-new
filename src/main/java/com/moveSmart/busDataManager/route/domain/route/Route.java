@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
@@ -14,12 +15,10 @@ import java.util.List;
  * Route Aggregate Root
  */
 @Getter
-@AggregateRoot
+@Document(collection = "route")
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Generated
-@Entity
-@Table(name = "ROUTE")
 public class Route {
 
     /**

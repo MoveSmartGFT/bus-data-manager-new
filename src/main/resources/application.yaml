@@ -1,13 +1,8 @@
 spring:
   application:
     name: busDataManager
-  datasource:
-    url: jdbc:h2:mem:testdb # Base de datos en memoria
-    driverClassName: org.h2.Driver
-    username: sa
-    password: sa
-  h2:
-    console:
-      enabled: true # Habilitar la consola de H2
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/busDataManager
+      database: busDataManager
