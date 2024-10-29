@@ -2,7 +2,7 @@ package com.moveSmart.busDataManager.route.infrastructure.api.stop;
 
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
-import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
+import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.StopRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +23,9 @@ public class StopController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Stop create(@Valid @RequestBody Stop stop) {
+    public Stop create(@Valid @RequestBody StopRequest createStopRequest) {
         log.info("Stop creation is requested");
-        return stopManagementUseCase.create(stop);
+        return stopManagementUseCase.create(createStopRequest);
     }
 
     @GetMapping(STOP_ID_PATH)
@@ -38,7 +38,7 @@ public class StopController {
     @PutMapping(STOP_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
     public Stop update(@PathVariable String stopId,
-                       @Valid @RequestBody UpdateStopRequest stopRequest) {
+                       @Valid @RequestBody StopRequest stopRequest) {
         log.info("Requested update stop with id {}", stopId);
         return stopManagementUseCase.update(stopRequest.toStop(stopId));
     }

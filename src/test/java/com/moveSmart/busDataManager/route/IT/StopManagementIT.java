@@ -5,7 +5,7 @@ import com.moveSmart.busDataManager.route.EndPointInventory;
 import com.moveSmart.busDataManager.route.RouteInstancioModels;
 import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopRepository;
-import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
+import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.StopRequest;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,23 +30,23 @@ public class StopManagementIT extends EndPointInventory {
     @DisplayName("WHEN a stop creation request is received THEN returns stop object and status 201 AND" +
             "WHEN same stop creation request is received THEN returns status 409")
     void testStopCreate() throws Exception {
-        final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+        StopRequest stopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
-        MvcResult newStop = createStopRequest(stop);
+        MvcResult newStop = createStopRequest(stopRequest);
 
         assertThat(HttpStatus.valueOf(newStop.getResponse().getStatus())).isEqualTo(HttpStatus.CREATED);
         Stop responseBody = objectMapper.readValue(newStop.getResponse().getContentAsString(), Stop.class);
-        checkStop(responseBody, stop);
+        checkStop(responseBody, stopRequest);
 
-        assertThat(stopRepository.findById(stop.getId()).isPresent()).isTrue();
-        checkStop(stopRepository.findById(stop.getId()).get(), stop);
+        assertThat(stopRepository.findById(responseBody.getId()).isPresent()).isTrue();
+        checkStop(stopRepository.findById(responseBody.getId()).get(), stopRequest);
 
-        MvcResult stopConflict = createStopRequest(stop);
+        MvcResult stopConflict = createStopRequest(stopRequest);
 
         assertThat(HttpStatus.valueOf(stopConflict.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
 
-        assertThat(stopRepository.findById(stop.getId()).isPresent()).isTrue();
-        checkStop(stopRepository.findById(stop.getId()).get(), stop);
+        assertThat(stopRepository.findById(responseBody.getId()).isPresent()).isTrue();
+        checkStop(stopRepository.findById(responseBody.getId()).get(), stopRequest);
     }
 
     //-----------------------------------------------------------------------------------------------------------------
@@ -55,15 +55,15 @@ public class StopManagementIT extends EndPointInventory {
     @Test
     @DisplayName("WHEN a Stop retrieval request is received AND said Stop exists THEN return the Stop and status 200")
     void testGetStop() throws Exception {
-        final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+        StopRequest stopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
-        createStopRequest(stop);
+        Stop createdStop = objectMapper.readValue(createStopRequest(stopRequest).getResponse().getContentAsString(), Stop.class);
 
-        MvcResult stopRetrieved = getStopRequest(stop.getId());
+        MvcResult stopRetrieved = getStopRequest(createdStop.getId());
 
         assertThat(HttpStatus.valueOf(stopRetrieved.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Stop responseBody = objectMapper.readValue(stopRetrieved.getResponse().getContentAsString(), Stop.class);
-        checkStop(responseBody, stop);
+        checkStop(responseBody, stopRequest);
     }
 
     @Test
@@ -82,22 +82,21 @@ public class StopManagementIT extends EndPointInventory {
     @Test
     @DisplayName("WHEN a Stop update request is received AND Stop exists THEN return the Stop and status 200")
     void testUpdateStop() throws Exception {
-        final UpdateStopRequest stopRequest = Instancio.create(RouteInstancioModels.UPDATE_STOP_REQUEST_MODEL);
-        final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
+        StopRequest stopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
-        createStopRequest(stop);
+        Stop createdStop = objectMapper.readValue(createStopRequest(stopRequest).getResponse().getContentAsString(), Stop.class);
 
-        MvcResult updatedStop = updateStopRequest(stop.getId(), stopRequest);
+        MvcResult updatedStop = updateStopRequest(createdStop.getId(), stopRequest);
 
         assertThat(HttpStatus.valueOf(updatedStop.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         Stop responseBody = objectMapper.readValue(updatedStop.getResponse().getContentAsString(), Stop.class);
-        checkStop(responseBody, responseBody);
+        checkStop(responseBody, stopRequest);
     }
 
     @Test
     @DisplayName("WHEN a Stop update request is received AND Stop does not exist THEN returns status 404")
     void testUpdateStopDoesNotExist() throws Exception {
-        final UpdateStopRequest stopRequest = Instancio.create(RouteInstancioModels.UPDATE_STOP_REQUEST_MODEL);
+        StopRequest stopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
         MvcResult updatedStop = updateStopRequest("Stop1", stopRequest);
 
@@ -107,10 +106,9 @@ public class StopManagementIT extends EndPointInventory {
     //-----------------------------------------------------------------------------------------------------------------
     // SUPPORT METHODS
 
-    void checkStop(Stop result, Stop expected) {
-        assertThat(result.getId()).isEqualTo(expected.getId());
-        assertThat(result.getName()).isEqualTo(expected.getName());
-        assertThat(result.getLocation().latitude()).isEqualTo(expected.getLocation().latitude());
-        assertThat(result.getLocation().longitude()).isEqualTo(expected.getLocation().longitude());
+    void checkStop(Stop result, StopRequest expected) {
+        assertThat(result.getName()).isEqualTo(expected.name());
+        assertThat(result.getLocation().latitude()).isEqualTo(expected.location().latitude());
+        assertThat(result.getLocation().longitude()).isEqualTo(expected.location().longitude());
     }
 }

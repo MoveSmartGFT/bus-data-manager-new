@@ -8,7 +8,7 @@ import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.domain.stop.StopManagementUseCase;
 import com.moveSmart.busDataManager.route.infrastructure.api.stop.StopController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
+import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.StopRequest;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -35,9 +35,6 @@ public class StopControllerTest {
 
     @Mock
     private StopManagementUseCase stopManagementUseCase;
-
-    @Mock
-    private UpdateStopRequest updateStopRequest;
 
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
@@ -126,7 +123,7 @@ public class StopControllerTest {
     @Test
     @DisplayName("GIVEN a stop update request is received WHEN the stop exists THEN returns stop object updated and status 200")
     void testUpdate() throws Exception {
-        UpdateStopRequest newStop = Instancio.create(RouteInstancioModels.UPDATE_STOP_REQUEST_MODEL);
+        StopRequest newStop = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
         when(stopManagementUseCase.update(any()))
                 .thenReturn(stop);
@@ -143,7 +140,7 @@ public class StopControllerTest {
     @Test
     @DisplayName("GIVEN a stop update request is received WHEN the stop does not exist THEN returns status 404")
     void testUpdateStopDoesNotExist() throws Exception {
-        UpdateStopRequest newStop = Instancio.create(RouteInstancioModels.UPDATE_STOP_REQUEST_MODEL);
+        StopRequest newStop = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
         when(stopManagementUseCase.update(any()))
                 .thenThrow(new EntityNotFoundException("Stop", stop.getId()));

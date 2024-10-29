@@ -2,11 +2,10 @@ package com.moveSmart.busDataManager.route;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moveSmart.busDataManager.route.domain.route.Route;
-import com.moveSmart.busDataManager.route.domain.stop.Stop;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.RouteController;
 import com.moveSmart.busDataManager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.moveSmart.busDataManager.route.infrastructure.api.stop.StopController;
-import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.UpdateStopRequest;
+import com.moveSmart.busDataManager.route.infrastructure.api.stop.dto.StopRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
@@ -29,11 +28,11 @@ public abstract class EndPointInventory {
     //-----------------------------------------------------------------------------------------------------------------
     // STOP ENDPOINT
 
-    protected MvcResult createStopRequest(Stop stop) throws Exception {
+    protected MvcResult createStopRequest(StopRequest stopRequest) throws Exception {
         return this.mockMvc.perform(
                         post(StopController.STOP_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(stop))
+                                .content(objectMapper.writeValueAsString(stopRequest))
                 )
                 .andReturn();
     }
@@ -45,7 +44,7 @@ public abstract class EndPointInventory {
                 .andReturn();
     }
 
-    protected MvcResult updateStopRequest(String stopId, UpdateStopRequest stop) throws Exception {
+    protected MvcResult updateStopRequest(String stopId, StopRequest stop) throws Exception {
         return this.mockMvc.perform(
                         put(StopController.STOP_PATH+StopController.STOP_ID_PATH, stopId)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
