@@ -19,10 +19,5 @@ public record Schedule (
     public static Schedule of(TypeOfDay typeOfDay, LocalDateTime startTime, LocalDateTime endTime, Integer frequencyInMinutes) {
         return new Schedule(typeOfDay, startTime, endTime, frequencyInMinutes);
     }
-
-    @Override
-    public @NotNull TypeOfDay typeOfDay() {
-        return typeOfDay;
-    }
 }
 
