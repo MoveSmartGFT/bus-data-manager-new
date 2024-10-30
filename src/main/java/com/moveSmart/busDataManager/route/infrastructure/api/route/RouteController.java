@@ -18,9 +18,9 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class RouteController {
-    public static final String ROUTE_PATH = "/api/v1/routes";
-    public static final String ROUTE_ID_PATH = "/{routeId}";
-    public static final String STOPS_PATH = "/stops";
+    public static final String ROUTE_PATH = "/api/v1/routes"; // NOSONAR
+    public static final String ROUTE_ID_PATH = "/{routeId}"; // NO SONAR
+    public static final String STOPS_PATH = "/stops"; // NO SONAR
 
     private final RouteManagementUseCase routeManagementUseCase;
 

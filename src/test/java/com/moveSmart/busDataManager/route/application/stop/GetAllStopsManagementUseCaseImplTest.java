@@ -34,9 +34,9 @@ public class GetAllStopsManagementUseCaseImplTest {
 
         when(stopRepository.findAll()).thenReturn(stopList);
 
-        List<Stop> StopListRetrieved = stopManagementUseCaseImpl.getAll();
+        List<Stop> stopListRetrieved = stopManagementUseCaseImpl.getAll();
 
-        assertThat(StopListRetrieved).isEqualTo(stopList);
+        assertThat(stopListRetrieved).isEqualTo(stopList);
     }
 
     @Test
@@ -44,8 +44,8 @@ public class GetAllStopsManagementUseCaseImplTest {
     void testGetAllStopsEmpty() {
         when(stopRepository.findAll()).thenReturn(List.of());
 
-        List<Stop> StopListRetrieved = stopManagementUseCaseImpl.getAll();
+        List<Stop> stopListRetrieved = stopManagementUseCaseImpl.getAll();
 
-        assertThat(StopListRetrieved).isEqualTo(List.of());
+        assertThat(stopListRetrieved).isEqualTo(List.of());
     }
 }
