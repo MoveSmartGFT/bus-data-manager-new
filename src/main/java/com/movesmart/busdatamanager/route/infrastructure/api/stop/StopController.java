@@ -18,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StopController {
 
-    public static final String STOP_PATH = "/api/v1/stops"; // NO SONAR
-    public static final String STOP_ID_PATH = "/{stopId}"; // NO SONAR
+    public static final String STOP_PATH = "/api/v1/stops"; // NOSONAR
+    public static final String STOP_ID_PATH = "/{stopId}"; // NOSONAR
 
     private final StopManagementUseCase stopManagementUseCase;
 
