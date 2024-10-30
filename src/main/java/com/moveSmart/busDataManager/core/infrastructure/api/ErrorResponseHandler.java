@@ -22,7 +22,7 @@ public class ErrorResponseHandler extends ResponseEntityExceptionHandler {
         ProblemDetail body = createProblemDetail(
                 ex,
                 HttpStatus.CONFLICT,
-                "Entity already exists",
+                ex.getMessage(),
                 null,
                 new String[] {ex.getObjectType(), ex.getId()},
                 request);
@@ -35,7 +35,7 @@ public class ErrorResponseHandler extends ResponseEntityExceptionHandler {
         ProblemDetail body = createProblemDetail(
                 ex,
                 HttpStatus.NOT_FOUND,
-                "Entity not found",
+                ex.getMessage(),
                 null,
                 new String[] {ex.getObjectType(), ex.getId()},
                 request);
