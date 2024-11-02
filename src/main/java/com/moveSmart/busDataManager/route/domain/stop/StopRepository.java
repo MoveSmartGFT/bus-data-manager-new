@@ -1,13 +1,13 @@
 package com.moveSmart.busDataManager.route.domain.stop;
 
 import lombok.Generated;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.jmolecules.ddd.annotation.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
 @Generated
 @Repository
-public interface StopRepository extends JpaRepository<Stop, String> {
+public interface StopRepository extends MongoRepository<Stop, String> {
     Optional<Stop> findByName(String name);
 }

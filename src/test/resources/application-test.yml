@@ -1,0 +1,19 @@
+# src/test/resources/application-test.yml
+
+spring:
+  application:
+    name: busDataManagerTest # Cambia el nombre para identificar la base de prueba
+  data:
+    mongodb:
+      uri: mongodb://localhost:27027/test_db # Base de datos de prueba (asegúrate que esta base exista en tu MongoDB local)
+  jpa:
+    hibernate:
+      ddl-auto: none  # No aplicar cambios de esquema en el test, evita conflictos en DB
+
+logging:
+  level:
+    root: WARN
+    org.springframework.data.mongodb: DEBUG # Solo MongoDB en DEBUG para seguimiento
+
+server:
+  port: 0  # Asignar un puerto aleatorio para evitar conflictos durante pruebas
