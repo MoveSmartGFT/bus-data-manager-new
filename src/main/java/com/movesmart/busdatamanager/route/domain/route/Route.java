@@ -1,6 +1,6 @@
 package com.movesmart.busdatamanager.route.domain.route;
 
-import com.movesmart.busdatamanager.route.domain.schedule.Schedule;
+import com.movesmart.busdatamanager.route.domain.Schedule;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -86,7 +86,7 @@ public class Route {
     @ValueObject
     public enum Status {
         Enabled,
-        Disabled;
+        Disabled
     }
 }
 

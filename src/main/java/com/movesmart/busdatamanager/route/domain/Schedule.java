@@ -1,4 +1,4 @@
-package com.movesmart.busdatamanager.route.domain.schedule;
+package com.movesmart.busdatamanager.route.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +18,11 @@ public record Schedule (
 ) implements ValueObject {
     public static Schedule of(TypeOfDay typeOfDay, LocalDateTime startTime, LocalDateTime endTime, Integer frequencyInMinutes) {
         return new Schedule(typeOfDay, startTime, endTime, frequencyInMinutes);
+    }
+
+    public enum TypeOfDay {
+        WEEKDAY,
+        WEEKEND
     }
 }
 

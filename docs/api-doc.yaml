@@ -1,0 +1,283 @@
+openapi: 3.0.0
+info:
+  title: MoveSmart Bus Data Manager API
+  description: API para la gestión de rutas y paradas de autobuses en MoveSmart
+  version: 1.0.0
+paths:
+  /api/v1/stops:
+    post:
+      summary: Crear una nueva parada
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopRequest'
+      responses:
+        '201':
+          description: Parada creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stop'
+    get:
+      summary: Obtener todas las paradas
+      responses:
+        '200':
+          description: Lista de paradas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Stop'
+
+  /api/v1/stops/{stopId}:
+    get:
+      summary: Obtener una parada por ID
+      parameters:
+        - in: path
+          name: stopId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parada encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stop'
+    put:
+      summary: Actualizar una parada por ID
+      parameters:
+        - in: path
+          name: stopId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopRequest'
+      responses:
+        '200':
+          description: Parada actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stop'
+
+  /api/v1/routes:
+    post:
+      summary: Crear una nueva ruta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+      responses:
+        '201':
+          description: Ruta creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+    get:
+      summary: Obtener todas las rutas
+      responses:
+        '200':
+          description: Lista de rutas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+
+  /api/v1/routes/{routeId}:
+    get:
+      summary: Obtener una ruta por ID
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ruta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+    put:
+      summary: Actualizar una ruta por ID
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRouteRequest'
+      responses:
+        '200':
+          description: Ruta actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+    delete:
+      summary: Eliminar una ruta por ID
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ruta eliminada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+
+  /api/v1/routes/{routeId}/disable:
+    patch:
+      summary: Desactivar una ruta por ID
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ruta desactivada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+
+  /api/v1/routes/{routeId}/enable:
+    patch:
+      summary: Activar una ruta por ID
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ruta activada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+
+  /api/v1/routes/{routeId}/stops:
+    get:
+      summary: Obtener los IDs de paradas de una ruta por su ID
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de IDs de paradas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+components:
+  schemas:
+    Stop:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        location:
+          $ref: '#/components/schemas/Coordinates'
+
+    StopRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        location:
+          $ref: '#/components/schemas/Coordinates'
+
+    Route:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        stopIds:
+          type: array
+          items:
+            type: string
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        status:
+          type: string
+          enum: [Enabled, Disabled]
+
+    UpdateRouteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        stopIds:
+          type: array
+          items:
+            type: string
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+
+    Schedule:
+      type: object
+      properties:
+        typeOfDay:
+          type: string
+          enum: [WEEKDAY, WEEKEND]
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        frequencyInMinutes:
+          type: integer

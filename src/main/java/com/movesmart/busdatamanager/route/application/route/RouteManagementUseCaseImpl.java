@@ -6,8 +6,7 @@ import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
-import com.movesmart.busdatamanager.route.domain.schedule.Schedule;
-import com.movesmart.busdatamanager.route.domain.schedule.TypeOfDay;
+import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -156,9 +155,9 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     }
 
     private Schedule validateSchedule(Schedule schedule) {
-        TypeOfDay typeOfDay = schedule.typeOfDay();
+        Schedule.TypeOfDay typeOfDay = schedule.typeOfDay();
 
-        if (typeOfDay != TypeOfDay.WEEKDAY && typeOfDay != TypeOfDay.WEEKEND) {
+        if (typeOfDay != Schedule.TypeOfDay.WEEKDAY && typeOfDay != Schedule.TypeOfDay.WEEKEND) {
             throw new IllegalArgumentException("Invalid typeOfDay format. Expected 'WEEKDAY' or 'WEEKEND'.");
         }
         return schedule;
