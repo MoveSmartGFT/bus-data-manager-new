@@ -1,5 +1,6 @@
 package com.movesmart.busdatamanager.route.application.route;
 
+import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.route.domain.route.Route;
@@ -91,6 +92,52 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
         log.info("Found Route with id: {}", route.getId());
         return routeRepository.save(route);
+    }
+
+    /**
+     * @see RouteManagementUseCase#disable(String)
+     */
+    public Route disable(String routeId) {
+        log.info("Attempting to disable Route with id: {}", routeId);
+
+        get(routeId);
+        Route route = routeRepository.findEnabledRouteById(routeId)
+                .orElseThrow(() -> new EntityStatusException(ROUTE, routeId, Route.Status.Disabled.toString()));
+
+        log.info("Disabling Route with id: {}", routeId);
+        route.disable();
+
+        return routeRepository.save(route);
+    }
+
+    /**
+     * @see RouteManagementUseCase#enable(String)
+     */
+    public Route enable(String routeId) {
+        log.info("Attempting to enable Route with id: {}", routeId);
+
+        get(routeId);
+        Route route = routeRepository.findDisabledRouteById(routeId)
+                .orElseThrow(() -> new EntityStatusException(ROUTE, routeId, Route.Status.Enabled.toString()));
+
+        log.info("Enabling Route with id: {}", routeId);
+        route.enable();
+
+        return routeRepository.save(route);
+    }
+
+    /**
+     * @see RouteManagementUseCase#delete(String)
+     */
+    public Route delete(String routeId) {
+        log.info("Attempting to delete Route with id: {}", routeId);
+
+        Route route = get(routeId);
+
+        log.info("Deleting Route with id: {}", routeId);
+        routeRepository.delete(route);
+
+        return route;
     }
 
     private void doesStopExists(List<String> stopIds) {
