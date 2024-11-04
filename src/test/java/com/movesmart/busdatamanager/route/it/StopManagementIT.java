@@ -6,9 +6,11 @@ import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,6 +25,14 @@ public class StopManagementIT extends EndPointStopInventory {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @AfterEach
+    void cleanDatabase() {
+        mongoTemplate.getDb().drop();
+    }
 
     @Test
     void stopIT() throws Exception {
@@ -53,8 +63,6 @@ public class StopManagementIT extends EndPointStopInventory {
         assertThat(HttpStatus.valueOf(retrieveAllStopsResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         List<Stop> retrievedAllStops = objectMapper.readValue(retrieveAllStopsResponse.getResponse().getContentAsString(), new TypeReference<>() {});
         assertThat(retrievedAllStops).hasSizeBetween(2,3);
-//        checkStop(retrievedAllStops.get(0), firstStopRequest);
-//        checkStop(retrievedAllStops.get(1), secondStopRequest);
 
         Stop notSavedStop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 

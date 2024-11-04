@@ -10,9 +10,11 @@ import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
@@ -30,6 +32,14 @@ public class RouteManagementIT extends EndPointRouteInventory {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @AfterEach
+    void cleanDatabase() {
+        mongoTemplate.getDb().drop();
+    }
 
     @Transactional
     @Test
