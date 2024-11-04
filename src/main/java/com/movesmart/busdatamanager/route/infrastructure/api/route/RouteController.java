@@ -20,6 +20,8 @@ import java.util.List;
 public class RouteController {
     public static final String ROUTE_PATH = "/api/v1/routes"; // NOSONAR
     public static final String ROUTE_ID_PATH = "/{routeId}"; // NOSONAR
+    public static final String ROUTE_DISABLE_PATH = "/disable"; // NOSONAR
+    public static final String ROUTE_ENABLE_PATH = "/enable"; // NOSONAR
     public static final String STOPS_PATH = "/stops"; // NOSONAR
 
     private final RouteManagementUseCase routeManagementUseCase;
@@ -60,5 +62,25 @@ public class RouteController {
         return routeManagementUseCase.update(routeRequest.toRoute(routeId));
     }
 
+    @PatchMapping(ROUTE_ID_PATH+ROUTE_DISABLE_PATH)
+    @ResponseStatus(code =  HttpStatus.OK)
+    public Route disable(@PathVariable String routeId) {
+        log.info("Requested disable route with id {}", routeId);
+        return routeManagementUseCase.disable(routeId);
+    }
+
+    @PatchMapping(ROUTE_ID_PATH+ROUTE_ENABLE_PATH)
+    @ResponseStatus(code =  HttpStatus.OK)
+    public Route enable(@PathVariable String routeId) {
+        log.info("Requested enable route with id {}", routeId);
+        return routeManagementUseCase.enable(routeId);
+    }
+
+    @DeleteMapping(ROUTE_ID_PATH)
+    @ResponseStatus(code =  HttpStatus.OK)
+    public Route delete(@PathVariable String routeId) {
+        log.info("Requested delete route with id {}", routeId);
+        return routeManagementUseCase.delete(routeId);
+    }
 }
 

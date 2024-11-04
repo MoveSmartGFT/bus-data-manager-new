@@ -1,12 +1,13 @@
 package com.movesmart.busdatamanager.route.domain.route;
 
-import com.movesmart.busdatamanager.route.domain.schedule.Schedule;
+import com.movesmart.busdatamanager.route.domain.Schedule;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
+import org.jmolecules.ddd.annotation.ValueObject;
 
 import java.util.List;
 
@@ -47,6 +48,46 @@ public class Route {
     @NotNull
     @ElementCollection
     private List<Schedule> schedules;
+
+    /**
+     * Status of the route
+     */
+    @NotNull
+    private Status status;
+
+    /**
+     * Creator of the route
+     */
+    public Route(String id, String name, List<String> stopIds, List<Schedule> schedules) {
+        this.id = id;
+        this.name = name;
+        this.stopIds = stopIds;
+        this.schedules = schedules;
+        this.status = Status.Enabled;
+    }
+
+    /**
+     * Disables the route
+     */
+    public void disable() {
+        this.status = Status.Disabled;
+    }
+
+    /**
+     * Enabled the route
+     */
+    public void enable() {
+        this.status = Status.Enabled;
+    }
+
+    /**
+     * Possible status of the route
+     */
+    @ValueObject
+    public enum Status {
+        Enabled,
+        Disabled
+    }
 }
 
 

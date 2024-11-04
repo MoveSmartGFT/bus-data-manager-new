@@ -10,7 +10,7 @@ public class EntityAlreadyExistsException extends RuntimeException {
     private final String id;
 
     public EntityAlreadyExistsException(String objectType, String id) {
-        super("%s %s already exists".formatted(objectType, id));
+        super("%s with id %s already exists".formatted(objectType, id));
         this.objectType = objectType;
         this.id = id;
     }

@@ -39,4 +39,25 @@ public interface RouteManagementUseCase {
      * @return Route
      */
     Route update(Route route);
+
+    /**
+     * Disables a Route
+     * @param routeId to disable
+     * @return Route
+     */
+    Route disable(String routeId);
+
+    /**
+     * Enables a Route
+     * @param routeId to enable
+     * @return Route
+     */
+    Route enable(String routeId);
+
+    /**
+     * Deletes a Route
+     * @param routeId to delete
+     * @return Route
+     */
+    Route delete(String routeId);
 }
