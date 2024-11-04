@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
+import com.movesmart.busdatamanager.route.domain.schedule.Schedule;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
@@ -11,14 +12,20 @@ import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
+@ActiveProfiles("test")
 public class RouteManagementIT extends EndPointRouteInventory {
 
     @Autowired
@@ -92,6 +99,17 @@ public class RouteManagementIT extends EndPointRouteInventory {
         assertThat(result.getId()).isEqualTo(expected.getId());
         assertThat(result.getName()).isEqualTo(expected.getName());
         assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
-        assertThat(result.getSchedules()).isEqualTo(expected.getSchedules());
+
+        assertThat(getScheduleStrings(result.getSchedules())).isEqualTo(getScheduleStrings(expected.getSchedules()));
+    }
+
+    private List<String> getScheduleStrings(List<Schedule> schedules) {
+        return schedules.stream()
+                .map(schedule -> String.join(",",
+                        schedule.typeOfDay().toString(),
+                        String.valueOf(schedule.frequencyInMinutes()),
+                        schedule.startTime().truncatedTo(ChronoUnit.MILLIS).toString(),
+                        schedule.endTime().truncatedTo(ChronoUnit.MILLIS).toString()))
+                .collect(Collectors.toList());
     }
 }
