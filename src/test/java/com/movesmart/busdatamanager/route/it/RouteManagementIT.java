@@ -103,6 +103,41 @@ public class RouteManagementIT extends EndPointRouteInventory {
 
         MvcResult updatedRouteNotFoundResponse = updateRouteRequest("Route1", routeRequest);
         assertThat(HttpStatus.valueOf(updatedRouteNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult disabledRouteResponse = disableRouteRequest(firstRoute.getId());
+        assertThat(HttpStatus.valueOf(disabledRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Route retrievedRouteDisabled = objectMapper.readValue(disabledRouteResponse.getResponse().getContentAsString(), Route.class);
+        checkRoutes(retrievedRouteDisabled, routeRequest.toRoute(firstRoute.getId()));
+        MvcResult getDisabledResponse = getRouteRequest(firstRoute.getId());
+        Route retrievedGetRouteDisabled = objectMapper.readValue(getDisabledResponse.getResponse().getContentAsString(), Route.class);
+        assertThat(retrievedGetRouteDisabled.getStatus()).isEqualTo(Route.Status.Disabled);
+
+        MvcResult disabledRouteNotFoundResponse = disableRouteRequest("Route1");
+        assertThat(HttpStatus.valueOf(disabledRouteNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult disabledRouteAlreadyDisabledResponse = disableRouteRequest(firstRoute.getId());
+        assertThat(HttpStatus.valueOf(disabledRouteAlreadyDisabledResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult enabledRouteResponse = enableRouteRequest(firstRoute.getId());
+        assertThat(HttpStatus.valueOf(enabledRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Route retrievedRouteEnabled = objectMapper.readValue(enabledRouteResponse.getResponse().getContentAsString(), Route.class);
+        checkRoutes(retrievedRouteEnabled, routeRequest.toRoute(firstRoute.getId()));
+        MvcResult getEnabledResponse = getRouteRequest(firstRoute.getId());
+        Route retrievedGetRouteEnabled = objectMapper.readValue(getEnabledResponse.getResponse().getContentAsString(), Route.class);
+        assertThat(retrievedGetRouteEnabled.getStatus()).isEqualTo(Route.Status.Enabled);
+
+        MvcResult enabledRouteNotFoundResponse = enableRouteRequest("Route1");
+        assertThat(HttpStatus.valueOf(enabledRouteNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult enabledRouteAlreadyDisabledResponse = enableRouteRequest(firstRoute.getId());
+        assertThat(HttpStatus.valueOf(enabledRouteAlreadyDisabledResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult deleteRouteResponse = deleteRouteRequest(secondRoute.getId());
+        assertThat(HttpStatus.valueOf(deleteRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Route retrievedRouteDeleted = objectMapper.readValue(deleteRouteResponse.getResponse().getContentAsString(), Route.class);
+        checkRoutes(retrievedRouteDeleted, secondRoute);
+        MvcResult getDeletedResponse = getRouteRequest(secondRoute.getId());
+        assertThat(HttpStatus.valueOf(getDeletedResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     void checkRoutes(Route result, Route expected) {

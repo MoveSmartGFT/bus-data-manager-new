@@ -66,4 +66,25 @@ public abstract class EndPointRouteInventory extends EndPointStopInventory {
                 )
                 .andReturn();
     }
+
+    protected MvcResult disableRouteRequest(String routeId) throws Exception {
+        return this.mockMvc.perform(
+                        patch(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.ROUTE_DISABLE_PATH, routeId)
+                )
+                .andReturn();
+    }
+
+    protected MvcResult enableRouteRequest(String routeId) throws Exception {
+        return this.mockMvc.perform(
+                        patch(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.ROUTE_ENABLE_PATH, routeId)
+                )
+                .andReturn();
+    }
+
+    protected MvcResult deleteRouteRequest(String routeId) throws Exception {
+        return this.mockMvc.perform(
+                        delete(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, routeId)
+                )
+                .andReturn();
+    }
 }

@@ -5,7 +5,7 @@ import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
-import com.movesmart.busdatamanager.route.domain.schedule.Schedule;
+import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
