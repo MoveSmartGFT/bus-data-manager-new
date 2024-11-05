@@ -6,3 +6,5 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/busDataManager
       database: busDataManager
+  main:
+    allow-bean-definition-overriding: true
