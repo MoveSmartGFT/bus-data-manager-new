@@ -3,6 +3,7 @@ package com.movesmart.busdatamanager.route.infrastructure.api.route;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -81,6 +82,16 @@ public class RouteController {
     public Route delete(@PathVariable String routeId) {
         log.info("Requested delete route with id {}", routeId);
         return routeManagementUseCase.delete(routeId);
+    }
+
+    @PatchMapping(ROUTE_ID_PATH + STOPS_PATH)
+    @ResponseStatus(code =  HttpStatus.OK)
+    public Route updateStopsRoute(@PathVariable String routeId,
+                                  @Valid @RequestBody UpdateRouteStopsRequest routeRequest){
+        log.info("Requested update stops of the route with id {}", routeId);
+        Route existingRoute = routeManagementUseCase.get(routeId);
+        Route updatedRoute = routeRequest.toRoute(existingRoute);
+        return routeManagementUseCase.updateRouteStops(updatedRoute);
     }
 }
 
