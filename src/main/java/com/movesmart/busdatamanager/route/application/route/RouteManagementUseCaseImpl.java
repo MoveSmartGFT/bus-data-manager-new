@@ -152,13 +152,6 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
         return routeRepository.save(existingRoute);
     }
 
-    /**
-     * @see RouteManagementUseCase#updateRouteStops(Route)
-     */
-    public Route updateRouteStops(String routeId) {
-        return null;
-    }
-
     private void doesStopExists(List<String> stopIds) {
         for (String stopId : stopIds) {
             if (!stopRepository.existsById(stopId)) {
