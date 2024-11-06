@@ -4,6 +4,7 @@ import com.movesmart.busdatamanager.route.domain.Coordinates;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import lombok.experimental.UtilityClass;
 import org.instancio.Instancio;
@@ -52,4 +53,11 @@ public class RouteInstancioModels {
                 .set(field(UpdateRouteRequest::stopIds), stopIds)
                 .toModel();
     }
+
+    public static Model<UpdateRouteStopsRequest> getUpdateRouteStopsRequestModelWithStops(List<String> stopIds) {
+        return Instancio.of(UpdateRouteStopsRequest.class)
+                .set(field(UpdateRouteStopsRequest::stopIds), stopIds)
+                .toModel();
+    }
+
 }
