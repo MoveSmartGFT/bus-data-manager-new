@@ -86,12 +86,12 @@ public class RouteController {
 
     @PatchMapping(ROUTE_ID_PATH + STOPS_PATH)
     @ResponseStatus(code =  HttpStatus.OK)
-    public Route updatestopsroute(@PathVariable String routeId,
+    public Route updateRouteStops(@PathVariable String routeId,
                                   @Valid @RequestBody UpdateRouteStopsRequest routeRequest){
         log.info("Requested update stops of the route with id {}", routeId);
         Route existingRoute = routeManagementUseCase.get(routeId);
-        Route updatedRoute = routeRequest.toRoute(existingRoute);
-        return routeManagementUseCase.updateRouteStops(updatedRoute);
+        Route routeToUpdate = routeRequest.toRoute(existingRoute);
+        return routeManagementUseCase.updateRouteStops(routeToUpdate);
     }
 }
 
