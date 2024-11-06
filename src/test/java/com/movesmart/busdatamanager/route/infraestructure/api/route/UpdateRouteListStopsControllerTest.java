@@ -74,7 +74,7 @@ public class UpdateRouteListStopsControllerTest {
         when(routeManagementUseCase.get(route.getId())).thenReturn(existingRoute);
 
         when(routeManagementUseCase.updateRouteStops(any()))
-                .thenThrow(new EntityNotFoundException("Stop", "SomeStopId"));
+                .thenThrow(new EntityNotFoundException("Stop", "NoExistingStopId"));
 
         mockMvc.perform(
                         patch(RouteController.ROUTE_PATH + RouteController.ROUTE_ID_PATH + RouteController.STOPS_PATH, route.getId())

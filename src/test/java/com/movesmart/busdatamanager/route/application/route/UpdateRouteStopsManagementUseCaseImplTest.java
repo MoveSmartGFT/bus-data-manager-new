@@ -76,4 +76,20 @@ public class UpdateRouteStopsManagementUseCaseImplTest {
                 .hasMessageContaining("nonExistingStop");
     }
 
+    @Test
+    @DisplayName("GIVEN a List of Stops WHEN the Route does not exist THEN update fails with an exception")
+    void testUpdateRouteStopsWithNonExistingRoute() {
+        List<String> newStopIds = Arrays.asList("stop1", "stop2", "stop3");
+
+        Route routeToUpdate = new Route("nonExistingRouteId", "TestRoute", newStopIds, route.getSchedules());
+
+        when(routeRepository.findById(routeToUpdate.getId())).thenReturn(Optional.empty());
+
+        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.updateRouteStops(routeToUpdate));
+
+        assertThat(throwable)
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("Route")
+                .hasMessageContaining("nonExistingRouteId");
+    }
 }
