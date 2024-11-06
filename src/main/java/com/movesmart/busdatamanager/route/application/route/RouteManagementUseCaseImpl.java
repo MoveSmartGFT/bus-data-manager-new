@@ -38,7 +38,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
             throw new EntityAlreadyExistsException(ROUTE, route.getId());
         }
 
-        doesStopExists(route.getStopIds());
+        checkStopsExist(route.getStopIds());
 
         List<Schedule> validatedSchedules = validateSchedules(route.getSchedules());
 
@@ -87,7 +87,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
         get(route.getId());
 
-        doesStopExists(route.getStopIds());
+        checkStopsExist(route.getStopIds());
 
         log.info("Found Route with id: {}", route.getId());
         return routeRepository.save(route);
@@ -144,15 +144,14 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
         Route existingRoute = get(route.getId());
 
-        doesStopExists(route.getStopIds());
-
+        checkStopsExist(route.getStopIds());
         existingRoute.setStopIds(route.getStopIds());
 
         log.info("Updated Route with id: {}", existingRoute.getId());
         return routeRepository.save(existingRoute);
     }
 
-    private void doesStopExists(List<String> stopIds) {
+    private void checkStopsExist(List<String> stopIds) {
         for (String stopId : stopIds) {
             if (!stopRepository.existsById(stopId)) {
                 log.warn("Stop with id: {} does not exists", stopId);
