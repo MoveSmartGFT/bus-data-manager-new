@@ -12,13 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 
 @Getter
-@Entity
+@AggregateRoot
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Generated
+@Entity
 @Table(name = "STOP")
 public class Stop {
 
