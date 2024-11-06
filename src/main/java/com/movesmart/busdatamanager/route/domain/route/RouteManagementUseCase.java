@@ -60,4 +60,6 @@ public interface RouteManagementUseCase {
      * @return Route
      */
     Route delete(String routeId);
+
+    Route updateRouteStops(Route route);
 }

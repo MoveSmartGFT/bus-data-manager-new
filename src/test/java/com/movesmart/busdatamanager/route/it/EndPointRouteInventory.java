@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -57,6 +58,15 @@ public abstract class EndPointRouteInventory extends EndPointStopInventory {
     protected MvcResult updateRouteRequest(String routeId, UpdateRouteRequest route) throws Exception {
         return this.mockMvc.perform(
                         put(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, routeId)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(objectMapper.writeValueAsString(route))
+                )
+                .andReturn();
+    }
+
+    protected MvcResult updateRouteStopsRequest(String routeId, UpdateRouteStopsRequest route) throws Exception {
+        return this.mockMvc.perform(
+                        patch(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(objectMapper.writeValueAsString(route))
                 )
