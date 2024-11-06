@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Route Aggregate Root
  */
+@Setter
 @Getter
 @Document(collection = "route")
 @RequiredArgsConstructor
@@ -39,6 +40,8 @@ public class Route {
     /**
      * List of stopIds for the route
      */
+    @NotNull
+    @ElementCollection
     private List<String> stopIds;
 
     /**

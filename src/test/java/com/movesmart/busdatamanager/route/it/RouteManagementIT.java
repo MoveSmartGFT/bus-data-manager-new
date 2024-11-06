@@ -7,6 +7,7 @@ import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
@@ -103,6 +104,22 @@ public class RouteManagementIT extends EndPointRouteInventory {
 
         MvcResult updatedRouteNotFoundResponse = updateRouteRequest("Route1", routeRequest);
         assertThat(HttpStatus.valueOf(updatedRouteNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+
+
+        UpdateRouteStopsRequest routeRequestStops = Instancio.create(RouteInstancioModels.getUpdateRouteStopsRequestModelWithStops(List.of(stop.getId())));
+
+        MvcResult updateRouteStopsResponse = updateRouteStopsRequest(firstRoute.getId(), routeRequestStops);
+        assertThat(HttpStatus.valueOf(updateRouteStopsResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Route updatedRouteStops = objectMapper.readValue(updateRouteStopsResponse.getResponse().getContentAsString(), Route.class);
+        checkRoutes(updatedRouteStops, routeRequestStops.toRoute(updatedRouteStops));
+        MvcResult routeRetrievedUpdatedListResponse = getRouteRequest(firstRoute.getId());
+        assertThat(HttpStatus.valueOf(routeRetrievedUpdatedListResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        assertThat(HttpStatus.valueOf(routeRetrievedUpdatedListResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Route retrievedRouteStopsUpdated = objectMapper.readValue(routeRetrievedUpdatedResponse.getResponse().getContentAsString(), Route.class);
+        checkRoutes(retrievedRouteStopsUpdated, routeRequest.toRoute(firstRoute.getId()));
+
+        MvcResult updatedRouteStopNotFoundResponse = updateRouteStopsRequest("NonExistingStop", routeRequestStops);
+        assertThat(HttpStatus.valueOf(updatedRouteStopNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult disabledRouteResponse = disableRouteRequest(firstRoute.getId());
         assertThat(HttpStatus.valueOf(disabledRouteResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
