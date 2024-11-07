@@ -204,6 +204,41 @@ paths:
                 items:
                   type: string
 
+    patch:
+      summary: Actualizar la lista de paradas de una ruta
+      description: Modificar la lista de IDs de paradas en una ruta específica.
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+          description: ID único de la ruta a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stopIds:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - stopIds
+      responses:
+        '200':
+          description: Lista de paradas actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          description: Solicitud inválida
+        '404':
+          description: Ruta no encontrada
+
 components:
   schemas:
     Stop:
