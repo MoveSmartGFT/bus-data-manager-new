@@ -94,6 +94,19 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     }
 
     /**
+     * @see RouteManagementUseCase#removeStopIdFromRoutes(String)
+     */
+    public String removeStopIdFromRoutes(String stopId) {
+        List<Route> routesWithStopId = routeRepository.findByStopId(stopId);
+
+        routesWithStopId.stream()
+                .peek(route -> route.getStopIds().removeIf(id -> id.equals(stopId)))
+                .forEach(routeRepository::save);
+
+        return "Stop with id %s removed from %s routes".formatted(stopId, routesWithStopId.size());
+    }
+
+    /**
      * @see RouteManagementUseCase#disable(String)
      */
     public Route disable(String routeId) {

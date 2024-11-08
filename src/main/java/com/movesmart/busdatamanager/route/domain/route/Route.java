@@ -40,6 +40,7 @@ public class Route {
     /**
      * List of stopIds for the route
      */
+    @ElementCollection
     private List<String> stopIds;
 
     /**
