@@ -158,7 +158,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
         Route existingRoute = get(route.getId());
 
         checkStopsExist(route.getStopIds());
-        existingRoute.setStopIds(route.getStopIds());
+        existingRoute.updateStopIdList(route.getStopIds());
 
         log.info("Updated Route with id: {}", existingRoute.getId());
         return routeRepository.save(existingRoute);

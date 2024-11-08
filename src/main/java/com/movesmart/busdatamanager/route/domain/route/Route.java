@@ -81,6 +81,10 @@ public class Route {
         this.status = Status.Enabled;
     }
 
+    public void updateStopIdList(List<String> stopIdsList) {
+        this.stopIds = stopIdsList;
+    }
+
     /**
      * Possible status of the route
      */
