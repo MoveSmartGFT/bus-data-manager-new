@@ -11,13 +11,14 @@ import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Document(collection = "stop")
-@Entity
+@AggregateRoot
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Generated

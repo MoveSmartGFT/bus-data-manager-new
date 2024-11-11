@@ -20,7 +20,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -161,17 +163,11 @@ public class RouteManagementIT extends EndPointRouteInventory {
         assertThat(result.getId()).isEqualTo(expected.getId());
         assertThat(result.getName()).isEqualTo(expected.getName());
         assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
-
-        assertThat(getScheduleStrings(result.getSchedules())).isEqualTo(getScheduleStrings(expected.getSchedules()));
-    }
-
-    private List<String> getScheduleStrings(List<Schedule> schedules) {
-        return schedules.stream()
-                .map(schedule -> String.join(",",
-                        schedule.typeOfDay().toString(),
-                        String.valueOf(schedule.frequencyInMinutes()),
-                        schedule.startTime().truncatedTo(ChronoUnit.MILLIS).toString(),
-                        schedule.endTime().truncatedTo(ChronoUnit.MILLIS).toString()))
-                .collect(Collectors.toList());
+        assertThat(result.getSchedules())
+                .usingRecursiveComparison()
+                .withComparatorForType(
+                        Comparator.comparing(t -> t.truncatedTo(ChronoUnit.MILLIS)),
+                        LocalDateTime.class)
+                .isEqualTo(expected.getSchedules());
     }
 }

@@ -10,5 +10,10 @@ import java.util.Optional;
 @Generated
 @Repository
 public interface StopRepository extends MongoRepository<Stop, String> {
+
+    /**
+     * Searches a Stop name
+     * @param name of route
+     */
     Optional<Stop> findByName(String name);
 }

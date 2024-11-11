@@ -62,7 +62,9 @@ public class StopManagementIT extends EndPointStopInventory {
         MvcResult retrieveAllStopsResponse = getAllStopsRequest();
         assertThat(HttpStatus.valueOf(retrieveAllStopsResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         List<Stop> retrievedAllStops = objectMapper.readValue(retrieveAllStopsResponse.getResponse().getContentAsString(), new TypeReference<>() {});
-        assertThat(retrievedAllStops).hasSizeBetween(2,3);
+        assertThat(retrievedAllStops).hasSize(2);
+        checkStop(retrievedAllStops.get(0), firstStopRequest);
+        checkStop(retrievedAllStops.get(1), secondStopRequest);
 
         Stop notSavedStop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
