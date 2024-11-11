@@ -53,4 +53,11 @@ public abstract class EndPointStopInventory {
                 )
                 .andReturn();
     }
+
+    protected MvcResult removeStopIdFromRoutesRequest(String stopId) throws Exception {
+        return this.mockMvc.perform(
+                        patch(StopController.STOP_PATH+StopController.STOP_ID_PATH+StopController.ROUTE_PATH, stopId)
+                )
+                .andReturn();
+    }
 }

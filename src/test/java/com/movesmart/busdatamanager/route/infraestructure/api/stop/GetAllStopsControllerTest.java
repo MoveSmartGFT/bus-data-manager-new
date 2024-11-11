@@ -3,6 +3,7 @@ package com.movesmart.busdatamanager.route.infraestructure.api.stop;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
+import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
@@ -32,12 +33,14 @@ public class GetAllStopsControllerTest {
 
     @Mock
     private StopManagementUseCase stopManagementUseCase;
+    @Mock
+    private RouteManagementUseCase routeManagementUseCase;
 
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
     @BeforeEach
     void setUp() {
-        StopController stopController = new StopController(stopManagementUseCase);
+        StopController stopController = new StopController(stopManagementUseCase, routeManagementUseCase);
         mockMvc = Fixtures.setupMockMvc(stopController);
     }
 

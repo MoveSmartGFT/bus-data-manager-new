@@ -1,14 +1,11 @@
 package com.movesmart.busdatamanager.route.infraestructure.api.stop;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
-import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
-import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,15 +16,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
-public class GetStopByIdControllerTest {
+public class RemoveStopIdFromRoutesControllerTest {
 
     private MockMvc mockMvc;
 
@@ -35,8 +32,6 @@ public class GetStopByIdControllerTest {
     private StopManagementUseCase stopManagementUseCase;
     @Mock
     private RouteManagementUseCase routeManagementUseCase;
-
-    private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
     private final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
@@ -47,27 +42,16 @@ public class GetStopByIdControllerTest {
     }
 
     @Test
-    @DisplayName("GIVEN a stop retrieval request is received WHEN the stop exists THEN returns stop object and status 200")
-    void testGetStop() throws Exception {
-        when(stopManagementUseCase.get(any()))
-                .thenReturn(stop);
+    @DisplayName("GIVEN a stop id to be removed from routes THEN is removed and returns a message")
+    void testRemoveStopIdFromRoute() throws Exception {
+        when(routeManagementUseCase.removeStopIdFromRoutes(any()))
+                .thenReturn("Stop with id %s removed from %s routes"
+                        .formatted(stop.getId(), 0));
 
         mockMvc.perform(
-                        get(StopController.STOP_PATH+StopController.STOP_ID_PATH, stop.getId())
+                        patch(StopController.STOP_PATH+StopController.STOP_ID_PATH+StopController.ROUTE_PATH, stop.getId())
                 )
                 .andExpect(status().isOk())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stop)));
-    }
-
-    @Test
-    @DisplayName("GIVEN a stop retrieval request is received WHEN the stop does not exist THEN returns status 404")
-    void testGetStopDoesNotExist() throws Exception {
-        when(stopManagementUseCase.get(any()))
-                .thenThrow(new EntityNotFoundException("Stop", stop.getId()));
-
-        mockMvc.perform(
-                        get(StopController.STOP_PATH+StopController.STOP_ID_PATH, stop.getId())
-                )
-                .andExpect(status().isNotFound());
+                .andExpect(content().string("Stop with id %s removed from %s routes".formatted(stop.getId(), 0)));
     }
 }
