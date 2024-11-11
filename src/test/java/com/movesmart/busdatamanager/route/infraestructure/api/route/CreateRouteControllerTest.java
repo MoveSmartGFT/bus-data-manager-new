@@ -7,6 +7,8 @@ import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -36,7 +38,8 @@ public class CreateRouteControllerTest {
 
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
-    private final Route route = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
+    private final CreateRouteRequest createRouteRequest = Instancio.create(RouteInstancioModels.CREATE_ROUTE_REQUEST_MODEL);
+    private final Route route = createRouteRequest.toRoute();
 
     @BeforeEach
     void setUp() {
@@ -47,16 +50,18 @@ public class CreateRouteControllerTest {
     @Test
     @DisplayName("WHEN a route creation request is received THEN returns route object and status 201")
     void testRouteCreate() throws Exception {
+        RouteResponse routeResponse = RouteResponse.fromRoute(route);
+
         when(routeManagementUseCase.create(any()))
                 .thenReturn(route);
 
         mockMvc.perform(
                         post(RouteController.ROUTE_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(route))
+                                .content(objectMapper.writeValueAsString(createRouteRequest))
                 )
                 .andExpect(status().isCreated())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(route)));
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(routeResponse)));
     }
 
     @Test
@@ -68,7 +73,7 @@ public class CreateRouteControllerTest {
         mockMvc.perform(
                         post(RouteController.ROUTE_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(route))
+                                .content(objectMapper.writeValueAsString(createRouteRequest))
                 )
                 .andExpect(status().isConflict());
     }

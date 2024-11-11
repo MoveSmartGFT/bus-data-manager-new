@@ -2,6 +2,8 @@ package com.movesmart.busdatamanager.route.infrastructure.api.route;
 
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import jakarta.validation.Valid;
@@ -13,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(RouteController.ROUTE_PATH)
@@ -29,9 +32,9 @@ public class RouteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Route create(@Valid @RequestBody Route route) {
+    public RouteResponse create(@Valid @RequestBody CreateRouteRequest routeRequest) {
         log.info("Route creation is requested");
-        return routeManagementUseCase.create(route);
+        return RouteResponse.fromRoute(routeManagementUseCase.create(routeRequest.toRoute()));
     }
 
     @GetMapping(ROUTE_ID_PATH+STOPS_PATH)
@@ -43,55 +46,57 @@ public class RouteController {
 
     @GetMapping(ROUTE_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public Route get(@NotBlank @PathVariable String routeId) {
+    public RouteResponse get(@NotBlank @PathVariable String routeId) {
         log.info("Requested route with id {}", routeId);
 
-        return routeManagementUseCase.get(routeId);
+        return RouteResponse.fromRoute(routeManagementUseCase.get(routeId));
     }
 
     @GetMapping()
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Route> getAll() {
-        return routeManagementUseCase.getAll();
+    public List<RouteResponse> getAll() {
+        return routeManagementUseCase.getAll().stream()
+                .map(RouteResponse::fromRoute)
+                .collect(Collectors.toList());
     }
 
     @PutMapping(ROUTE_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public Route update(@PathVariable String routeId,
+    public RouteResponse update(@PathVariable String routeId,
                        @Valid @RequestBody UpdateRouteRequest routeRequest) {
         log.info("Requested update route with id {}", routeId);
-        return routeManagementUseCase.update(routeRequest.toRoute(routeId));
+        return RouteResponse.fromRoute(routeManagementUseCase.update(routeRequest.toRoute(routeId)));
     }
 
     @PatchMapping(ROUTE_ID_PATH+ROUTE_DISABLE_PATH)
     @ResponseStatus(code =  HttpStatus.OK)
-    public Route disable(@PathVariable String routeId) {
+    public RouteResponse disable(@PathVariable String routeId) {
         log.info("Requested disable route with id {}", routeId);
-        return routeManagementUseCase.disable(routeId);
+        return RouteResponse.fromRoute(routeManagementUseCase.disable(routeId));
     }
 
     @PatchMapping(ROUTE_ID_PATH+ROUTE_ENABLE_PATH)
     @ResponseStatus(code =  HttpStatus.OK)
-    public Route enable(@PathVariable String routeId) {
+    public RouteResponse enable(@PathVariable String routeId) {
         log.info("Requested enable route with id {}", routeId);
-        return routeManagementUseCase.enable(routeId);
+        return RouteResponse.fromRoute(routeManagementUseCase.enable(routeId));
     }
 
     @DeleteMapping(ROUTE_ID_PATH)
     @ResponseStatus(code =  HttpStatus.OK)
-    public Route delete(@PathVariable String routeId) {
+    public RouteResponse delete(@PathVariable String routeId) {
         log.info("Requested delete route with id {}", routeId);
-        return routeManagementUseCase.delete(routeId);
+        return RouteResponse.fromRoute(routeManagementUseCase.delete(routeId));
     }
 
     @PatchMapping(ROUTE_ID_PATH + STOPS_PATH)
     @ResponseStatus(code =  HttpStatus.OK)
-    public Route updateRouteStops(@PathVariable String routeId,
+    public RouteResponse updateRouteStops(@PathVariable String routeId,
                                   @Valid @RequestBody UpdateRouteStopsRequest routeRequest){
         log.info("Requested update stops of the route with id {}", routeId);
         Route existingRoute = routeManagementUseCase.get(routeId);
         Route routeToUpdate = routeRequest.toRoute(existingRoute);
-        return routeManagementUseCase.updateRouteStops(routeToUpdate);
+        return RouteResponse.fromRoute(routeManagementUseCase.updateRouteStops(routeToUpdate));
     }
 }
 
