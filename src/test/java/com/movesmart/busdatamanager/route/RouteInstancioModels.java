@@ -3,6 +3,7 @@ package com.movesmart.busdatamanager.route;
 import com.movesmart.busdatamanager.route.domain.Coordinates;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
@@ -38,6 +39,9 @@ public class RouteInstancioModels {
 
     public static final Model<Route> ROUTE_MODEL = Instancio.of(Route.class)
                 .toModel();
+
+    public static final Model<CreateRouteRequest> CREATE_ROUTE_REQUEST_MODEL = Instancio.of(CreateRouteRequest.class)
+            .toModel();
 
     public static final Model<UpdateRouteRequest> UPDATE_ROUTE_REQUEST_MODEL = Instancio.of(UpdateRouteRequest.class)
             .toModel();

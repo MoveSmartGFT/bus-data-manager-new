@@ -2,6 +2,7 @@ package com.movesmart.busdatamanager.route.infrastructure.api.route;
 
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
@@ -31,9 +32,9 @@ public class RouteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public RouteResponse create(@Valid @RequestBody Route route) {
+    public RouteResponse create(@Valid @RequestBody CreateRouteRequest routeRequest) {
         log.info("Route creation is requested");
-        return RouteResponse.fromRoute(routeManagementUseCase.create(route));
+        return RouteResponse.fromRoute(routeManagementUseCase.create(routeRequest.toRoute()));
     }
 
     @GetMapping(ROUTE_ID_PATH+STOPS_PATH)
