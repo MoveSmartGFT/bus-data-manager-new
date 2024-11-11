@@ -1,16 +1,13 @@
 package com.movesmart.busdatamanager.route.domain.route;
 
 import lombok.Generated;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Generated
-public interface RouteRepository
-        extends JpaRepository<Route, String> {
+public interface RouteRepository extends MongoRepository<Route, String> {
 
     /**
      * Searches a Route by id and status
@@ -39,6 +36,5 @@ public interface RouteRepository
      * Searches Routes which contains stopId
      * @param stopId id of the stop
      */
-    @Query(value = "SELECT r FROM Route r WHERE :stopId MEMBER OF r.stopIds")
-    List<Route> findByStopId(@Param("stopId") String stopId);
+    List<Route> findByStopIds(String stopId);
 }

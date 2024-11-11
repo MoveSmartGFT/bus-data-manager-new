@@ -6,19 +6,33 @@ import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
+@ActiveProfiles("test")
 public class StopManagementIT extends EndPointStopInventory {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @AfterEach
+    void cleanDatabase() {
+        mongoTemplate.getDb().drop();
+    }
 
     @Test
     void stopIT() throws Exception {

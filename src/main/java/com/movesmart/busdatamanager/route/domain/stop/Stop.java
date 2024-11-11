@@ -3,7 +3,6 @@ package com.movesmart.busdatamanager.route.domain.stop;
 import com.movesmart.busdatamanager.route.domain.Coordinates;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -12,14 +11,17 @@ import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jmolecules.ddd.annotation.AggregateRoot;
+import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
-@Entity
+@Document(collection = "stop")
+@AggregateRoot
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Generated
-@Table(name = "STOP")
 public class Stop {
 
     /**
