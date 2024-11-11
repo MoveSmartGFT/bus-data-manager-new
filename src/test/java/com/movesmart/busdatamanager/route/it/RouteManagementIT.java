@@ -4,26 +4,45 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
+import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
+@ActiveProfiles("test")
 public class RouteManagementIT extends EndPointRouteInventory {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @AfterEach
+    void cleanDatabase() {
+        mongoTemplate.getDb().drop();
+    }
 
     @Transactional
     @Test
@@ -144,6 +163,11 @@ public class RouteManagementIT extends EndPointRouteInventory {
         assertThat(result.getId()).isEqualTo(expected.getId());
         assertThat(result.getName()).isEqualTo(expected.getName());
         assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
-        assertThat(result.getSchedules()).isEqualTo(expected.getSchedules());
+        assertThat(result.getSchedules())
+                .usingRecursiveComparison()
+                .withComparatorForType(
+                        Comparator.comparing(t -> t.truncatedTo(ChronoUnit.MILLIS)),
+                        LocalDateTime.class)
+                .isEqualTo(expected.getSchedules());
     }
 }

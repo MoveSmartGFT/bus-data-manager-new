@@ -36,7 +36,7 @@ public class RemoveStopIdFromRoutesManagementUseCaseImplTest {
     void testRemoveStopIdFromRoute() {
         String stopId = route.getStopIds().get(0);
 
-        when(routeRepository.findByStopId(stopId)).thenReturn(List.of(route));
+        when(routeRepository.findByStopIds(stopId)).thenReturn(List.of(route));
         when(routeRepository.save(any())).thenReturn(route);
 
         String messageRetrieved = routeManagementUseCaseImpl.removeStopIdFromRoutes(stopId);
@@ -51,7 +51,7 @@ public class RemoveStopIdFromRoutesManagementUseCaseImplTest {
     void testRemoveStopIdFromAnyRoute() {
         String stopId = Instancio.create(String.class);
 
-        when(routeRepository.findByStopId(stopId)).thenReturn(List.of());
+        when(routeRepository.findByStopIds(stopId)).thenReturn(List.of());
 
         String messageRetrieved = routeManagementUseCaseImpl.removeStopIdFromRoutes(stopId);
 
