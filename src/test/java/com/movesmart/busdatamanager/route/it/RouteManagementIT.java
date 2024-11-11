@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
-import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
@@ -24,7 +23,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
