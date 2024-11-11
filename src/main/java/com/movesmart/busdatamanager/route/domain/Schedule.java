@@ -1,6 +1,7 @@
 package com.movesmart.busdatamanager.route.domain;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Generated;
 import org.jmolecules.ddd.types.ValueObject;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Generated
 @Embeddable
 public record Schedule (
-        @NotNull TypeOfDay typeOfDay,
+        @NotNull @Enumerated TypeOfDay typeOfDay,
         @NotNull LocalDateTime startTime,
         @NotNull LocalDateTime endTime,
         @NotNull Integer frequencyInMinutes
