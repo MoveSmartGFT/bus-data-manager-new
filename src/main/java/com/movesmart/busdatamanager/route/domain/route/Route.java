@@ -2,6 +2,7 @@ package com.movesmart.busdatamanager.route.domain.route;
 
 import com.movesmart.busdatamanager.route.domain.Schedule;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -46,6 +47,7 @@ public class Route {
      * Schedules of the route
      */
     @NotNull
+    @Valid
     @ElementCollection
     private List<Schedule> schedules;
 
@@ -80,6 +82,9 @@ public class Route {
         this.status = Status.Enabled;
     }
 
+    /**
+     * Update the stopId list of the route
+     */
     public void updateStopIdList(List<String> stopIdsList) {
         this.stopIds = stopIdsList;
     }
@@ -93,5 +98,3 @@ public class Route {
         Disabled
     }
 }
-
-

@@ -6,7 +6,6 @@ import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
-import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,9 +39,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
         checkStopsExist(route.getStopIds());
 
-        List<Schedule> validatedSchedules = validateSchedules(route.getSchedules());
-
-        Route validatedRoute = new Route(route.getId(), route.getName(), route.getStopIds(), validatedSchedules);
+        Route validatedRoute = new Route(route.getId(), route.getName(), route.getStopIds(), route.getSchedules());
 
         Route savedRoute = routeRepository.save(validatedRoute);
         log.info("Route with ID: {} successfully created", route.getId());
@@ -152,6 +149,9 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
         return route;
     }
 
+    /**
+     * @see RouteManagementUseCase#update(Route)
+     */
     public Route updateRouteStops(Route route) {
         log.info("Attempting to update the Stops of the Route with id: {}", route.getId());
 
@@ -171,20 +171,5 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
                 throw new EntityNotFoundException("Stop", stopId);
             }
         }
-    }
-
-    private List<Schedule> validateSchedules(List<Schedule> schedules) {
-        return schedules.stream()
-                .map(this::validateSchedule)
-                .toList();
-    }
-
-    private Schedule validateSchedule(Schedule schedule) {
-        Schedule.TypeOfDay typeOfDay = schedule.typeOfDay();
-
-        if (typeOfDay != Schedule.TypeOfDay.WEEKDAY && typeOfDay != Schedule.TypeOfDay.WEEKEND) {
-            throw new IllegalArgumentException("Invalid typeOfDay format. Expected 'WEEKDAY' or 'WEEKEND'.");
-        }
-        return schedule;
     }
 }
