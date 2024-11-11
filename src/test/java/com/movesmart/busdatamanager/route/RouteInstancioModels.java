@@ -27,7 +27,6 @@ public class RouteInstancioModels {
                             ))
                     .toModel();
 
-
     public static final Model<StopRequest> STOP_REQUEST_MODEL =
             Instancio.of(StopRequest.class)
                     .supply(field(StopRequest::location),

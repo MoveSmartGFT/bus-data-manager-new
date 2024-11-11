@@ -47,7 +47,6 @@ public class Route {
     /**
      * Schedules of the route
      */
-    @NotNull
     @Valid
     @ElementCollection
     private List<Schedule> schedules;

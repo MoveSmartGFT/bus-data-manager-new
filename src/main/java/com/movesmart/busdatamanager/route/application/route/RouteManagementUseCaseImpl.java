@@ -7,22 +7,19 @@ import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
     private final RouteRepository routeRepository;
     private final StopRepository stopRepository;
-
-    public RouteManagementUseCaseImpl(RouteRepository routeRepository, StopRepository stopRepository) {
-        this.routeRepository = routeRepository;
-        this.stopRepository = stopRepository;
-    }
 
     /**
      * @param route data
