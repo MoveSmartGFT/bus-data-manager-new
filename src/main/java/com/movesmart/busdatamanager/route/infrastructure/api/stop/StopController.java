@@ -1,9 +1,9 @@
 package com.movesmart.busdatamanager.route.infrastructure.api.stop;
 
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
-import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,30 +28,32 @@ public class StopController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Stop create(@Valid @RequestBody StopRequest createStopRequest) {
+    public StopResponse create(@Valid @RequestBody StopRequest stopRequest) {
         log.info("Stop creation is requested");
-        return stopManagementUseCase.create(createStopRequest.toStop());
+        return StopResponse.fromStop(stopManagementUseCase.create(stopRequest.toStop()));
     }
 
     @GetMapping(STOP_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public Stop get(@PathVariable String stopId) {
+    public StopResponse get(@PathVariable String stopId) {
         log.info("Requested stop with id {}", stopId);
-        return stopManagementUseCase.get(stopId);
+        return StopResponse.fromStop(stopManagementUseCase.get(stopId));
     }
 
     @GetMapping()
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Stop> getAll() {
-        return stopManagementUseCase.getAll();
+    public List<StopResponse> getAll() {
+        return stopManagementUseCase.getAll().stream()
+                .map(StopResponse::fromStop)
+                .toList();
     }
 
     @PutMapping(STOP_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public Stop update(@PathVariable String stopId,
+    public StopResponse update(@PathVariable String stopId,
                        @Valid @RequestBody StopRequest stopRequest) {
         log.info("Requested update stop with id {}", stopId);
-        return stopManagementUseCase.update(stopRequest.toStop(stopId));
+        return StopResponse.fromStop(stopManagementUseCase.update(stopRequest.toStop(stopId)));
     }
 
     @PatchMapping(STOP_ID_PATH+ROUTE_PATH)
