@@ -7,6 +7,7 @@ import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
@@ -47,6 +47,8 @@ public class DeleteRouteControllerTest {
     @Test
     @DisplayName("GIVEN a route delete request is received WHEN the route exists THEN returns route object deleted and status 200")
     void testDelete() throws Exception {
+        RouteResponse routeResponse = RouteResponse.fromRoute(route);
+
         when(routeManagementUseCase.delete(any()))
                 .thenReturn(route);
 
@@ -54,7 +56,7 @@ public class DeleteRouteControllerTest {
                         delete(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, route.getId())
                 )
                 .andExpect(status().isOk())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(route)));
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(routeResponse)));
     }
 
     @Test

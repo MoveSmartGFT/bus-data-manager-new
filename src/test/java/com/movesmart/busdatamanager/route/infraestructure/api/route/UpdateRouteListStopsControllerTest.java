@@ -7,6 +7,7 @@ import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
@@ -48,7 +49,7 @@ public class UpdateRouteListStopsControllerTest {
     @Test
     @DisplayName("GIVEN a Route Stop List update request is received WHEN all the stops exist THEN returns updated route object and status 200")
     void testUpdateRouteStops() throws Exception {
-
+        RouteResponse routeResponse = RouteResponse.fromRoute(route);
         UpdateRouteStopsRequest newRoute = Instancio.create(RouteInstancioModels.UPDATE_ROUTE_STOPS_REQUEST_MODEL);
 
         Route existingRoute = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
@@ -62,7 +63,7 @@ public class UpdateRouteListStopsControllerTest {
                                 .content(objectMapper.writeValueAsString(newRoute))
                 )
                 .andExpect(status().isOk())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(route)));
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(routeResponse)));
     }
 
     @Test
