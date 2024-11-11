@@ -82,6 +82,11 @@ public class StopManagementIT extends EndPointStopInventory {
 
         MvcResult updateStopNotFoundResponse = updateStopRequest("Stop1", firstStopRequest);
         assertThat(HttpStatus.valueOf(updateStopNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult removeStopIdFromRoutesResponse = removeStopIdFromRoutesRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(removeStopIdFromRoutesResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        String removedStopIdFromRoutes = removeStopIdFromRoutesResponse.getResponse().getContentAsString();
+        assertThat(removedStopIdFromRoutes).isEqualTo("Stop with id %s removed from %s routes".formatted(createdStop.getId(), 0));
     }
 
     void checkStop(Stop result, StopRequest expected) {

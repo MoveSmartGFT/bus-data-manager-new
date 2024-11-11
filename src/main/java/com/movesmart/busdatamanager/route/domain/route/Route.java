@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * Route Aggregate Root
  */
-@Setter
 @Getter
 @Document(collection = "route")
 @RequiredArgsConstructor
@@ -40,7 +39,6 @@ public class Route {
     /**
      * List of stopIds for the route
      */
-    @NotNull
     @ElementCollection
     private List<String> stopIds;
 
@@ -80,6 +78,10 @@ public class Route {
      */
     public void enable() {
         this.status = Status.Enabled;
+    }
+
+    public void updateStopIdList(List<String> stopIdsList) {
+        this.stopIds = stopIdsList;
     }
 
     /**

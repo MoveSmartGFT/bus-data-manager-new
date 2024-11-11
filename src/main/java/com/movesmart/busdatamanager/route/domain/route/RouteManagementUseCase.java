@@ -62,4 +62,10 @@ public interface RouteManagementUseCase {
     Route delete(String routeId);
 
     Route updateRouteStops(Route route);
+
+    /**
+     * Deletes a Stop from all routes
+     * @param stopId to delete
+     */
+    String removeStopIdFromRoutes(String stopId);
 }
