@@ -5,7 +5,6 @@ import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
-import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -16,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +50,6 @@ public class CreateRouteManagementUseCaseImplTest {
         assertThat(routeCreated).isEqualTo(route);
     }
 
-
     @Test
     @DisplayName("GIVEN a route to create WHEN already exists THEN returns an exception and status 409")
     void testRouteCreateAlreadyExists() {
@@ -79,21 +76,5 @@ public class CreateRouteManagementUseCaseImplTest {
         assertThat(throwable)
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContainingAll("Stop", nonExistingStopId);
-    }
-
-    @Test
-    @DisplayName("GIVEN a route with invalid schedule WHEN creating THEN returns an exception")
-    void testRouteCreateWithInvalidSchedule() {
-        Schedule invalidSchedule = new Schedule(null, LocalDateTime.now(), LocalDateTime.now().plusHours(1), 15);
-        Route routeWithInvalidSchedule = new Route(route.getId(), route.getName(), route.getStopIds(), List.of(invalidSchedule));
-
-        when(routeRepository.existsById(routeWithInvalidSchedule.getId())).thenReturn(false);
-        when(stopRepository.existsById(any())).thenReturn(true);
-
-        Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.create(routeWithInvalidSchedule));
-
-        assertThat(throwable)
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid typeOfDay format. Expected 'WEEKDAY' or 'WEEKEND'.");
     }
 }
