@@ -39,7 +39,6 @@ public class CreateVehicleControllerTest {
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
     private final VehicleRequest vehicleRequest = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
-    private final Vehicle vehicle = vehicleRequest.toVehicle();
 
     @BeforeEach
     void setUp() {
@@ -50,6 +49,7 @@ public class CreateVehicleControllerTest {
     @Test
     @DisplayName("WHEN a vehicle creation request is received THEN returns vehicle object and status 201")
     void testVehicleCreate() throws Exception {
+        Vehicle vehicle = vehicleRequest.toVehicle();
         VehicleResponse vehicleResponse = VehicleResponse.fromVehicle(vehicle);
 
         when(vehicleManagementUseCase.create(any()))
@@ -67,6 +67,7 @@ public class CreateVehicleControllerTest {
     @Test
     @DisplayName("WHEN a vehicle creation request is received WHEN vehicle already exists THEN returns status 409")
     void testVehicleCreateConflict() throws Exception {
+        Vehicle vehicle = vehicleRequest.toVehicle();
         when(vehicleManagementUseCase.create(any()))
                 .thenThrow(new EntityAlreadyExistsException("Vehicle", vehicle.getId()));
 

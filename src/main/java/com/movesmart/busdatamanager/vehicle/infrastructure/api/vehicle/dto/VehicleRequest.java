@@ -13,7 +13,7 @@ import java.util.List;
 
 @Generated
 public record VehicleRequest(@NotBlank String id, @NotBlank String plateNumber, @NotNull Integer capacity, @NotBlank String status,
-                             @NotBlank String type, @Valid Coordinates location, @Valid List<Event> events, @NotNull double speed,
+                             @NotBlank String type, @NotNull @Valid Coordinates location, @Valid List<Event> events, @NotNull double speed,
                              @NotBlank String direction, @Valid List<VehicleHistory> vehicleHistory) {
 
     public Vehicle toVehicle() {

@@ -1,6 +1,6 @@
 package com.movesmart.busdatamanager.vehicle;
 
-import com.movesmart.busdatamanager.route.domain.Coordinates;
+import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import lombok.experimental.UtilityClass;

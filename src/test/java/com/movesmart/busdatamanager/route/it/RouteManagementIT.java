@@ -105,7 +105,6 @@ public class RouteManagementIT extends EndPointRouteInventory {
         MvcResult updatedRouteNotFoundResponse = updateRouteRequest("Route1", routeRequest);
         assertThat(HttpStatus.valueOf(updatedRouteNotFoundResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
 
-
         UpdateRouteStopsRequest routeRequestStops = Instancio.create(RouteInstancioModels.getUpdateRouteStopsRequestModelWithStops(List.of(stop.getId())));
 
         MvcResult updateRouteStopsResponse = updateRouteStopsRequest(firstRoute.getId(), routeRequestStops);

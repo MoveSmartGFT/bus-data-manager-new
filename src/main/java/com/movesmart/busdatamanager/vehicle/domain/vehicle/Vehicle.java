@@ -3,7 +3,6 @@ package com.movesmart.busdatamanager.vehicle.domain.vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
 import com.movesmart.busdatamanager.vehicle.domain.Event;
 import com.movesmart.busdatamanager.vehicle.domain.VehicleHistory;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -66,6 +65,7 @@ public class Vehicle {
     /**
      * Coordinates of the vehicle
      */
+    @NotNull
     @Valid
     private Coordinates location;
 
@@ -73,7 +73,6 @@ public class Vehicle {
      * Events of the vehicle
      */
     @Valid
-    @ElementCollection
     private List<Event> events;
 
     /**
@@ -93,7 +92,6 @@ public class Vehicle {
      * Historical of the vehicle
      */
     @Valid
-    @ElementCollection
     private List<VehicleHistory> vehicleHistory;
 
     /**
