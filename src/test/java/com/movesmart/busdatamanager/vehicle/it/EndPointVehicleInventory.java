@@ -34,4 +34,11 @@ public abstract class EndPointVehicleInventory {
                 )
                 .andReturn();
     }
+
+    protected MvcResult getVehicleRequest(String plateNumber) throws Exception {
+        return this.mockMvc.perform(
+                        get(VehicleController.VEHICLE_PATH+ VehicleController.VEHICLE_ID_PATH, plateNumber)
+                )
+                .andReturn();
+    }
 }

@@ -48,7 +48,6 @@ public class RouteController {
     @ResponseStatus(code = HttpStatus.OK)
     public RouteResponse get(@NotBlank @PathVariable String routeId) {
         log.info("Requested route with id {}", routeId);
-
         return RouteResponse.fromRoute(routeManagementUseCase.get(routeId));
     }
 

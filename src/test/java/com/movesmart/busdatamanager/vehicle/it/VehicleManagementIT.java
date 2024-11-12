@@ -1,6 +1,7 @@
 package com.movesmart.busdatamanager.vehicle.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
@@ -29,9 +30,6 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private VehicleRepository vehicleRepository;
-
     @AfterEach
     void cleanDatabase() {
         mongoTemplate.getDb().drop();
@@ -48,13 +46,16 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
                 VehicleResponse.class);
         checkVehicles(createdVehicle, firstVehicleRequest);
 
-        Vehicle retrievedVehicle = vehicleRepository.findById(firstVehicleRequest.plateNumber()).get();
+        MvcResult retrieveVehicleResponse = getVehicleRequest(firstVehicleRequest.plateNumber());
+        assertThat(HttpStatus.valueOf(retrieveVehicleResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Vehicle retrievedVehicle = objectMapper.readValue(retrieveVehicleResponse.getResponse().getContentAsString(), Vehicle.class);
         checkVehicles(retrievedVehicle, firstVehicleRequest);
 
         MvcResult VehicleConflictResponse = createVehicleRequest(firstVehicleRequest);
         assertThat(HttpStatus.valueOf(VehicleConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
-
-        Vehicle retrievedVehiclePostConflict = vehicleRepository.findById(firstVehicleRequest.plateNumber()).get();
+        MvcResult retrieveVehiclePostConflictResponse = getVehicleRequest(firstVehicleRequest.plateNumber());
+        assertThat(HttpStatus.valueOf(retrieveVehiclePostConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Vehicle retrievedVehiclePostConflict = objectMapper.readValue(retrieveVehiclePostConflictResponse.getResponse().getContentAsString(), Vehicle.class);
         checkVehicles(retrievedVehiclePostConflict, firstVehicleRequest);
     }
 
