@@ -3,20 +3,32 @@ package com.movesmart.busdatamanager.vehicle.domain;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Generated;
-import org.jmolecules.ddd.types.ValueObject;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.jmolecules.ddd.annotation.Identity;
 
 import java.time.LocalDateTime;
 
+@Getter
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Generated
-public record VehicleHistory(
-        @NotBlank String id,
-        @NotBlank String routeId,
-        @Valid Driver driver,
-        @NotNull LocalDateTime startTime,
-        @NotNull LocalDateTime endTime
-        ) implements ValueObject {
-    public static VehicleHistory of(String id, String routeId, Driver driver, LocalDateTime startTime, LocalDateTime endTime) {
-        return new VehicleHistory(id, routeId, driver, startTime, endTime);
-    }
+public class VehicleHistory {
+    @Identity
+    @NotBlank
+    private String id;
+
+    @NotBlank
+    private String routeId;
+
+    @Valid
+    private Driver driver;
+
+    @NotNull
+    private LocalDateTime startTime;
+
+    @NotNull
+    private LocalDateTime endTime;
 }
