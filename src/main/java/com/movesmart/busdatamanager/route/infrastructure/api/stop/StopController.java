@@ -62,4 +62,11 @@ public class StopController {
         log.info("Requested delete stop with id {} from all routes", stopId);
         return routeManagementUseCase.removeStopIdFromRoutes(stopId);
     }
+
+    @DeleteMapping(STOP_ID_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public StopResponse delete(@PathVariable String stopId) {
+        log.info("Requested delete stop with id {}", stopId);
+        return StopResponse.fromStop(stopManagementUseCase.delete(stopId));
+    }
 }

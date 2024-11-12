@@ -5,7 +5,7 @@ import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
-import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

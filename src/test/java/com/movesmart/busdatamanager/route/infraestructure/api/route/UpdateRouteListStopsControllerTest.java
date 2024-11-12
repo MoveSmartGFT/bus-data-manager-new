@@ -8,7 +8,7 @@ import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
-import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

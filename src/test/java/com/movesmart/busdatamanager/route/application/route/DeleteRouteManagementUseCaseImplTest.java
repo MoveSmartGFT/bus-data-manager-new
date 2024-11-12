@@ -36,9 +36,9 @@ public class DeleteRouteManagementUseCaseImplTest {
     void testDeleteRoute() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
 
-        Route stopRetrieved = routeManagementUseCaseImpl.delete(route.getId());
+        Route routeRetrieved = routeManagementUseCaseImpl.delete(route.getId());
 
-        assertThat(stopRetrieved).isEqualTo(route);
+        assertThat(routeRetrieved).isEqualTo(route);
     }
 
     @Test

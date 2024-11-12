@@ -6,7 +6,7 @@ import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
-import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import jakarta.transaction.Transactional;
 import org.instancio.Instancio;

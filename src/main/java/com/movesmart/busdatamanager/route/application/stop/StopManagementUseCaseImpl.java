@@ -69,4 +69,18 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
         log.info("Found Stop with id: {}", stop.getId());
         return stopRepository.save(stop);
     }
+
+    /**
+     * @see StopManagementUseCase#delete(String)
+     */
+    public Stop delete (String stopId){
+        log.info("Attempting to delete Stop with id: {}", stopId);
+
+        Stop stop = get(stopId);
+
+        log.info("Deleting Stop with id: {}", stopId);
+        stopRepository.delete(stop);
+
+        return stop;
+    }
 }
