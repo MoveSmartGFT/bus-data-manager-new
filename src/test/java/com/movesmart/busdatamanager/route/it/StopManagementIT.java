@@ -3,6 +3,7 @@ package com.movesmart.busdatamanager.route.it;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
+import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import org.instancio.Instancio;
@@ -89,6 +90,13 @@ public class StopManagementIT extends EndPointStopInventory {
         assertThat(HttpStatus.valueOf(removeStopIdFromRoutesResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
         String removedStopIdFromRoutes = removeStopIdFromRoutesResponse.getResponse().getContentAsString();
         assertThat(removedStopIdFromRoutes).isEqualTo("Stop with id %s removed from %s routes".formatted(createdStop.getId(), 0));
+
+        MvcResult deleteStopResponse = deleteStopRequest(secondStopRequest.toStop().getId());
+        assertThat(HttpStatus.valueOf(deleteStopResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
+        Stop retrievedStopDeleted = objectMapper.readValue(deleteStopResponse.getResponse().getContentAsString(), Stop.class);
+        checkStop(retrievedStopDeleted, secondStopRequest);
+        MvcResult getDeletedResponse = getStopRequest(secondStopRequest.toStop().getId());
+        assertThat(HttpStatus.valueOf(getDeletedResponse.getResponse().getStatus())).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     void checkStop(Stop result, StopRequest expected) {
