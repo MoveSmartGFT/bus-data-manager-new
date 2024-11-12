@@ -64,4 +64,11 @@ public abstract class EndPointStopInventory {
                 )
                 .andReturn();
     }
+
+    protected MvcResult deleteStopRequest(String stopId) throws Exception {
+        return this.mockMvc.perform(
+                        delete(StopController.STOP_PATH+StopController.STOP_ID_PATH, stopId)
+                )
+                .andReturn();
+    }
 }

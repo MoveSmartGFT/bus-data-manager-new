@@ -1,4 +1,4 @@
-package com.movesmart.busdatamanager.route.infrastructure.api.route.dto;
+package com.movesmart.busdatamanager.route.infrastructure.api.stop.dto;
 
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import jakarta.validation.constraints.NotNull;

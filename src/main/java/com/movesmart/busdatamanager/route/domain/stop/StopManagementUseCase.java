@@ -32,4 +32,12 @@ public interface StopManagementUseCase {
      * @return Stop
      */
     Stop update(Stop stop);
+
+    /**
+     * Deletes a Stop
+     * @param stopId to delete
+     * @return Route
+     */
+    Stop delete(String stopId);
+
 }
