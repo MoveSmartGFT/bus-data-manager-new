@@ -21,15 +21,15 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
      */
     @Override
     public Vehicle create(Vehicle vehicle) {
-        log.info("Attempting to create Vehicle with id: {}", vehicle.getId());
+        log.info("Attempting to create Vehicle with plate number: {}", vehicle.getPlateNumber());
 
-        if (vehicleRepository.existsById(vehicle.getId())) {
-            log.warn("Vehicle with id: {} already exists", vehicle.getId());
-            throw new EntityAlreadyExistsException(VEHICLE, vehicle.getId());
+        if (vehicleRepository.existsById(vehicle.getPlateNumber())) {
+            log.warn("Vehicle with plate number: {} already exists", vehicle.getPlateNumber());
+            throw new EntityAlreadyExistsException(VEHICLE, vehicle.getPlateNumber());
         }
 
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
-        log.info("Vehicle with ID: {} successfully created", vehicle.getId());
+        log.info("Vehicle with plate number: {} successfully created", vehicle.getPlateNumber());
 
         return savedVehicle;
     }

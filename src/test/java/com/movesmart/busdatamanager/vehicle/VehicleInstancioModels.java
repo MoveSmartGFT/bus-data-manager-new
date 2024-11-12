@@ -14,6 +14,10 @@ public class VehicleInstancioModels {
 
     public static final Model<Vehicle> VEHICLE_MODEL =
             Instancio.of(Vehicle.class)
+                    .supply(field(Vehicle::getPlateNumber),
+                            () -> Instancio.gen().string().numericSequence().length(4).get()
+                                    + Instancio.gen().string().length(3)
+                    )
                     .supply(field(Vehicle::getLocation),
                             () -> Coordinates.of(
                                     Instancio.gen().doubles().min(-90.0).max(90.0).get(),
@@ -23,6 +27,10 @@ public class VehicleInstancioModels {
 
     public static final Model<VehicleRequest> VEHICLE_REQUEST_MODEL =
             Instancio.of(VehicleRequest.class)
+                    .supply(field(VehicleRequest::plateNumber),
+                            () -> Instancio.gen().string().digits().length(4).get()
+                                    + Instancio.gen().string().length(3).get()
+                    )
                     .supply(field(VehicleRequest::location),
                             () -> Coordinates.of(
                                     Instancio.gen().doubles().min(-90.0).max(90.0).get(),
