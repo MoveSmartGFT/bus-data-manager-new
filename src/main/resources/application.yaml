@@ -1,7 +1,6 @@
 spring:
   application:
     name: busDataManager
-
   data:
     mongodb:
       uri: mongodb://localhost:27017/busDataManager

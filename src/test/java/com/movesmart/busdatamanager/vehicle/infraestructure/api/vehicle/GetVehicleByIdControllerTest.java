@@ -1,8 +1,8 @@
-package com.movesmart.busdatamanager.vehicle.api.vehicle;
+package com.movesmart.busdatamanager.vehicle.infraestructure.api.vehicle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
-import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
@@ -18,18 +18,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
-public class CreateVehicleControllerTest {
+public class GetVehicleByIdControllerTest {
 
     private MockMvc mockMvc;
 
@@ -48,44 +47,29 @@ public class CreateVehicleControllerTest {
     }
 
     @Test
-    @DisplayName("WHEN a vehicle creation request is received THEN returns vehicle object and status 201")
-    void testVehicleCreate() throws Exception {
+    @DisplayName("GIVEN a vehicle retrieval request is received WHEN the vehicle exists THEN returns vehicle object and status 200")
+    void testGetVehicle() throws Exception {
         VehicleResponse vehicleResponse = VehicleResponse.fromVehicle(vehicle);
 
-        when(vehicleManagementUseCase.create(any()))
+        when(vehicleManagementUseCase.get(any()))
                 .thenReturn(vehicle);
 
         mockMvc.perform(
-                        post(VehicleController.VEHICLE_PATH)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(vehicleRequest))
+                        get(VehicleController.VEHICLE_PATH+VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                 )
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(vehicleResponse)));
     }
 
     @Test
-    @DisplayName("WHEN a vehicle creation request is received WHEN vehicle already exists THEN returns status 409")
-    void testVehicleCreateConflict() throws Exception {
-        when(vehicleManagementUseCase.create(any()))
-                .thenThrow(new EntityAlreadyExistsException("Vehicle", vehicle.getPlateNumber()));
+    @DisplayName("GIVEN a vehicle retrieval request is received WHEN the vehicle does not exist THEN returns status 404")
+    void testGetVehicleDoesNotExist() throws Exception {
+        when(vehicleManagementUseCase.get(any()))
+                .thenThrow(new EntityNotFoundException("Vehicle", vehicle.getPlateNumber()));
 
         mockMvc.perform(
-                        post(VehicleController.VEHICLE_PATH)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(vehicleRequest))
+                        get(VehicleController.VEHICLE_PATH+VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                 )
-                .andExpect(status().isConflict());
-    }
-
-    @Test
-    @DisplayName("WHEN a vehicle creation request is received WHEN is a bad request THEN returns status 400")
-    void testVehicleCreateBadRequest() throws Exception {
-        mockMvc.perform(
-                        post(VehicleController.VEHICLE_PATH)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content("Vehicle")
-                )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }

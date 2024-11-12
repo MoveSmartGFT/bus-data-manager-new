@@ -1,6 +1,7 @@
 package com.movesmart.busdatamanager.vehicle.application.vehicle;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
@@ -32,5 +33,14 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
         log.info("Vehicle with plate number: {} successfully created", vehicle.getPlateNumber());
 
         return savedVehicle;
+    }
+
+    /**
+     * @see VehicleManagementUseCase#get(String)
+     */
+    public Vehicle get(String plateNumber) {
+        log.info("Searching vehicle with plate number: {}", plateNumber);
+
+        return vehicleRepository.findById(plateNumber).orElseThrow(() -> new EntityNotFoundException(VEHICLE, plateNumber));
     }
 }
