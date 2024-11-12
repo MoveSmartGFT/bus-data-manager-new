@@ -40,6 +40,7 @@ public class Stop {
      * Location of the stop
      */
     @Valid
+    @NotNull
     @Embedded
     private Coordinates location;
 }
