@@ -1,10 +1,8 @@
 package com.movesmart.busdatamanager.vehicle.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
-import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
 import jakarta.transaction.Transactional;
