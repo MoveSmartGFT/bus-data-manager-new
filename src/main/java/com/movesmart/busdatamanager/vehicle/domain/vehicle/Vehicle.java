@@ -31,16 +31,10 @@ import java.util.List;
 public class Vehicle {
 
     /**
-     * Identifier for the vehicle
+     * Identifier (plate number) for the vehicle
      */
     @Identity
     @Id
-    @NotNull
-    private String id;
-
-    /**
-     * Plate number of the vehicle
-     */
     @NotBlank
     private String plateNumber;
 
@@ -100,9 +94,8 @@ public class Vehicle {
     /**
      * Creator of the vehicle
      */
-    public Vehicle(String id, String plateNumber, Integer capacity, String status, String type, Coordinates location,
+    public Vehicle(String plateNumber, Integer capacity, String status, String type, Coordinates location,
                    List<Event> events, double speed, String direction, List<VehicleHistory> vehicleHistory) {
-        this.id = id;
         this.plateNumber = plateNumber;
         this.capacity = capacity;
         this.status = status;

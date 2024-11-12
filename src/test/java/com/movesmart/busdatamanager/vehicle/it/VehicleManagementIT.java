@@ -48,18 +48,17 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
                 VehicleResponse.class);
         checkVehicles(createdVehicle, firstVehicleRequest);
 
-        Vehicle retrievedVehicle = vehicleRepository.findById(firstVehicleRequest.id()).get();
+        Vehicle retrievedVehicle = vehicleRepository.findById(firstVehicleRequest.plateNumber()).get();
         checkVehicles(retrievedVehicle, firstVehicleRequest);
 
         MvcResult VehicleConflictResponse = createVehicleRequest(firstVehicleRequest);
         assertThat(HttpStatus.valueOf(VehicleConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
 
-        Vehicle retrievedVehiclePostConflict = vehicleRepository.findById(firstVehicleRequest.id()).get();
+        Vehicle retrievedVehiclePostConflict = vehicleRepository.findById(firstVehicleRequest.plateNumber()).get();
         checkVehicles(retrievedVehiclePostConflict, firstVehicleRequest);
     }
 
     void checkVehicles(Vehicle result, VehicleRequest expected) {
-        assertThat(result.getId()).isEqualTo(expected.id());
         assertThat(result.getPlateNumber()).isEqualTo(expected.plateNumber());
         assertThat(result.getCapacity()).isEqualTo(expected.capacity());
         assertThat(result.getStatus()).isEqualTo(expected.status());
@@ -72,7 +71,6 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
     }
 
     void checkVehicles(VehicleResponse result, VehicleRequest expected) {
-        assertThat(result.id()).isEqualTo(expected.id());
         assertThat(result.plateNumber()).isEqualTo(expected.plateNumber());
         assertThat(result.capacity()).isEqualTo(expected.capacity());
         assertThat(result.status()).isEqualTo(expected.status());

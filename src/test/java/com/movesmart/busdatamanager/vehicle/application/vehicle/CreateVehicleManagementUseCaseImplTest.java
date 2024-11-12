@@ -33,7 +33,7 @@ public class CreateVehicleManagementUseCaseImplTest {
     @Test
     @DisplayName("GIVEN a vehicle to create THEN returns vehicle object and status 201")
     void testVehicleCreate() {
-        when(vehicleRepository.existsById(vehicle.getId())).thenReturn(false);
+        when(vehicleRepository.existsById(vehicle.getPlateNumber())).thenReturn(false);
         when(vehicleRepository.save(any(Vehicle.class))).thenReturn(vehicle);
 
         Vehicle vehicleCreated = vehicleManagementUseCase.create(vehicle);
@@ -44,12 +44,12 @@ public class CreateVehicleManagementUseCaseImplTest {
     @Test
     @DisplayName("GIVEN a vehicle to create WHEN already exists THEN returns an exception and status 409")
     void testVehicleCreateAlreadyExists() {
-        when(vehicleRepository.existsById(vehicle.getId())).thenReturn(true);
+        when(vehicleRepository.existsById(vehicle.getPlateNumber())).thenReturn(true);
 
         Throwable throwable = catchThrowable(() -> vehicleManagementUseCase.create(vehicle));
 
         assertThat(throwable)
                 .isInstanceOf(EntityAlreadyExistsException.class)
-                .hasMessageContainingAll("Vehicle", vehicle.getId());
+                .hasMessageContainingAll("Vehicle", vehicle.getPlateNumber());
     }
 }

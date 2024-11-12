@@ -12,11 +12,11 @@ import lombok.Generated;
 import java.util.List;
 
 @Generated
-public record VehicleResponse(@NotBlank String id, @NotBlank String plateNumber, @NotNull Integer capacity, @NotBlank String status,
+public record VehicleResponse(@NotBlank String plateNumber, @NotNull Integer capacity, @NotBlank String status,
                               @NotBlank String type, @Valid Coordinates location, @Valid List<Event> events, @NotNull double speed,
                               @NotBlank String direction, @Valid List<VehicleHistory> vehicleHistory) {
     public static VehicleResponse fromVehicle(Vehicle vehicle) {
-        return new VehicleResponse(vehicle.getId(), vehicle.getPlateNumber(), vehicle.getCapacity(), vehicle.getStatus(),
+        return new VehicleResponse(vehicle.getPlateNumber(), vehicle.getCapacity(), vehicle.getStatus(),
                 vehicle.getType(), vehicle.getLocation(), vehicle.getEvents(), vehicle.getSpeed(), vehicle.getDirection(),
                 vehicle.getVehicleHistory());
     }
