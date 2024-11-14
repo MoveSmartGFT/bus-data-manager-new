@@ -54,29 +54,20 @@ public class RouteManagementIT extends EndPointRouteInventory {
                 Instancio.create(RouteInstancioModels.getCreateRouteRequestModelWithStops(List.of(stop.getId())));
         Route firstRoute =
                 Instancio.create(RouteInstancioModels.getRouteModelFromCreateRequest(firstCreateRouteRequest));
-        Route secondRoute =
-                Instancio.create(RouteInstancioModels.getRouteModelFromCreateRequest(secondCreateRouteRequest));
 
         MvcResult createRouteResponse = createRouteRequest(firstCreateRouteRequest);
         assertThat(HttpStatus.valueOf(createRouteResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.CREATED);
         Route firstCreatedRoute =
                 objectMapper.readValue(createRouteResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(firstCreatedRoute, firstRoute);
+        checkRouteCreated(firstCreatedRoute, firstRoute);
 
         MvcResult retrieveRouteResponse = getRouteRequest(firstCreatedRoute.getId());
         assertThat(HttpStatus.valueOf(retrieveRouteResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         Route retrievedRoute =
                 objectMapper.readValue(retrieveRouteResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(retrievedRoute, firstRoute);
-
-        /*        MvcResult routeConflictResponse = createRouteRequest(firstCreateRouteRequest);
-        assertThat(HttpStatus.valueOf(routeConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
-        MvcResult routeRetrievedPostConflictResponse = getRouteRequest(firstRoute.getId());
-        assertThat(HttpStatus.valueOf(routeRetrievedPostConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
-        Route retrievedRoutePostConflict = objectMapper.readValue(routeRetrievedPostConflictResponse.getResponse().getContentAsString(), Route.class);
-        checkRoutes(retrievedRoutePostConflict, firstRoute);*/
+        checkRoutes(retrievedRoute, firstCreatedRoute);
 
         MvcResult createSecondRouteResponse = createRouteRequest(secondCreateRouteRequest);
         assertThat(HttpStatus.valueOf(createSecondRouteResponse.getResponse().getStatus()))
@@ -90,8 +81,8 @@ public class RouteManagementIT extends EndPointRouteInventory {
         List<Route> retrievedAllRoutes = objectMapper.readValue(
                 retrieveAllRoutesResponse.getResponse().getContentAsString(), new TypeReference<>() {});
         assertThat(retrievedAllRoutes).hasSize(2);
-        checkRoutes(retrievedAllRoutes.get(0), firstRoute);
-        checkRoutes(retrievedAllRoutes.get(1), secondRoute);
+        checkRoutes(retrievedAllRoutes.get(0), firstCreatedRoute);
+        checkRoutes(retrievedAllRoutes.get(1), secondCreatedRoute);
 
         Route notSavedRoute = Instancio.create(RouteInstancioModels.ROUTE_MODEL);
 
@@ -104,7 +95,7 @@ public class RouteManagementIT extends EndPointRouteInventory {
                 .isEqualTo(HttpStatus.OK);
         List<String> retrievedStopIds = objectMapper.readValue(
                 retrieveStopIdsResponse.getResponse().getContentAsString(), new TypeReference<>() {});
-        assertEquals(retrievedStopIds, firstRoute.getStopIds());
+        assertEquals(retrievedStopIds, firstCreatedRoute.getStopIds());
 
         MvcResult stopIdsRouteDoesNotExistResponse = getStopIdsByRouteIdRequest(notSavedRoute.getId());
         assertThat(HttpStatus.valueOf(
@@ -209,7 +200,17 @@ public class RouteManagementIT extends EndPointRouteInventory {
                 .isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    void checkRouteCreated(Route result, Route expected) {
+        assertThat(result.getName()).isEqualTo(expected.getName());
+        assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
+        assertThat(result.getSchedules())
+                .usingRecursiveComparison()
+                .withComparatorForType(Comparator.comparing(t -> t.truncatedTo(ChronoUnit.MILLIS)), LocalDateTime.class)
+                .isEqualTo(expected.getSchedules());
+    }
+
     void checkRoutes(Route result, Route expected) {
+        assertThat(result.getId()).isEqualTo(expected.getId());
         assertThat(result.getName()).isEqualTo(expected.getName());
         assertThat(result.getStopIds()).isEqualTo(expected.getStopIds());
         assertThat(result.getSchedules())

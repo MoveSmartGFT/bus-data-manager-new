@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Document(collection = "route")
 @AggregateRoot
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Generated
 public class Route {
