@@ -39,4 +39,10 @@ public abstract class EndPointVehicleInventory {
                 .perform(get(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, plateNumber))
                 .andReturn();
     }
+
+    protected MvcResult deleteVehicleRequest(String plateNumber) throws Exception {
+        return this.mockMvc
+                .perform(delete(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, plateNumber))
+                .andReturn();
+    }
 }

@@ -154,6 +154,7 @@ public class RouteManagementIT extends EndPointRouteInventory {
         Route retrievedRouteDisabled =
                 objectMapper.readValue(disabledRouteResponse.getResponse().getContentAsString(), Route.class);
         checkRoutes(retrievedRouteDisabled, routeRequest.toRoute(firstCreatedRoute.getId()));
+        checkRoutes(retrievedRouteDisabled, routeRequest.toRoute(firstCreatedRoute.getId()));
         MvcResult getDisabledResponse = getRouteRequest(firstCreatedRoute.getId());
         Route retrievedGetRouteDisabled =
                 objectMapper.readValue(getDisabledResponse.getResponse().getContentAsString(), Route.class);

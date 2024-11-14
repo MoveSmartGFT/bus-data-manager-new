@@ -45,4 +45,18 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
                 .findById(plateNumber)
                 .orElseThrow(() -> new EntityNotFoundException(VEHICLE, plateNumber));
     }
+
+    /**
+     * @see VehicleManagementUseCase#delete(String)
+     */
+    public Vehicle delete(String plateNumber) {
+        log.info("Attempting to delete vehicle with plate number: {}", plateNumber);
+
+        Vehicle vehicle = get(plateNumber);
+
+        log.info("Deleting vehicle with plate number: {}", plateNumber);
+        vehicleRepository.delete(vehicle);
+
+        return vehicle;
+    }
 }
