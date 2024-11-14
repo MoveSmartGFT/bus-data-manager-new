@@ -200,29 +200,38 @@ classDiagram
 
 ```mermaid
 sequenceDiagram
-    actor VehicleSender
-    actor EventTrigger
-    
+    actor Vehicle
+    participant vehicleModule
     participant eventQueue
-    participant monitoringReceiver
-    participant vehicleReceiver
-    participant routerReceiver
-    participant notificationReceiver
-    participant database
+    participant monitoringModule
+
+
+    Vehicle ->> +vehicleModule: Vehicle arrives at stop
+    vehicleModule ->> +eventQueue: Update current stop
+    vehicleModule ->> +eventQueue: Update vehicle capacity
+    eventQueue ->> +vehicleModule: Update capacity of vehicle
+
+    vehicleModule ->> +eventQueue: Update vehicle position
+    eventQueue ->> +monitoringModule: Receive updated vehicle position
+    
+    #-accidentes
+    #-cuando bus llega a una parada
+    #-bus a punto de llegar a parada (alerta a usuario)
+    #-bus actualiza qué tan ocupado está
+```
+
+```mermaid
+sequenceDiagram
+    actor EventTrigger
+    participant notificationModule
+    participant eventQueue
     participant passengers
 
 
-    VehicleSender ->> +eventQueue: Vehicle arrives at stop
-    VehicleSender ->> +eventQueue: Update vehicle position
-    VehicleSender ->> +eventQueue: Update vehicle capacity
-    
-    eventQueue ->> +monitoringReceiver: Receive updated vehicle position
-    eventQueue ->> +vehicleReceiver: Update capacity of vehicle
-    
-    EventTrigger ->> +eventQueue: Vehicle has accident
-    eventQueue ->> notificationReceiver: Create new notification
-    #-accidentes
-    #-cuando bus llega a una parada
-    #bus a punto de llegar a parada (alerta a usuario)
-    #-bus actualiza qué tan ocupado está
+    EventTrigger ->> +notificationModule: Vehicle has accident
+    notificationModule ->> +notificationModule: create Notification
+    notificationModule ->> +eventQueue: Send notification to queue
+    eventQueue ->> +passengers: Send notification to subscribed passengers
+    eventQueue ->> +notificationModule: Send notification to notification module to process
+    notificationModule ->> +notificationModule: Update notification feed
 ```
