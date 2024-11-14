@@ -1,8 +1,8 @@
 package com.movesmart.busdatamanager.route.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
@@ -29,11 +29,11 @@ public abstract class EndPointRouteInventory extends EndPointStopInventory {
     @Autowired
     private ObjectMapper objectMapper;
 
-    protected MvcResult createRouteRequest(Route route) throws Exception {
+    protected MvcResult createRouteRequest(CreateRouteRequest routeRequest) throws Exception {
         return this.mockMvc.perform(
                         post(RouteController.ROUTE_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(route))
+                                .content(objectMapper.writeValueAsString(routeRequest))
                 )
                 .andReturn();
     }
@@ -59,20 +59,20 @@ public abstract class EndPointRouteInventory extends EndPointStopInventory {
                 .andReturn();
     }
 
-    protected MvcResult updateRouteRequest(String routeId, UpdateRouteRequest route) throws Exception {
+    protected MvcResult updateRouteRequest(String routeId, UpdateRouteRequest routeRequest) throws Exception {
         return this.mockMvc.perform(
                         put(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH, routeId)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(route))
+                                .content(objectMapper.writeValueAsString(routeRequest))
                 )
                 .andReturn();
     }
 
-    protected MvcResult updateRouteStopsRequest(String routeId, UpdateRouteStopsRequest route) throws Exception {
+    protected MvcResult updateRouteStopsRequest(String routeId, UpdateRouteStopsRequest routeRequest) throws Exception {
         return this.mockMvc.perform(
                         patch(RouteController.ROUTE_PATH+RouteController.ROUTE_ID_PATH+RouteController.STOPS_PATH, routeId)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(route))
+                                .content(objectMapper.writeValueAsString(routeRequest))
                 )
                 .andReturn();
     }

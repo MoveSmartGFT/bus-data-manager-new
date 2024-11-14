@@ -7,10 +7,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record UpdateRouteRequest(@NotBlank String name, @NotNull List<String> stopIds, @NotNull List<Schedule> schedules,
-                                 @NotNull Route.Status status) {
+public record UpdateRouteRequest(@NotBlank String name, @NotNull List<String> stopIds, @NotNull List<Schedule> schedules) {
 
     public Route toRoute(String id) {
-        return new Route(id, name, stopIds, schedules, status);
+        return new Route(id, name, stopIds, schedules);
     }
 }

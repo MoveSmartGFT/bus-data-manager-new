@@ -37,6 +37,7 @@ public class RouteInstancioModels {
                     .toModel();
 
     public static final Model<Route> ROUTE_MODEL = Instancio.of(Route.class)
+                .set(field(Route::getStatus), Route.Status.Enabled)
                 .toModel();
 
     public static final Model<CreateRouteRequest> CREATE_ROUTE_REQUEST_MODEL = Instancio.of(CreateRouteRequest.class)
@@ -48,9 +49,25 @@ public class RouteInstancioModels {
     public static final Model<UpdateRouteStopsRequest> UPDATE_ROUTE_STOPS_REQUEST_MODEL = Instancio.of(UpdateRouteStopsRequest.class)
             .toModel();
 
+    public static Model<Route> getRouteModelFromCreateRequest (CreateRouteRequest createRouteRequest) {
+        return Instancio.of(Route.class)
+                .set(field(Route::getName), createRouteRequest.name())
+                .set(field(Route::getStopIds), createRouteRequest.stopIds())
+                .set(field(Route::getSchedules), createRouteRequest.schedules())
+                .set(field(Route::getStatus), Route.Status.Enabled)
+                .toModel();
+    }
+
     public static Model<Route> getRouteModelWithStops (List<String> stopIds) {
         return Instancio.of(Route.class)
                 .set(field(Route::getStopIds), stopIds)
+                .set(field(Route::getStatus), Route.Status.Enabled)
+                .toModel();
+    }
+
+    public static Model<CreateRouteRequest> getCreateRouteRequestModelWithStops (List<String> stopIds) {
+        return Instancio.of(CreateRouteRequest.class)
+                .set(field(CreateRouteRequest::stopIds), stopIds)
                 .toModel();
     }
 
