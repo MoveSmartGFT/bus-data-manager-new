@@ -39,9 +39,9 @@ public class DisableRouteManagementUseCaseImplTest {
         when(routeRepository.findEnabledRouteById(route.getId())).thenReturn(Optional.of(route));
         when(routeRepository.save(route)).thenReturn(route);
 
-        Route stopRetrieved = routeManagementUseCaseImpl.disable(route.getId());
+        Route routeRetrieved = routeManagementUseCaseImpl.disable(route.getId());
 
-        assertThat(stopRetrieved).isEqualTo(route);
+        assertThat(routeRetrieved).isEqualTo(route);
     }
 
     @Test

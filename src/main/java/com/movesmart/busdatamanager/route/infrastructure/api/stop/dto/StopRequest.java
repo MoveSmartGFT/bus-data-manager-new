@@ -9,12 +9,12 @@ import jakarta.validation.constraints.NotNull;
 public record StopRequest(@NotBlank String name, @NotNull @Valid Coordinates location) {
 
     public Stop toStop(String id) {
-        return new Stop(id, name, location);
+        return new Stop(id, name, location, Stop.Status.Enabled);
     }
 
     public Stop toStop() {
         String id = "MS" + name.toUpperCase().replace(" ", "_");
 
-        return new Stop(id, name, location);
+        return new Stop(id, name, location, Stop.Status.Enabled);
     }
 }

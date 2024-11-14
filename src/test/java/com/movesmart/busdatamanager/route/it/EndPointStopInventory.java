@@ -71,4 +71,11 @@ public abstract class EndPointStopInventory {
                 )
                 .andReturn();
     }
+
+    protected MvcResult disableStopRequest(String stopId) throws Exception {
+        return this.mockMvc.perform(
+                        patch(StopController.STOP_PATH+StopController.STOP_ID_PATH+StopController.STOP_DISABLE_PATH, stopId)
+                )
+                .andReturn();
+    }
 }

@@ -22,6 +22,8 @@ public class StopController {
     public static final String STOP_PATH = "/api/v1/stops"; // NOSONAR
     public static final String STOP_ID_PATH = "/{stopId}"; // NOSONAR
     public static final String ROUTE_PATH = "/routes"; // NOSONAR
+    public static final String STOP_DISABLE_PATH = "/disable"; // NOSONAR
+    public static final String STOP_ENABLE_PATH = "/enable"; // NOSONAR
 
     private final StopManagementUseCase stopManagementUseCase;
     private final RouteManagementUseCase routeManagementUseCase;
@@ -61,6 +63,20 @@ public class StopController {
     public String removeStopIdFromRoutes(@PathVariable String stopId) {
         log.info("Requested delete stop with id {} from all routes", stopId);
         return routeManagementUseCase.removeStopIdFromRoutes(stopId);
+    }
+
+    @PatchMapping(STOP_ID_PATH+STOP_DISABLE_PATH)
+    @ResponseStatus(code =  HttpStatus.OK)
+    public StopResponse disable(@PathVariable String stopId) {
+        log.info("Requested disable stop with id {}", stopId);
+        return StopResponse.fromStop(stopManagementUseCase.disable(stopId));
+    }
+
+    @PatchMapping(STOP_ID_PATH+STOP_ENABLE_PATH)
+    @ResponseStatus(code =  HttpStatus.OK)
+    public StopResponse enable(@PathVariable String stopId) {
+        log.info("Requested enable stop with id {}", stopId);
+        return StopResponse.fromStop(stopManagementUseCase.enable(stopId));
     }
 
     @DeleteMapping(STOP_ID_PATH)
