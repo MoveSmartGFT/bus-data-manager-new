@@ -12,14 +12,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
-import org.jmolecules.ddd.annotation.ValueObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Document(collection = "stop")
 @AggregateRoot
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Generated
 public class Stop {
 
@@ -65,6 +63,11 @@ public class Stop {
         this.status = Status.Enabled;
     }
 
+    public Stop(String id, String name, Coordinates location) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+    }
 
     /**
      * Possible status of the stop

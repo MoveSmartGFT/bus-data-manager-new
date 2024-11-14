@@ -3,21 +3,20 @@ package com.movesmart.busdatamanager.route.domain;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import lombok.Generated;
 import org.jmolecules.ddd.types.ValueObject;
 
-import java.time.LocalDateTime;
-
 @Generated
 @Embeddable
-public record Schedule (
+public record Schedule(
         @NotNull @Enumerated TypeOfDay typeOfDay,
         @NotNull LocalDateTime startTime,
         @NotNull LocalDateTime endTime,
-        @NotNull Integer frequencyInMinutes
-
-) implements ValueObject {
-    public static Schedule of(TypeOfDay typeOfDay, LocalDateTime startTime, LocalDateTime endTime, Integer frequencyInMinutes) {
+        @NotNull Integer frequencyInMinutes)
+        implements ValueObject {
+    public static Schedule of(
+            TypeOfDay typeOfDay, LocalDateTime startTime, LocalDateTime endTime, Integer frequencyInMinutes) {
         return new Schedule(typeOfDay, startTime, endTime, frequencyInMinutes);
     }
 
@@ -26,4 +25,3 @@ public record Schedule (
         WEEKEND
     }
 }
-

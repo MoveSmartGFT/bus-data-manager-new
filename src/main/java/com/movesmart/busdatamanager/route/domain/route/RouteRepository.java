@@ -1,10 +1,9 @@
 package com.movesmart.busdatamanager.route.domain.route;
 
-import lombok.Generated;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.List;
 import java.util.Optional;
+import lombok.Generated;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 @Generated
 public interface RouteRepository extends MongoRepository<Route, String> {

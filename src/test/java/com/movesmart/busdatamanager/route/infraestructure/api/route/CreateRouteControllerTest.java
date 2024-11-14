@@ -1,5 +1,11 @@
 package com.movesmart.busdatamanager.route.infraestructure.api.route;
 
+import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
@@ -21,12 +27,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
 public class CreateRouteControllerTest {
@@ -38,7 +38,8 @@ public class CreateRouteControllerTest {
 
     private final ObjectMapper objectMapper = Fixtures.setupObjectMapper();
 
-    private final CreateRouteRequest createRouteRequest = Instancio.create(RouteInstancioModels.CREATE_ROUTE_REQUEST_MODEL);
+    private final CreateRouteRequest createRouteRequest =
+            Instancio.create(RouteInstancioModels.CREATE_ROUTE_REQUEST_MODEL);
     private final Route route = createRouteRequest.toRoute();
 
     @BeforeEach
@@ -52,40 +53,33 @@ public class CreateRouteControllerTest {
     void testRouteCreate() throws Exception {
         RouteResponse routeResponse = RouteResponse.fromRoute(route);
 
-        when(routeManagementUseCase.create(any()))
-                .thenReturn(route);
+        when(routeManagementUseCase.create(any())).thenReturn(route);
 
-        mockMvc.perform(
-                        post(RouteController.ROUTE_PATH)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(createRouteRequest))
-                )
+        mockMvc.perform(post(RouteController.ROUTE_PATH)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(createRouteRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(routeResponse)));
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT)
+                        .isEqualTo(objectMapper.writeValueAsString(routeResponse)));
     }
 
     @Test
     @DisplayName("WHEN a route creation request is received WHEN route already exists THEN returns status 409")
     void testRouteCreateConflict() throws Exception {
-        when(routeManagementUseCase.create(any()))
-                .thenThrow(new EntityAlreadyExistsException("Route", route.getId()));
+        when(routeManagementUseCase.create(any())).thenThrow(new EntityAlreadyExistsException("Route", route.getId()));
 
-        mockMvc.perform(
-                        post(RouteController.ROUTE_PATH)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(createRouteRequest))
-                )
+        mockMvc.perform(post(RouteController.ROUTE_PATH)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(createRouteRequest)))
                 .andExpect(status().isConflict());
     }
 
     @Test
     @DisplayName("WHEN a route creation request is received WHEN is a bad request THEN returns status 400")
     void testRouteCreateBadRequest() throws Exception {
-        mockMvc.perform(
-                        post(RouteController.ROUTE_PATH)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content("Route")
-                )
+        mockMvc.perform(post(RouteController.ROUTE_PATH)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content("Route"))
                 .andExpect(status().isBadRequest());
     }
 }

@@ -1,5 +1,11 @@
 package com.movesmart.busdatamanager.route.infraestructure.api.stop;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.movesmart.busdatamanager.core.Fixtures;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
@@ -16,12 +22,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
 public class RemoveStopIdFromRoutesControllerTest {
@@ -30,6 +30,7 @@ public class RemoveStopIdFromRoutesControllerTest {
 
     @Mock
     private StopManagementUseCase stopManagementUseCase;
+
     @Mock
     private RouteManagementUseCase routeManagementUseCase;
 
@@ -45,12 +46,11 @@ public class RemoveStopIdFromRoutesControllerTest {
     @DisplayName("GIVEN a stop id to be removed from routes THEN is removed and returns a message")
     void testRemoveStopIdFromRoute() throws Exception {
         when(routeManagementUseCase.removeStopIdFromRoutes(any()))
-                .thenReturn("Stop with id %s removed from %s routes"
-                        .formatted(stop.getId(), 0));
+                .thenReturn("Stop with id %s removed from %s routes".formatted(stop.getId(), 0));
 
-        mockMvc.perform(
-                        patch(StopController.STOP_PATH+StopController.STOP_ID_PATH+StopController.ROUTE_PATH, stop.getId())
-                )
+        mockMvc.perform(patch(
+                        StopController.STOP_PATH + StopController.STOP_ID_PATH + StopController.ROUTE_PATH,
+                        stop.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Stop with id %s removed from %s routes".formatted(stop.getId(), 0)));
     }

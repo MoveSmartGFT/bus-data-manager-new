@@ -1,5 +1,7 @@
 package com.movesmart.busdatamanager.vehicle.it;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.VehicleController;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
@@ -11,8 +13,6 @@ import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -27,18 +27,16 @@ public abstract class EndPointVehicleInventory {
     private ObjectMapper objectMapper;
 
     protected MvcResult createVehicleRequest(VehicleRequest vehicleRequest) throws Exception {
-        return this.mockMvc.perform(
-                        post(VehicleController.VEHICLE_PATH)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(vehicleRequest))
-                )
+        return this.mockMvc
+                .perform(post(VehicleController.VEHICLE_PATH)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(vehicleRequest)))
                 .andReturn();
     }
 
     protected MvcResult getVehicleRequest(String plateNumber) throws Exception {
-        return this.mockMvc.perform(
-                        get(VehicleController.VEHICLE_PATH+ VehicleController.VEHICLE_ID_PATH, plateNumber)
-                )
+        return this.mockMvc
+                .perform(get(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, plateNumber))
                 .andReturn();
     }
 }

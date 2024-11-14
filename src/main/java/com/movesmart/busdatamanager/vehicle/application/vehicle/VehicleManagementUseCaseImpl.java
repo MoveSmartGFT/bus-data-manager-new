@@ -41,6 +41,8 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
     public Vehicle get(String plateNumber) {
         log.info("Searching vehicle with plate number: {}", plateNumber);
 
-        return vehicleRepository.findById(plateNumber).orElseThrow(() -> new EntityNotFoundException(VEHICLE, plateNumber));
+        return vehicleRepository
+                .findById(plateNumber)
+                .orElseThrow(() -> new EntityNotFoundException(VEHICLE, plateNumber));
     }
 }

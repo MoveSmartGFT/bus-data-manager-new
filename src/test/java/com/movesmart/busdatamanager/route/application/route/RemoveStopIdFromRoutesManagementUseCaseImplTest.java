@@ -1,8 +1,13 @@
 package com.movesmart.busdatamanager.route.application.route;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
+import java.util.List;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -11,12 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
@@ -41,13 +40,12 @@ public class RemoveStopIdFromRoutesManagementUseCaseImplTest {
 
         String messageRetrieved = routeManagementUseCaseImpl.removeStopIdFromRoutes(stopId);
 
-        assertThat(messageRetrieved).isEqualTo("Stop with id %s removed from %s routes"
-                .formatted(stopId, 1));
+        assertThat(messageRetrieved).isEqualTo("Stop with id %s removed from %s routes".formatted(stopId, 1));
     }
 
     @Test
-    @DisplayName("GIVEN a stop id to be removed from routes WHEN stop id does not exists in any route" +
-            "THEN returns a message")
+    @DisplayName("GIVEN a stop id to be removed from routes WHEN stop id does not exists in any route"
+            + "THEN returns a message")
     void testRemoveStopIdFromAnyRoute() {
         String stopId = Instancio.create(String.class);
 
@@ -55,7 +53,6 @@ public class RemoveStopIdFromRoutesManagementUseCaseImplTest {
 
         String messageRetrieved = routeManagementUseCaseImpl.removeStopIdFromRoutes(stopId);
 
-        assertThat(messageRetrieved).isEqualTo("Stop with id %s removed from %s routes"
-                .formatted(stopId, 0));
+        assertThat(messageRetrieved).isEqualTo("Stop with id %s removed from %s routes".formatted(stopId, 0));
     }
 }
