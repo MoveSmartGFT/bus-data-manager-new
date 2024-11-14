@@ -3,6 +3,7 @@ package com.movesmart.busdatamanager.route.it;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteStopsRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
@@ -29,11 +30,11 @@ public abstract class EndPointRouteInventory extends EndPointStopInventory {
     @Autowired
     private ObjectMapper objectMapper;
 
-    protected MvcResult createRouteRequest(Route route) throws Exception {
+    protected MvcResult createRouteRequest(CreateRouteRequest createRouteRequest) throws Exception {
         return this.mockMvc.perform(
                         post(RouteController.ROUTE_PATH)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                .content(objectMapper.writeValueAsString(route))
+                                .content(objectMapper.writeValueAsString(createRouteRequest))
                 )
                 .andReturn();
     }
