@@ -12,7 +12,7 @@ public class Send {
 
     public static void main(String[] argv) throws Exception {
 
-        String uri = "amqps://niduuxqx:64q4XK7jFyAF_cigL6W2SXwevqZsx0hJ@kangaroo.rmq.cloudamqp.com/niduuxqx";
+        String uri = "";
 
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUri(uri);
@@ -22,7 +22,7 @@ public class Send {
                 Channel channel = connection.createChannel()) {
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            String message = "jaja lol xd";
+            String message = "Hello world";
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
             System.out.println(" [x] Sent '" + message + "'");
         }
