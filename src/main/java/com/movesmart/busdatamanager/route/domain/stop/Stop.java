@@ -1,6 +1,7 @@
 package com.movesmart.busdatamanager.route.domain.stop;
 
 import com.movesmart.busdatamanager.route.domain.Coordinates;
+import com.movesmart.busdatamanager.route.domain.route.Route;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Id;
 import jakarta.validation.Valid;
@@ -67,6 +68,7 @@ public class Stop {
         this.id = id;
         this.name = name;
         this.location = location;
+        this.status = Stop.Status.Enabled;
     }
 
     /**

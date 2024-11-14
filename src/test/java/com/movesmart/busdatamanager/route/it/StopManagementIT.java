@@ -52,6 +52,35 @@ public class StopManagementIT extends EndPointStopInventory {
                 objectMapper.readValue(retrieveStopResponse.getResponse().getContentAsString(), Stop.class);
         checkStop(retrievedStop, firstStopRequest);
 
+        MvcResult disableStopResponse = disableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(disableStopResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        MvcResult getDisabledResponse = getStopRequest(createdStop.getId());
+        Stop retrievedDisabledStop =
+                objectMapper.readValue(getDisabledResponse.getResponse().getContentAsString(), Stop.class);
+        assertThat(retrievedDisabledStop.getStatus()).isEqualTo(Stop.Status.Disabled);
+
+        MvcResult disableStopAlreadyDisabledResponse = disableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(disableStopAlreadyDisabledResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult enableStopResponse = enableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(enableStopResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+
+        MvcResult getEnabledResponse = getStopRequest(createdStop.getId());
+        Stop retrievedEnabledStop =
+                objectMapper.readValue(getEnabledResponse.getResponse().getContentAsString(), Stop.class);
+        assertThat(retrievedEnabledStop.getStatus()).isEqualTo(Stop.Status.Enabled);
+
+        MvcResult enableStopNotFoundResponse = enableStopRequest("NonExistingStopId");
+        assertThat(HttpStatus.valueOf(enableStopNotFoundResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult enableStopAlreadyEnabledResponse = enableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(enableStopAlreadyEnabledResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
         MvcResult stopConflictResponse = createStopRequest(firstStopRequest);
         assertThat(HttpStatus.valueOf(stopConflictResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.CONFLICT);
