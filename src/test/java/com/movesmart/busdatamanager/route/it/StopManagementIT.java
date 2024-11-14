@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
-import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import java.util.List;
@@ -103,12 +102,12 @@ public class StopManagementIT extends EndPointStopInventory {
         assertThat(retrievedGetStopDisabled.getStatus()).isEqualTo(Stop.Status.Disabled);
 
         MvcResult disabledStopNotFoundResponse = disableStopRequest("Stop1");
-        assertThat(HttpStatus.valueOf(
-                disabledStopNotFoundResponse.getResponse().getStatus()))
+        assertThat(HttpStatus.valueOf(disabledStopNotFoundResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult disableStopAlreadyDisabledResponse = disableStopRequest(createdStop.getId());
-        assertThat(HttpStatus.valueOf(disableStopAlreadyDisabledResponse.getResponse().getStatus()))
+        assertThat(HttpStatus.valueOf(
+                        disableStopAlreadyDisabledResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult enableStopResponse = enableStopRequest(createdStop.getId());
@@ -127,7 +126,8 @@ public class StopManagementIT extends EndPointStopInventory {
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult enableStopAlreadyEnabledResponse = enableStopRequest(createdStop.getId());
-        assertThat(HttpStatus.valueOf(enableStopAlreadyEnabledResponse.getResponse().getStatus()))
+        assertThat(HttpStatus.valueOf(
+                        enableStopAlreadyEnabledResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult stopConflictResponse = createStopRequest(firstStopRequest);
@@ -140,13 +140,6 @@ public class StopManagementIT extends EndPointStopInventory {
         Stop retrievedStopPostConflict =
                 objectMapper.readValue(retrieveStopResponse.getResponse().getContentAsString(), Stop.class);
         checkStop(retrievedStopPostConflict, firstStopRequest.toStop());
-
-
-
-
-
-
-
 
         MvcResult removeStopIdFromRoutesResponse = removeStopIdFromRoutesRequest(createdStop.getId());
         assertThat(HttpStatus.valueOf(

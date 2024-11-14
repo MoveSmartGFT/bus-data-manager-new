@@ -1,10 +1,15 @@
 package com.movesmart.busdatamanager.route.application.stop;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.Mockito.when;
+
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
+import java.util.Optional;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -13,12 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
@@ -49,23 +48,21 @@ public class EnableStopManagementUseCaseImplTest {
     void testEnableStopDoesNotExist() {
         when(stopRepository.findById(stop.getId())).thenReturn(Optional.empty());
 
-        Throwable throwable = catchThrowable(() -> stopManagementUseCaseImpl.disable(stop.getId()));
+        Throwable throwable = catchThrowable(() -> stopManagementUseCaseImpl.enable(stop.getId()));
 
-        assertThat(throwable)
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContainingAll("Stop", stop.getId());
+        assertThat(throwable).isInstanceOf(EntityNotFoundException.class).hasMessageContainingAll("Stop", stop.getId());
     }
 
     @Test
     @DisplayName("GIVEN a stop to enable WHEN it is already disabled THEN an exception is thrown")
     void testEnableStopAlreadyEnabled() {
         when(stopRepository.findById(stop.getId())).thenReturn(Optional.of(stop));
-        when(stopRepository.findEnabledStopById(stop.getId())).thenReturn(Optional.empty());
+        when(stopRepository.findDisabledStopById(stop.getId())).thenReturn(Optional.empty());
 
-        Throwable throwable = catchThrowable(() -> stopManagementUseCaseImpl.disable(stop.getId()));
+        Throwable throwable = catchThrowable(() -> stopManagementUseCaseImpl.enable(stop.getId()));
 
         assertThat(throwable)
                 .isInstanceOf(EntityStatusException.class)
-                .hasMessageContainingAll("Stop", stop.getId(), Stop.Status.Disabled.toString());
+                .hasMessageContainingAll("Stop", stop.getId(), Stop.Status.Enabled.toString());
     }
 }

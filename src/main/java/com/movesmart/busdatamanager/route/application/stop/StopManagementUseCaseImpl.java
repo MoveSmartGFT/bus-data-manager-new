@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -92,7 +91,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
         log.info("Attempting to disable Stop with id: {}", stopId);
 
         get(stopId);
-        Stop stop = stopRepository.findEnabledStopById(stopId)
+        Stop stop = stopRepository
+                .findEnabledStopById(stopId)
                 .orElseThrow(() -> new EntityStatusException(STOP, stopId, Stop.Status.Disabled.toString()));
 
         log.info("Disabling Stop with id: {}", stopId);
@@ -108,7 +108,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
         log.info("Attempting to enable Stop with id: {}", stopId);
 
         get(stopId);
-        Stop stop = stopRepository.findDisabledStopById(stopId)
+        Stop stop = stopRepository
+                .findDisabledStopById(stopId)
                 .orElseThrow(() -> new EntityStatusException(STOP, stopId, Stop.Status.Enabled.toString()));
 
         log.info("Enabling Stop with id: {}", stopId);

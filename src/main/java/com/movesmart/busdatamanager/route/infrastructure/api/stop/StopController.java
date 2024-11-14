@@ -63,15 +63,15 @@ public class StopController {
         return routeManagementUseCase.removeStopIdFromRoutes(stopId);
     }
 
-    @PatchMapping(STOP_ID_PATH+STOP_DISABLE_PATH)
-    @ResponseStatus(code =  HttpStatus.OK)
+    @PatchMapping(STOP_ID_PATH + STOP_DISABLE_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
     public StopResponse disable(@PathVariable String stopId) {
         log.info("Requested disable stop with id {}", stopId);
         return StopResponse.fromStop(stopManagementUseCase.disable(stopId));
     }
 
-    @PatchMapping(STOP_ID_PATH+STOP_ENABLE_PATH)
-    @ResponseStatus(code =  HttpStatus.OK)
+    @PatchMapping(STOP_ID_PATH + STOP_ENABLE_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
     public StopResponse enable(@PathVariable String stopId) {
         log.info("Requested enable stop with id {}", stopId);
         return StopResponse.fromStop(stopManagementUseCase.enable(stopId));

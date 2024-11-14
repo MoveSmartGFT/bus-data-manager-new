@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
-public class DeleleStopManagmentUseCaseImplTest {
+public class DeleteStopManagementUseCaseImplTest {
 
     @Mock
     private StopRepository stopRepository;
