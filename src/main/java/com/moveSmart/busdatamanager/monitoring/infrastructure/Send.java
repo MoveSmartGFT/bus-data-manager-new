@@ -1,9 +1,11 @@
-package com.moveSmart.busdatamanager.monitoring.infrastructure;
+package com.movesmart.busdatamanager.monitoring.infrastructure;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.Generated;
 
+@Generated
 public class Send {
 
     private static final String QUEUE_NAME = "hello";
