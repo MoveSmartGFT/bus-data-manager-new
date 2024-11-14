@@ -5,13 +5,12 @@ import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(StopController.STOP_PATH)
@@ -50,13 +49,12 @@ public class StopController {
 
     @PutMapping(STOP_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public StopResponse update(@PathVariable String stopId,
-                       @Valid @RequestBody StopRequest stopRequest) {
+    public StopResponse update(@PathVariable String stopId, @Valid @RequestBody StopRequest stopRequest) {
         log.info("Requested update stop with id {}", stopId);
         return StopResponse.fromStop(stopManagementUseCase.update(stopRequest.toStop(stopId)));
     }
 
-    @PatchMapping(STOP_ID_PATH+ROUTE_PATH)
+    @PatchMapping(STOP_ID_PATH + ROUTE_PATH)
     @ResponseStatus(code = HttpStatus.OK)
     public String removeStopIdFromRoutes(@PathVariable String stopId) {
         log.info("Requested delete stop with id {} from all routes", stopId);

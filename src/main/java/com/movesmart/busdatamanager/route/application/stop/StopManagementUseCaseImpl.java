@@ -6,11 +6,10 @@ import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
 import jakarta.annotation.Resource;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -73,7 +72,7 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#delete(String)
      */
-    public Stop delete (String stopId){
+    public Stop delete(String stopId) {
         log.info("Attempting to delete Stop with id: {}", stopId);
 
         Stop stop = get(stopId);

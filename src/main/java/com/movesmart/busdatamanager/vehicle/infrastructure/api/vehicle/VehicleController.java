@@ -35,4 +35,3 @@ public class VehicleController {
         return VehicleResponse.fromVehicle(vehicleManagementUseCase.get(plateNumber));
     }
 }
-

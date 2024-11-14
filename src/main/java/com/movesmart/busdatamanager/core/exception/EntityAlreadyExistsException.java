@@ -14,5 +14,4 @@ public class EntityAlreadyExistsException extends RuntimeException {
         this.objectType = objectType;
         this.id = id;
     }
-
 }

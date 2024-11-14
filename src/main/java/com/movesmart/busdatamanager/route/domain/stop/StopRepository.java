@@ -1,11 +1,9 @@
 package com.movesmart.busdatamanager.route.domain.stop;
 
-import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import java.util.Optional;
 import lombok.Generated;
 import org.jmolecules.ddd.annotation.Repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.Optional;
 
 @Generated
 @Repository

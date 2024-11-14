@@ -1,17 +1,16 @@
 package com.movesmart.busdatamanager.route.application.route;
 
-import com.movesmart.busdatamanager.core.exception.EntityStatusException;
-import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -107,7 +106,8 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
         log.info("Attempting to disable Route with id: {}", routeId);
 
         get(routeId);
-        Route route = routeRepository.findEnabledRouteById(routeId)
+        Route route = routeRepository
+                .findEnabledRouteById(routeId)
                 .orElseThrow(() -> new EntityStatusException(ROUTE, routeId, Route.Status.Disabled.toString()));
 
         log.info("Disabling Route with id: {}", routeId);
@@ -123,7 +123,8 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
         log.info("Attempting to enable Route with id: {}", routeId);
 
         get(routeId);
-        Route route = routeRepository.findDisabledRouteById(routeId)
+        Route route = routeRepository
+                .findDisabledRouteById(routeId)
                 .orElseThrow(() -> new EntityStatusException(ROUTE, routeId, Route.Status.Enabled.toString()));
 
         log.info("Enabling Route with id: {}", routeId);

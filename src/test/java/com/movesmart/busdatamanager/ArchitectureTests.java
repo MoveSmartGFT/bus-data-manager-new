@@ -8,21 +8,26 @@ import org.jmolecules.archunit.JMoleculesDddRules;
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;
 
-@AnalyzeClasses(packages =
-		{"movesmart.busdatamanager.core", "movesmart.busdatamanager.notification", "movesmart.busdatamanager.passenger",
-				"movesmart.busdatamanager.route", "movesmart.busdatamanager.vehicle"})
+@AnalyzeClasses(
+        packages = {
+            "movesmart.busdatamanager.core",
+            "movesmart.busdatamanager.notification",
+            "movesmart.busdatamanager.passenger",
+            "movesmart.busdatamanager.route",
+            "movesmart.busdatamanager.vehicle"
+        })
 class ArchitectureTests {
 
-	@ArchTest
-	ArchRule dddRules = JMoleculesDddRules.all();
+    @ArchTest
+    ArchRule dddRules = JMoleculesDddRules.all();
 
-	@ArchTest
-	ArchRule onion = JMoleculesArchitectureRules.ensureOnionSimple();
+    @ArchTest
+    ArchRule onion = JMoleculesArchitectureRules.ensureOnionSimple();
 
-	@Test
-	void verifiesModularStructure() {
-		ApplicationModules modules = ApplicationModules.of(BusDataManagerApplication.class);
-		modules.forEach(System.out::println);
-		modules.verify();
-	}
+    @Test
+    void verifiesModularStructure() {
+        ApplicationModules modules = ApplicationModules.of(BusDataManagerApplication.class);
+        modules.forEach(System.out::println);
+        modules.verify();
+    }
 }
