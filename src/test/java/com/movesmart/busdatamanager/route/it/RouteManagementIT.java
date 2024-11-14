@@ -1,6 +1,5 @@
 package com.movesmart.busdatamanager.route.it;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
