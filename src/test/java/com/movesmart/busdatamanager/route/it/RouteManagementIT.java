@@ -13,10 +13,12 @@ import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRou
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
 import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
+
 import org.instancio.Instancio;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -79,7 +81,8 @@ public class RouteManagementIT extends EndPointRouteInventory {
         assertThat(HttpStatus.valueOf(retrieveAllRoutesResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         List<Route> retrievedAllRoutes = objectMapper.readValue(
-                retrieveAllRoutesResponse.getResponse().getContentAsString(), new TypeReference<>() {});
+                retrieveAllRoutesResponse.getResponse().getContentAsString(), new TypeReference<>() {
+                });
         assertThat(retrievedAllRoutes).hasSize(2);
         checkRoutes(retrievedAllRoutes.get(0), firstCreatedRoute);
         checkRoutes(retrievedAllRoutes.get(1), secondCreatedRoute);
@@ -94,12 +97,13 @@ public class RouteManagementIT extends EndPointRouteInventory {
         assertThat(HttpStatus.valueOf(retrieveStopIdsResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         List<String> retrievedStopIds = objectMapper.readValue(
-                retrieveStopIdsResponse.getResponse().getContentAsString(), new TypeReference<>() {});
+                retrieveStopIdsResponse.getResponse().getContentAsString(), new TypeReference<>() {
+                });
         assertEquals(retrievedStopIds, firstCreatedRoute.getStopIds());
 
         MvcResult stopIdsRouteDoesNotExistResponse = getStopIdsByRouteIdRequest(notSavedRoute.getId());
         assertThat(HttpStatus.valueOf(
-                        stopIdsRouteDoesNotExistResponse.getResponse().getStatus()))
+                stopIdsRouteDoesNotExistResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         UpdateRouteRequest routeRequest =
@@ -113,7 +117,7 @@ public class RouteManagementIT extends EndPointRouteInventory {
         checkRoutes(updatedRoute, routeRequest.toRoute(firstCreatedRoute.getId()));
         MvcResult routeRetrievedUpdatedResponse = getRouteRequest(firstCreatedRoute.getId());
         assertThat(HttpStatus.valueOf(
-                        routeRetrievedUpdatedResponse.getResponse().getStatus()))
+                routeRetrievedUpdatedResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         Route retrievedRouteUpdated = objectMapper.readValue(
                 routeRetrievedUpdatedResponse.getResponse().getContentAsString(), Route.class);
@@ -134,10 +138,10 @@ public class RouteManagementIT extends EndPointRouteInventory {
         checkRoutes(updatedRouteStops, routeRequestStops.toRoute(updatedRouteStops));
         MvcResult routeRetrievedUpdatedListResponse = getRouteRequest(firstCreatedRoute.getId());
         assertThat(HttpStatus.valueOf(
-                        routeRetrievedUpdatedListResponse.getResponse().getStatus()))
+                routeRetrievedUpdatedListResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         assertThat(HttpStatus.valueOf(
-                        routeRetrievedUpdatedListResponse.getResponse().getStatus()))
+                routeRetrievedUpdatedListResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         Route retrievedRouteStopsUpdated = objectMapper.readValue(
                 routeRetrievedUpdatedResponse.getResponse().getContentAsString(), Route.class);
@@ -145,7 +149,7 @@ public class RouteManagementIT extends EndPointRouteInventory {
 
         MvcResult updatedRouteStopNotFoundResponse = updateRouteStopsRequest("NonExistingStop", routeRequestStops);
         assertThat(HttpStatus.valueOf(
-                        updatedRouteStopNotFoundResponse.getResponse().getStatus()))
+                updatedRouteStopNotFoundResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult disabledRouteResponse = disableRouteRequest(firstCreatedRoute.getId());
@@ -161,12 +165,12 @@ public class RouteManagementIT extends EndPointRouteInventory {
 
         MvcResult disabledRouteNotFoundResponse = disableRouteRequest("Route1");
         assertThat(HttpStatus.valueOf(
-                        disabledRouteNotFoundResponse.getResponse().getStatus()))
+                disabledRouteNotFoundResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult disabledRouteAlreadyDisabledResponse = disableRouteRequest(firstCreatedRoute.getId());
         assertThat(HttpStatus.valueOf(
-                        disabledRouteAlreadyDisabledResponse.getResponse().getStatus()))
+                disabledRouteAlreadyDisabledResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult enabledRouteResponse = enableRouteRequest(firstCreatedRoute.getId());
@@ -186,7 +190,7 @@ public class RouteManagementIT extends EndPointRouteInventory {
 
         MvcResult enabledRouteAlreadyDisabledResponse = enableRouteRequest(firstCreatedRoute.getId());
         assertThat(HttpStatus.valueOf(
-                        enabledRouteAlreadyDisabledResponse.getResponse().getStatus()))
+                enabledRouteAlreadyDisabledResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult deleteRouteResponse = deleteRouteRequest(secondCreatedRoute.getId());

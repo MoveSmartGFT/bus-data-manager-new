@@ -55,6 +55,14 @@ public class RouteInstancioModels {
                 .toModel();
     }
 
+    public static Model<Stop> getStopModelFromCreateRequest(StopRequest stopRequest) {
+        return Instancio.of(Stop.class)
+                .set(field(Stop::getName), stopRequest.name())
+                .set(field(Stop::getLocation), stopRequest.location())
+                .set(field(Stop::getStatus), Stop.Status.Enabled)
+                .toModel();
+    }
+
     public static Model<Route> getRouteModelWithStops(List<String> stopIds) {
         return Instancio.of(Route.class)
                 .set(field(Route::getStopIds), stopIds)

@@ -6,12 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
+import org.jmolecules.ddd.annotation.ValueObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
