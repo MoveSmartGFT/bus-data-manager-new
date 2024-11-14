@@ -1,10 +1,17 @@
 package com.movesmart.busdatamanager.route.application.route;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
+import java.util.List;
+import java.util.Optional;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -13,14 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
@@ -65,9 +64,11 @@ public class UpdateRouteManagementUseCaseImplTest {
     @DisplayName("GIVEN a route with non-existing stops WHEN update THEN returns an exception and status 404")
     void testRouteUpdateWithNonExistingStops() {
         String nonExistingStopId = "NoStop";
-        Route routeWithNonExistingStopId = Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(nonExistingStopId)));
+        Route routeWithNonExistingStopId =
+                Instancio.create(RouteInstancioModels.getRouteModelWithStops(List.of(nonExistingStopId)));
 
-        when(routeRepository.findById(routeWithNonExistingStopId.getId())).thenReturn(Optional.of(routeWithNonExistingStopId));
+        when(routeRepository.findById(routeWithNonExistingStopId.getId()))
+                .thenReturn(Optional.of(routeWithNonExistingStopId));
         when(stopRepository.existsById(nonExistingStopId)).thenReturn(false);
 
         Throwable throwable = catchThrowable(() -> routeManagementUseCaseImpl.update(routeWithNonExistingStopId));

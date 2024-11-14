@@ -1,5 +1,7 @@
 package com.movesmart.busdatamanager.vehicle.it;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
@@ -15,8 +17,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -39,21 +39,28 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         VehicleRequest firstVehicleRequest = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
 
         MvcResult createVehicleResponse = createVehicleRequest(firstVehicleRequest);
-        assertThat(HttpStatus.valueOf(createVehicleResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CREATED);
-        VehicleResponse createdVehicle = objectMapper.readValue(createVehicleResponse.getResponse().getContentAsString(),
-                VehicleResponse.class);
+        assertThat(HttpStatus.valueOf(createVehicleResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.CREATED);
+        VehicleResponse createdVehicle =
+                objectMapper.readValue(createVehicleResponse.getResponse().getContentAsString(), VehicleResponse.class);
         checkVehicles(createdVehicle, firstVehicleRequest);
 
         MvcResult retrieveVehicleResponse = getVehicleRequest(firstVehicleRequest.plateNumber());
-        assertThat(HttpStatus.valueOf(retrieveVehicleResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
-        Vehicle retrievedVehicle = objectMapper.readValue(retrieveVehicleResponse.getResponse().getContentAsString(), Vehicle.class);
+        assertThat(HttpStatus.valueOf(retrieveVehicleResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        Vehicle retrievedVehicle =
+                objectMapper.readValue(retrieveVehicleResponse.getResponse().getContentAsString(), Vehicle.class);
         checkVehicles(retrievedVehicle, firstVehicleRequest);
 
         MvcResult VehicleConflictResponse = createVehicleRequest(firstVehicleRequest);
-        assertThat(HttpStatus.valueOf(VehicleConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(HttpStatus.valueOf(VehicleConflictResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.CONFLICT);
         MvcResult retrieveVehiclePostConflictResponse = getVehicleRequest(firstVehicleRequest.plateNumber());
-        assertThat(HttpStatus.valueOf(retrieveVehiclePostConflictResponse.getResponse().getStatus())).isEqualTo(HttpStatus.OK);
-        Vehicle retrievedVehiclePostConflict = objectMapper.readValue(retrieveVehiclePostConflictResponse.getResponse().getContentAsString(), Vehicle.class);
+        assertThat(HttpStatus.valueOf(
+                        retrieveVehiclePostConflictResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        Vehicle retrievedVehiclePostConflict = objectMapper.readValue(
+                retrieveVehiclePostConflictResponse.getResponse().getContentAsString(), Vehicle.class);
         checkVehicles(retrievedVehiclePostConflict, firstVehicleRequest);
     }
 
@@ -66,7 +73,8 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         assertThat(result.getEvents().size()).isEqualTo(expected.events().size());
         assertThat(result.getSpeed()).isEqualTo(expected.speed());
         assertThat(result.getDirection()).isEqualTo(expected.direction());
-        assertThat(result.getVehicleHistory().size()).isEqualTo(expected.vehicleHistory().size());
+        assertThat(result.getVehicleHistory().size())
+                .isEqualTo(expected.vehicleHistory().size());
     }
 
     void checkVehicles(VehicleResponse result, VehicleRequest expected) {
@@ -78,6 +86,7 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         assertThat(result.events().size()).isEqualTo(expected.events().size());
         assertThat(result.speed()).isEqualTo(expected.speed());
         assertThat(result.direction()).isEqualTo(expected.direction());
-        assertThat(result.vehicleHistory().size()).isEqualTo(expected.vehicleHistory().size());
+        assertThat(result.vehicleHistory().size())
+                .isEqualTo(expected.vehicleHistory().size());
     }
 }

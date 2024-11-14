@@ -39,5 +39,4 @@ public interface StopManagementUseCase {
      * @return Route
      */
     Stop delete(String stopId);
-
 }

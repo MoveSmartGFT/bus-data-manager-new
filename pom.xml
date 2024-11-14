@@ -33,6 +33,7 @@
 		<instancio-junit.version>5.0.2</instancio-junit.version>
 		<json-unit.version>3.5.0</json-unit.version>
 		<jacoco.version>0.8.12</jacoco.version>
+		<hypersistence-tsid.version>2.1.2</hypersistence-tsid.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -131,6 +132,18 @@
 			<scope>test</scope>
 			<version>${json-unit.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>5.18.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-tsid</artifactId>
+			<version>${hypersistence-tsid.version}</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -222,6 +235,35 @@
 								</rule>
 							</rules>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>2.43.0</version>
+				<configuration>
+					<java>
+						<includes>
+							<include>**/*.java</include>
+						</includes>
+
+						<palantirJavaFormat>
+							<version>2.39.0</version>
+						</palantirJavaFormat>
+
+						<removeUnusedImports/>
+
+						<toggleOffOn/>
+					</java>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>apply</goal>
+						</goals>
+						<phase>compile</phase>
 					</execution>
 				</executions>
 			</plugin>

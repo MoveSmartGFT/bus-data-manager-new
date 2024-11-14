@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "stop")
 @AggregateRoot
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Generated
 public class Stop {
 
@@ -43,4 +41,10 @@ public class Stop {
     @NotNull
     @Embedded
     private Coordinates location;
+
+    public Stop(String id, String name, Coordinates location) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+    }
 }

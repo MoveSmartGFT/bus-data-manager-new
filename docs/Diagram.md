@@ -195,3 +195,34 @@ classDiagram
     Notification --> Action
 
 ```
+
+### Queue communication map
+
+```mermaid
+sequenceDiagram
+    actor VehicleSender
+    actor EventTrigger
+    
+    participant eventQueue
+    participant monitoringReceiver
+    participant vehicleReceiver
+    participant routerReceiver
+    participant notificationReceiver
+    participant database
+    participant passengers
+
+
+    VehicleSender ->> +eventQueue: Vehicle arrives at stop
+    VehicleSender ->> +eventQueue: Update vehicle position
+    VehicleSender ->> +eventQueue: Update vehicle capacity
+    
+    eventQueue ->> +monitoringReceiver: Receive updated vehicle position
+    eventQueue ->> +vehicleReceiver: Update capacity of vehicle
+    
+    EventTrigger ->> +eventQueue: Vehicle has accident
+    eventQueue ->> notificationReceiver: Create new notification
+    #-accidentes
+    #-cuando bus llega a una parada
+    #bus a punto de llegar a parada (alerta a usuario)
+    #-bus actualiza qué tan ocupado está
+```

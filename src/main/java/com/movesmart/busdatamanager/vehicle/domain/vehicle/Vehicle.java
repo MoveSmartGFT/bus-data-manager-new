@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.Getter;
@@ -16,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
 
 /**
  * Vehicle Aggregate Root
@@ -94,8 +93,16 @@ public class Vehicle {
     /**
      * Creator of the vehicle
      */
-    public Vehicle(String plateNumber, Integer capacity, String status, String type, Coordinates location,
-                   List<Event> events, double speed, String direction, List<VehicleHistory> vehicleHistory) {
+    public Vehicle(
+            String plateNumber,
+            Integer capacity,
+            String status,
+            String type,
+            Coordinates location,
+            List<Event> events,
+            double speed,
+            String direction,
+            List<VehicleHistory> vehicleHistory) {
         this.plateNumber = plateNumber;
         this.capacity = capacity;
         this.status = status;

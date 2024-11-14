@@ -4,13 +4,12 @@ import com.movesmart.busdatamanager.route.domain.Schedule;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.List;
 
-public record CreateRouteRequest(@NotBlank String id, @NotBlank String name, @NotNull List<String> stopIds,
-                                 @NotNull List<Schedule> schedules, @NotNull Route.Status status) {
+public record CreateRouteRequest(
+        @NotBlank String name, @NotNull List<String> stopIds, @NotNull List<Schedule> schedules) {
 
     public Route toRoute() {
-        return new Route(id, name, stopIds, schedules, status);
+        return new Route(name, stopIds, schedules);
     }
 }

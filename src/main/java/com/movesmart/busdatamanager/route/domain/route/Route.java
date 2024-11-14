@@ -1,26 +1,26 @@
 package com.movesmart.busdatamanager.route.domain.route;
 
 import com.movesmart.busdatamanager.route.domain.Schedule;
+import io.hypersistence.tsid.TSID;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.*;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 import org.jmolecules.ddd.annotation.ValueObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 /**
  * Route Aggregate Root
  */
 @Getter
 @Document(collection = "route")
-@RequiredArgsConstructor
 @AggregateRoot
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Generated
 public class Route {
 
@@ -61,6 +61,14 @@ public class Route {
     /**
      * Creator of the route
      */
+    public Route(String name, List<String> stopIds, List<Schedule> schedules) {
+        this.id = TSID.Factory.getTsid().toString();
+        this.name = name;
+        this.stopIds = stopIds;
+        this.schedules = schedules;
+        this.status = Status.Enabled;
+    }
+
     public Route(String id, String name, List<String> stopIds, List<Schedule> schedules) {
         this.id = id;
         this.name = name;

@@ -1,5 +1,11 @@
 package com.movesmart.busdatamanager.route.infraestructure.api.stop;
 
+import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
@@ -19,12 +25,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
 public class GetStopByIdControllerTest {
@@ -33,6 +33,7 @@ public class GetStopByIdControllerTest {
 
     @Mock
     private StopManagementUseCase stopManagementUseCase;
+
     @Mock
     private RouteManagementUseCase routeManagementUseCase;
 
@@ -47,27 +48,23 @@ public class GetStopByIdControllerTest {
     }
 
     @Test
-    @DisplayName("GIVEN a stop retrieval request is received WHEN the stop exists THEN returns stop object and status 200")
+    @DisplayName(
+            "GIVEN a stop retrieval request is received WHEN the stop exists THEN returns stop object and status 200")
     void testGetStop() throws Exception {
-        when(stopManagementUseCase.get(any()))
-                .thenReturn(stop);
+        when(stopManagementUseCase.get(any())).thenReturn(stop);
 
-        mockMvc.perform(
-                        get(StopController.STOP_PATH+StopController.STOP_ID_PATH, stop.getId())
-                )
+        mockMvc.perform(get(StopController.STOP_PATH + StopController.STOP_ID_PATH, stop.getId()))
                 .andExpect(status().isOk())
-                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stop)));
+                .andExpect(
+                        json().when(Option.TREATING_NULL_AS_ABSENT).isEqualTo(objectMapper.writeValueAsString(stop)));
     }
 
     @Test
     @DisplayName("GIVEN a stop retrieval request is received WHEN the stop does not exist THEN returns status 404")
     void testGetStopDoesNotExist() throws Exception {
-        when(stopManagementUseCase.get(any()))
-                .thenThrow(new EntityNotFoundException("Stop", stop.getId()));
+        when(stopManagementUseCase.get(any())).thenThrow(new EntityNotFoundException("Stop", stop.getId()));
 
-        mockMvc.perform(
-                        get(StopController.STOP_PATH+StopController.STOP_ID_PATH, stop.getId())
-                )
+        mockMvc.perform(get(StopController.STOP_PATH + StopController.STOP_ID_PATH, stop.getId()))
                 .andExpect(status().isNotFound());
     }
 }
