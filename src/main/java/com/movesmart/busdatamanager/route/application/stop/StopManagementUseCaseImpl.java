@@ -2,6 +2,7 @@ package com.movesmart.busdatamanager.route.application.stop;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
 import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
@@ -81,5 +82,39 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
         stopRepository.delete(stop);
 
         return stop;
+    }
+
+    /**
+     * @see StopManagementUseCase#disable(String)
+     */
+    public Stop disable(String stopId) {
+        log.info("Attempting to disable Stop with id: {}", stopId);
+
+        get(stopId);
+        Stop stop = stopRepository
+                .findEnabledStopById(stopId)
+                .orElseThrow(() -> new EntityStatusException(STOP, stopId, Stop.Status.Disabled.toString()));
+
+        log.info("Disabling Stop with id: {}", stopId);
+        stop.disable();
+
+        return stopRepository.save(stop);
+    }
+
+    /**
+     * @see StopManagementUseCase#enable(String)
+     */
+    public Stop enable(String stopId) {
+        log.info("Attempting to enable Stop with id: {}", stopId);
+
+        get(stopId);
+        Stop stop = stopRepository
+                .findDisabledStopById(stopId)
+                .orElseThrow(() -> new EntityStatusException(STOP, stopId, Stop.Status.Enabled.toString()));
+
+        log.info("Enabling Stop with id: {}", stopId);
+        stop.enable();
+
+        return stopRepository.save(stop);
     }
 }

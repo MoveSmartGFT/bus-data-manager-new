@@ -43,25 +43,14 @@ public class StopManagementIT extends EndPointStopInventory {
                 .isEqualTo(HttpStatus.CREATED);
         Stop createdStop =
                 objectMapper.readValue(createStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(createdStop, firstStopRequest);
+        checkStop(createdStop, firstStopRequest.toStop());
 
         MvcResult retrieveStopResponse = getStopRequest(createdStop.getId());
         assertThat(HttpStatus.valueOf(retrieveStopResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         Stop retrievedStop =
                 objectMapper.readValue(retrieveStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(retrievedStop, firstStopRequest);
-
-        MvcResult stopConflictResponse = createStopRequest(firstStopRequest);
-        assertThat(HttpStatus.valueOf(stopConflictResponse.getResponse().getStatus()))
-                .isEqualTo(HttpStatus.CONFLICT);
-        MvcResult stopRetrievedPostConflictResponse = getStopRequest(createdStop.getId());
-        assertThat(HttpStatus.valueOf(
-                        stopRetrievedPostConflictResponse.getResponse().getStatus()))
-                .isEqualTo(HttpStatus.OK);
-        Stop retrievedStopPostConflict =
-                objectMapper.readValue(retrieveStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(retrievedStopPostConflict, firstStopRequest);
+        checkStop(retrievedStop, firstStopRequest.toStop());
 
         MvcResult createSecondStopResponse = createStopRequest(secondStopRequest);
         assertThat(HttpStatus.valueOf(createSecondStopResponse.getResponse().getStatus()))
@@ -73,8 +62,8 @@ public class StopManagementIT extends EndPointStopInventory {
         List<Stop> retrievedAllStops = objectMapper.readValue(
                 retrieveAllStopsResponse.getResponse().getContentAsString(), new TypeReference<>() {});
         assertThat(retrievedAllStops).hasSize(2);
-        checkStop(retrievedAllStops.get(0), firstStopRequest);
-        checkStop(retrievedAllStops.get(1), secondStopRequest);
+        checkStop(retrievedAllStops.get(0), firstStopRequest.toStop());
+        checkStop(retrievedAllStops.get(1), secondStopRequest.toStop());
 
         Stop notSavedStop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
@@ -82,24 +71,75 @@ public class StopManagementIT extends EndPointStopInventory {
         assertThat(HttpStatus.valueOf(stopNotFoundResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
-        StopRequest updateStopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
+        StopRequest stopRequest = Instancio.create(RouteInstancioModels.STOP_REQUEST_MODEL);
 
-        MvcResult updateStopResponse = updateStopRequest(createdStop.getId(), updateStopRequest);
+        MvcResult updateStopResponse = updateStopRequest(createdStop.getId(), stopRequest);
         assertThat(HttpStatus.valueOf(updateStopResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         Stop updatedStop =
                 objectMapper.readValue(updateStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(updatedStop, updateStopRequest);
+        checkStop(updatedStop, stopRequest.toStop());
         MvcResult stopRetrievedUpdatedResponse = getStopRequest(createdStop.getId());
         assertThat(HttpStatus.valueOf(stopRetrievedUpdatedResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         Stop retrievedStopUpdated = objectMapper.readValue(
                 stopRetrievedUpdatedResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(retrievedStopUpdated, updateStopRequest);
+        checkStop(retrievedStopUpdated, stopRequest.toStop());
 
         MvcResult updateStopNotFoundResponse = updateStopRequest("Stop1", firstStopRequest);
         assertThat(HttpStatus.valueOf(updateStopNotFoundResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult disableStopResponse = disableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(disableStopResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        Stop retrievedDisabledStop =
+                objectMapper.readValue(disableStopResponse.getResponse().getContentAsString(), Stop.class);
+        checkStop(retrievedDisabledStop, stopRequest.toStop(createdStop.getId()));
+        MvcResult getDisabledResponse = getStopRequest(createdStop.getId());
+        Stop retrievedGetStopDisabled =
+                objectMapper.readValue(getDisabledResponse.getResponse().getContentAsString(), Stop.class);
+        assertThat(retrievedGetStopDisabled.getStatus()).isEqualTo(Stop.Status.Disabled);
+
+        MvcResult disabledStopNotFoundResponse = disableStopRequest("Stop1");
+        assertThat(HttpStatus.valueOf(disabledStopNotFoundResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult disableStopAlreadyDisabledResponse = disableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(
+                        disableStopAlreadyDisabledResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult enableStopResponse = enableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(enableStopResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        Stop retrievedEnabledStop =
+                objectMapper.readValue(enableStopResponse.getResponse().getContentAsString(), Stop.class);
+        checkStop(retrievedEnabledStop, stopRequest.toStop(createdStop.getId()));
+        MvcResult getEnabledResponse = getStopRequest(createdStop.getId());
+        Stop retrievedGetEnabledStop =
+                objectMapper.readValue(getEnabledResponse.getResponse().getContentAsString(), Stop.class);
+        assertThat(retrievedGetEnabledStop.getStatus()).isEqualTo(Stop.Status.Enabled);
+
+        MvcResult enableStopNotFoundResponse = enableStopRequest("NonExistingStopId");
+        assertThat(HttpStatus.valueOf(enableStopNotFoundResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult enableStopAlreadyEnabledResponse = enableStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(
+                        enableStopAlreadyEnabledResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        MvcResult stopConflictResponse = createStopRequest(firstStopRequest);
+        assertThat(HttpStatus.valueOf(stopConflictResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.CONFLICT);
+        MvcResult stopRetrievedPostConflictResponse = getStopRequest(createdStop.getId());
+        assertThat(HttpStatus.valueOf(
+                        stopRetrievedPostConflictResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        Stop retrievedStopPostConflict =
+                objectMapper.readValue(retrieveStopResponse.getResponse().getContentAsString(), Stop.class);
+        checkStop(retrievedStopPostConflict, firstStopRequest.toStop());
 
         MvcResult removeStopIdFromRoutesResponse = removeStopIdFromRoutesRequest(createdStop.getId());
         assertThat(HttpStatus.valueOf(
@@ -116,17 +156,17 @@ public class StopManagementIT extends EndPointStopInventory {
                 .isEqualTo(HttpStatus.OK);
         Stop retrievedStopDeleted =
                 objectMapper.readValue(deleteStopResponse.getResponse().getContentAsString(), Stop.class);
-        checkStop(retrievedStopDeleted, secondStopRequest);
+        checkStop(retrievedStopDeleted, secondStopRequest.toStop());
         MvcResult getDeletedResponse = getStopRequest(secondStopRequest.toStop().getId());
         assertThat(HttpStatus.valueOf(getDeletedResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-    void checkStop(Stop result, StopRequest expected) {
-        assertThat(result.getName()).isEqualTo(expected.name());
+    void checkStop(Stop result, Stop expected) {
+        assertThat(result.getName()).isEqualTo(expected.getName());
         assertThat(result.getLocation().latitude())
-                .isEqualTo(expected.location().latitude());
+                .isEqualTo(expected.getLocation().latitude());
         assertThat(result.getLocation().longitude())
-                .isEqualTo(expected.location().longitude());
+                .isEqualTo(expected.getLocation().longitude());
     }
 }

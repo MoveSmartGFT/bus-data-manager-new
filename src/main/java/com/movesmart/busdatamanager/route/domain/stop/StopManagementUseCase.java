@@ -39,4 +39,18 @@ public interface StopManagementUseCase {
      * @return Route
      */
     Stop delete(String stopId);
+
+    /**
+     * Disables a Stop
+     * @param stopId to disable
+     * @return Stop
+     */
+    Stop disable(String stopId);
+
+    /**
+     * Enables a Stop
+     * @param stopId to enable
+     * @return Stop
+     */
+    Stop enable(String stopId);
 }

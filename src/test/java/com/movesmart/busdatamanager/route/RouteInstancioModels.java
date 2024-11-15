@@ -23,6 +23,7 @@ public class RouteInstancioModels {
                     () -> Coordinates.of(
                             Instancio.gen().doubles().min(-90.0).max(90.0).get(),
                             Instancio.gen().doubles().min(-180.0).max(180.0).get()))
+            .set(field(Stop::getStatus), Stop.Status.Enabled)
             .toModel();
 
     public static final Model<StopRequest> STOP_REQUEST_MODEL = Instancio.of(StopRequest.class)

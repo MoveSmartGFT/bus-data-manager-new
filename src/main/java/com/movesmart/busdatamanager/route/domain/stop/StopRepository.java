@@ -10,8 +10,25 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface StopRepository extends MongoRepository<Stop, String> {
 
     /**
-     * Searches a Stop name
-     * @param name of route
+     * Searches a Stop by id and status
+     * @param id of stop
+     * @param status of stop
      */
-    Optional<Stop> findByName(String name);
+    Optional<Stop> findByIdAndStatus(String id, Stop.Status status);
+
+    /**
+     * Searches enabled Stop by id
+     * @param id of stop
+     */
+    default Optional<Stop> findEnabledStopById(String id) {
+        return findByIdAndStatus(id, Stop.Status.Enabled);
+    }
+
+    /**
+     * Searches disabled Stop by id
+     * @param id of stop
+     */
+    default Optional<Stop> findDisabledStopById(String id) {
+        return findByIdAndStatus(id, Stop.Status.Disabled);
+    }
 }
