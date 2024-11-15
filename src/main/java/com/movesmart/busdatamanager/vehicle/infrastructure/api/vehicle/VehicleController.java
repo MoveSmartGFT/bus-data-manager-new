@@ -34,4 +34,11 @@ public class VehicleController {
         log.info("Requested vehicle with plate number {}", plateNumber);
         return VehicleResponse.fromVehicle(vehicleManagementUseCase.get(plateNumber));
     }
+
+    @DeleteMapping(VEHICLE_ID_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public VehicleResponse delete(@PathVariable String plateNumber) {
+        log.info("Requested delete vehicle with plate number {}", plateNumber);
+        return VehicleResponse.fromVehicle(vehicleManagementUseCase.delete(plateNumber));
+    }
 }

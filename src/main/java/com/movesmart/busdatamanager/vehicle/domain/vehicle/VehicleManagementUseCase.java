@@ -16,4 +16,11 @@ public interface VehicleManagementUseCase {
      * @return Vehicle
      */
     Vehicle get(String plateNumber);
+
+    /**
+     * Deletes a Vehicle
+     * @param plateNumber to delete
+     * @return Vehicle
+     */
+    Vehicle delete(String plateNumber);
 }

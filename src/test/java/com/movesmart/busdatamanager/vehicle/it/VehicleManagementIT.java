@@ -37,6 +37,7 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
     @Test
     void vehicleIT() throws Exception {
         VehicleRequest firstVehicleRequest = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
+        VehicleRequest secondVehicleRequest = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
 
         MvcResult createVehicleResponse = createVehicleRequest(firstVehicleRequest);
         assertThat(HttpStatus.valueOf(createVehicleResponse.getResponse().getStatus()))
@@ -62,6 +63,22 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         Vehicle retrievedVehiclePostConflict = objectMapper.readValue(
                 retrieveVehiclePostConflictResponse.getResponse().getContentAsString(), Vehicle.class);
         checkVehicles(retrievedVehiclePostConflict, firstVehicleRequest);
+
+        MvcResult createSecondVehicleResponse = createVehicleRequest(secondVehicleRequest);
+        assertThat(HttpStatus.valueOf(createSecondVehicleResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.CREATED);
+        VehicleResponse secondCreatedVehicle = objectMapper.readValue(
+                createSecondVehicleResponse.getResponse().getContentAsString(), VehicleResponse.class);
+
+        MvcResult deleteVehicleResponse = deleteVehicleRequest(secondCreatedVehicle.plateNumber());
+        assertThat(HttpStatus.valueOf(deleteVehicleResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        Vehicle retrievedVehicleDeleted =
+                objectMapper.readValue(deleteVehicleResponse.getResponse().getContentAsString(), Vehicle.class);
+        checkVehicles(retrievedVehicleDeleted, secondVehicleRequest);
+        MvcResult getDeletedResponse = getVehicleRequest(secondCreatedVehicle.plateNumber());
+        assertThat(HttpStatus.valueOf(getDeletedResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     void checkVehicles(Vehicle result, VehicleRequest expected) {
