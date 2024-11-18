@@ -86,10 +86,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stop'
+        '400':
+          description: Parada con ID {stopId} no existe
+        '409':
+          description: Solicitud inválida
 
   /api/v1/stops/{stopId}/disable:
     patch:
-      summary: Desactivar una ruta por ID
+      summary: Desactivar una stop por ID
       parameters:
         - in: path
           name: stopId
@@ -98,11 +102,16 @@ paths:
             type: string
       responses:
         '200':
-          description: Parada desactivada
+          description: Parada activada
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stop'
+        '400':
+          description: Parada con ID {stopId} no existe
+        '409':
+          description: Solicitud inválida
+
 
   /api/v1/routes:
     post:
