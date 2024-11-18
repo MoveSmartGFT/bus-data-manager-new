@@ -15,6 +15,7 @@ import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.RouteResponse;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
+import java.util.Arrays;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -97,5 +98,30 @@ public class UpdateRouteListStopsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString("NoValid")))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName(
+            "GIVEN a Route Stop List update request with duplicates WHEN processed THEN duplicates are removed and returns updated route object and status 200")
+    void testUpdateRouteStopsWithDuplicates() throws Exception {
+        UpdateRouteStopsRequest requestWithDuplicates =
+                new UpdateRouteStopsRequest(Arrays.asList("stop1", "stop2", "stop2", "stop3"));
+
+        Route updatedRouteWithoutDuplicates = new Route(
+                route.getId(), route.getName(), Arrays.asList("stop1", "stop2", "stop3"), route.getSchedules());
+
+        RouteResponse expectedResponse = RouteResponse.fromRoute(updatedRouteWithoutDuplicates);
+
+        when(routeManagementUseCase.get(route.getId())).thenReturn(route);
+        when(routeManagementUseCase.updateRouteStops(any())).thenReturn(updatedRouteWithoutDuplicates);
+
+        mockMvc.perform(patch(
+                                RouteController.ROUTE_PATH + RouteController.ROUTE_ID_PATH + RouteController.STOPS_PATH,
+                                route.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(requestWithDuplicates)))
+                .andExpect(status().isOk())
+                .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT)
+                        .isEqualTo(objectMapper.writeValueAsString(expectedResponse)));
     }
 }
