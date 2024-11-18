@@ -91,4 +91,21 @@ public class UpdateRouteStopsManagementUseCaseImplTest {
                 .hasMessageContaining("Route")
                 .hasMessageContaining("nonExistingRouteId");
     }
+
+    @Test
+    @DisplayName("GIVEN a List of Stops with duplicates THEN duplicates are removed before updating the Route")
+    void testUpdateRouteStopsWithDuplicates() {
+        List<String> newStopIds = Arrays.asList("stop1", "stop2", "stop2", "stop3");
+        List<String> expectedStopIds = Arrays.asList("stop1", "stop2", "stop3");
+
+        Route updatedRoute = new Route(route.getId(), route.getName(), newStopIds, route.getSchedules());
+
+        when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
+        when(stopRepository.existsById(any())).thenReturn(true);
+        when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Route result = routeManagementUseCaseImpl.updateRouteStops(updatedRoute);
+
+        assertThat(result.getStopIds()).containsExactlyElementsOf(expectedStopIds);
+    }
 }

@@ -70,6 +70,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/Stop'
 
+  /api/v1/stops/{stopId}/enable:
+    patch:
+      summary: Activar una stop por ID
+      parameters:
+        - in: path
+          name: stopId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parada activada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stop'
+        '400':
+          description: Parada con ID {stopId} no existe
+        '409':
+          description: Solicitud inválida
+
+  /api/v1/stops/{stopId}/disable:
+    patch:
+      summary: Desactivar una stop por ID
+      parameters:
+        - in: path
+          name: stopId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parada activada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stop'
+        '400':
+          description: Parada con ID {stopId} no existe
+        '409':
+          description: Solicitud inválida
+
+
   /api/v1/routes:
     post:
       summary: Crear una nueva ruta

@@ -148,6 +148,12 @@ public class RouteManagementIT extends EndPointRouteInventory {
                         updatedRouteStopNotFoundResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
+        Route createdRoute =
+                objectMapper.readValue(createRouteResponse.getResponse().getContentAsString(), Route.class);
+        assertThat(createdRoute.getStopIds()).hasSize(1);
+        assertThat(updatedRoute.getStopIds()).hasSize(1);
+        assertThat(updatedRoute.getStopIds().get(0)).isEqualTo(stop.getId());
+
         MvcResult disabledRouteResponse = disableRouteRequest(firstCreatedRoute.getId());
         assertThat(HttpStatus.valueOf(disabledRouteResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
