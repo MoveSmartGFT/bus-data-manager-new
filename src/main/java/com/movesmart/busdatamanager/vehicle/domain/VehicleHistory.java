@@ -1,10 +1,9 @@
 package com.movesmart.busdatamanager.vehicle.domain;
 
-import jakarta.validation.Valid;
+import io.hypersistence.tsid.TSID;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.jmolecules.ddd.annotation.Identity;
 
 @Getter
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Generated
 public class VehicleHistory {
     @Identity
@@ -22,12 +20,18 @@ public class VehicleHistory {
     @NotBlank
     private String routeId;
 
-    @Valid
-    private Driver driver;
+    @NotBlank
+    private String driverId;
 
     @NotNull
     private LocalDateTime startTime;
 
-    @NotNull
     private LocalDateTime endTime;
+
+    public VehicleHistory(String routeId, String driverId, LocalDateTime startTime) {
+        this.id = TSID.Factory.getTsid().toString();
+        this.routeId = routeId;
+        this.driverId = driverId;
+        this.startTime = startTime;
+    }
 }
