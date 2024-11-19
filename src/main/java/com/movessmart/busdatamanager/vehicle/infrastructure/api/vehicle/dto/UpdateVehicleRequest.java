@@ -25,7 +25,7 @@ public record UpdateVehicleRequest(
         @NotNull double speed,
         @NotBlank String direction,
         @Valid List<VehicleHistoryDTO> vehicleHistory) {
-    public Vehicle toVehicle(String vehicleId) {
+    public Vehicle toVehicle(String plateNumber) {
         return new Vehicle(
                 plateNumber,
                 capacity,

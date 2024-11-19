@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.VehicleController;
+import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,6 +44,14 @@ public abstract class EndPointVehicleInventory {
     protected MvcResult deleteVehicleRequest(String plateNumber) throws Exception {
         return this.mockMvc
                 .perform(delete(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, plateNumber))
+                .andReturn();
+    }
+
+    protected MvcResult updateVehicleRequest(String plateNumber, UpdateVehicleRequest vehicle) throws Exception {
+        return this.mockMvc
+                .perform(put(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, plateNumber)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(vehicle)))
                 .andReturn();
     }
 }
