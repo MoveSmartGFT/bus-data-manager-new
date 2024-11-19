@@ -1,5 +1,6 @@
 package com.movesmart.busdatamanager;
 
+import com.movessmart.busdatamanager.BusDataManagerApplication;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
@@ -10,11 +11,11 @@ import org.springframework.modulith.core.ApplicationModules;
 
 @AnalyzeClasses(
         packages = {
-            "movesmart.busdatamanager.core",
-            "movesmart.busdatamanager.notification",
-            "movesmart.busdatamanager.passenger",
-            "movesmart.busdatamanager.route",
-            "movesmart.busdatamanager.vehicle"
+            "movessmart.busdatamanager.core",
+            "movessmart.busdatamanager.notification",
+            "movessmart.busdatamanager.passenger",
+            "movessmart.busdatamanager.route",
+            "movessmart.busdatamanager.vehicle"
         })
 class ArchitectureTests {
 

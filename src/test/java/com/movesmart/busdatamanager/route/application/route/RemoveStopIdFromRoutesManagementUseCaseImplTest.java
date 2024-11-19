@@ -5,8 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
-import com.movesmart.busdatamanager.route.domain.route.Route;
-import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
+import com.movessmart.busdatamanager.route.application.route.RouteManagementUseCaseImpl;
+import com.movessmart.busdatamanager.route.domain.route.Route;
+import com.movessmart.busdatamanager.route.domain.route.RouteRepository;
 import java.util.List;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

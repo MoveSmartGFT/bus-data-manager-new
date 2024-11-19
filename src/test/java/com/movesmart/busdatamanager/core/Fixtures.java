@@ -3,7 +3,7 @@ package com.movesmart.busdatamanager.core;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movesmart.busdatamanager.core.infrastructure.api.ErrorResponseHandler;
+import com.movessmart.busdatamanager.core.infrastructure.api.ErrorResponseHandler;
 import java.nio.charset.StandardCharsets;
 import lombok.NoArgsConstructor;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;

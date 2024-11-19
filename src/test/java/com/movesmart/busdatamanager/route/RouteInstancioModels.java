@@ -2,14 +2,14 @@ package com.movesmart.busdatamanager.route;
 
 import static org.instancio.Select.field;
 
-import com.movesmart.busdatamanager.route.domain.Coordinates;
-import com.movesmart.busdatamanager.route.domain.route.Route;
-import com.movesmart.busdatamanager.route.domain.stop.Stop;
-import com.movesmart.busdatamanager.route.infrastructure.api.model.CoordinatesDTO;
-import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
-import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
-import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
-import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
+import com.movessmart.busdatamanager.route.domain.Coordinates;
+import com.movessmart.busdatamanager.route.domain.route.Route;
+import com.movessmart.busdatamanager.route.domain.stop.Stop;
+import com.movessmart.busdatamanager.route.infrastructure.api.model.CoordinatesDTO;
+import com.movessmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
+import com.movessmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
+import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
+import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 import org.instancio.Instancio;

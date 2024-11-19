@@ -4,10 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.when;
 
-import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
-import com.movesmart.busdatamanager.route.domain.stop.Stop;
-import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
+import com.movessmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movessmart.busdatamanager.route.application.stop.StopManagementUseCaseImpl;
+import com.movessmart.busdatamanager.route.domain.stop.Stop;
+import com.movessmart.busdatamanager.route.domain.stop.StopRepository;
 import java.util.Optional;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
