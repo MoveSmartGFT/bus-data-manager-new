@@ -27,6 +27,7 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
      * @param stop data
      * @return Stop
      */
+    @CacheEvict(value = "stop")
     @Override
     public Stop create(Stop stop) {
         log.info("Attempting to create Stop with id: {}", stop.getId());

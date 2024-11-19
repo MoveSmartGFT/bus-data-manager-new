@@ -79,13 +79,6 @@ public class RouteController {
         return RouteResponse.fromRoute(routeManagementUseCase.enable(routeId));
     }
 
-    @DeleteMapping(ROUTE_ID_PATH)
-    @ResponseStatus(code = HttpStatus.OK)
-    public RouteResponse delete(@PathVariable String routeId) {
-        log.info("Requested delete route with id {}", routeId);
-        return RouteResponse.fromRoute(routeManagementUseCase.delete(routeId));
-    }
-
     @PatchMapping(ROUTE_ID_PATH + STOPS_PATH)
     @ResponseStatus(code = HttpStatus.OK)
     public RouteResponse updateRouteStops(
@@ -94,5 +87,12 @@ public class RouteController {
         Route existingRoute = routeManagementUseCase.get(routeId);
         Route routeToUpdate = routeRequest.toRoute(existingRoute);
         return RouteResponse.fromRoute(routeManagementUseCase.updateRouteStops(routeToUpdate));
+    }
+
+    @DeleteMapping(ROUTE_ID_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public RouteResponse delete(@PathVariable String routeId) {
+        log.info("Requested delete route with id {}", routeId);
+        return RouteResponse.fromRoute(routeManagementUseCase.delete(routeId));
     }
 }

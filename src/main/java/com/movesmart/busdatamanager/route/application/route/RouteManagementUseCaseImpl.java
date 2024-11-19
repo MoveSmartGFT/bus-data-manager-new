@@ -28,6 +28,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
      * @param route data
      * @return Route
      */
+    @CacheEvict(value = "route")
     @Override
     public Route create(Route route) {
         log.info("Attempting to create Route with id: {}", route.getId());
