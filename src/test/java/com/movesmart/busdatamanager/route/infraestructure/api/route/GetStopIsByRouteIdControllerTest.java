@@ -9,9 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
-import com.movesmart.busdatamanager.route.domain.route.Route;
-import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
-import com.movesmart.busdatamanager.route.infrastructure.api.route.RouteController;
+import com.movessmart.busdatamanager.route.domain.route.Route;
+import com.movessmart.busdatamanager.route.domain.route.RouteManagementUseCase;
+import com.movessmart.busdatamanager.route.infrastructure.api.route.RouteController;
 import java.util.List;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;

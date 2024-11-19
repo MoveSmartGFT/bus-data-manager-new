@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
-import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
+import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
+import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
 import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.AfterEach;
@@ -86,7 +86,8 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         assertThat(result.getCapacity()).isEqualTo(expected.capacity());
         assertThat(result.getStatus()).isEqualTo(expected.status());
         assertThat(result.getType()).isEqualTo(expected.type());
-        assertThat(result.getLocation()).isEqualTo(expected.location());
+        assertThat(result.getLocation().latitude()).isEqualTo(expected.location().latitude());
+        assertThat(result.getLocation().longitude()).isEqualTo(expected.location().longitude());
         assertThat(result.getEvents().size()).isEqualTo(expected.events().size());
         assertThat(result.getSpeed()).isEqualTo(expected.speed());
         assertThat(result.getDirection()).isEqualTo(expected.direction());

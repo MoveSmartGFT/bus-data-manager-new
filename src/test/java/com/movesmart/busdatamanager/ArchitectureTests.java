@@ -1,5 +1,6 @@
 package com.movesmart.busdatamanager;
 
+import com.movessmart.busdatamanager.BusDataManagerApplication;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;

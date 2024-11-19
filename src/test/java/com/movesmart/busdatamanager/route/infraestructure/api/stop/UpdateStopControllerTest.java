@@ -8,13 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
-import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movessmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
-import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
-import com.movesmart.busdatamanager.route.domain.stop.Stop;
-import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
-import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
-import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
+import com.movessmart.busdatamanager.route.domain.route.RouteManagementUseCase;
+import com.movessmart.busdatamanager.route.domain.stop.Stop;
+import com.movessmart.busdatamanager.route.domain.stop.StopManagementUseCase;
+import com.movessmart.busdatamanager.route.infrastructure.api.stop.StopController;
+import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

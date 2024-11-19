@@ -2,10 +2,10 @@ package com.movesmart.busdatamanager.vehicle;
 
 import static org.instancio.Select.field;
 
-import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
-import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
+import com.movessmart.busdatamanager.vehicle.domain.Coordinates;
+import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movessmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
+import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import lombok.experimental.UtilityClass;
 import org.instancio.Instancio;
 import org.instancio.Model;
