@@ -20,7 +20,6 @@ public record VehicleRequest(
                         message = "Plate number must be 4 numbers and 3 letters. Example: 2020KBR")
                 String plateNumber,
         @NotNull Integer capacity,
-        @NotBlank String status,
         @NotBlank String type,
         @NotNull @Valid CoordinatesDTO location,
         @Valid List<EventDTO> events,
@@ -31,7 +30,6 @@ public record VehicleRequest(
         return new Vehicle(
                 plateNumber,
                 capacity,
-                status,
                 type,
                 location.toCoordinates(),
                 events.stream().map(EventDTO::toEvent).collect(Collectors.toList()),
