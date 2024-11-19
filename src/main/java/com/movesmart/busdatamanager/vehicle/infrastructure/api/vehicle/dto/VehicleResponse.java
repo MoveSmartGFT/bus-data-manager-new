@@ -1,13 +1,14 @@
 package com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto;
 
-import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
-import com.movesmart.busdatamanager.vehicle.domain.Event;
-import com.movesmart.busdatamanager.vehicle.domain.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.EventDTO;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.VehicleHistoryDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Generated;
 
 @Generated
@@ -16,21 +17,23 @@ public record VehicleResponse(
         @NotNull Integer capacity,
         @NotBlank String status,
         @NotBlank String type,
-        @Valid Coordinates location,
-        @Valid List<Event> events,
+        @Valid CoordinatesDTO location,
+        @Valid List<EventDTO> events,
         @NotNull double speed,
         @NotBlank String direction,
-        @Valid List<VehicleHistory> vehicleHistory) {
+        @Valid List<VehicleHistoryDTO> vehicleHistory) {
     public static VehicleResponse fromVehicle(Vehicle vehicle) {
         return new VehicleResponse(
                 vehicle.getPlateNumber(),
                 vehicle.getCapacity(),
                 vehicle.getStatus(),
                 vehicle.getType(),
-                vehicle.getLocation(),
-                vehicle.getEvents(),
+                CoordinatesDTO.fromCoordinates(vehicle.getLocation()),
+                vehicle.getEvents().stream().map(EventDTO::fromEvent).collect(Collectors.toList()),
                 vehicle.getSpeed(),
                 vehicle.getDirection(),
-                vehicle.getVehicleHistory());
+                vehicle.getVehicleHistory().stream()
+                        .map(VehicleHistoryDTO::fromVehicleHistory)
+                        .collect(Collectors.toList()));
     }
 }

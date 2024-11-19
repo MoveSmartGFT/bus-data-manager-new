@@ -7,11 +7,8 @@ import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
 import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -159,9 +156,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
 
         Route existingRoute = get(route.getId());
 
-        List<String> uniqueStopIds = route.getStopIds().stream()
-                .distinct()
-                .collect(Collectors.toList());
+        List<String> uniqueStopIds = route.getStopIds().stream().distinct().collect(Collectors.toList());
 
         checkStopsExist(uniqueStopIds);
         existingRoute.updateStopIdList(uniqueStopIds);

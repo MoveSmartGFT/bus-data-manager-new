@@ -5,6 +5,7 @@ import static org.instancio.Select.field;
 import com.movesmart.busdatamanager.route.domain.Coordinates;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.infrastructure.api.model.CoordinatesDTO;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
@@ -29,7 +30,7 @@ public class RouteInstancioModels {
     public static final Model<StopRequest> STOP_REQUEST_MODEL = Instancio.of(StopRequest.class)
             .supply(
                     field(StopRequest::location),
-                    () -> Coordinates.of(
+                    () -> CoordinatesDTO.of(
                             Instancio.gen().doubles().min(-90.0).max(90.0).get(),
                             Instancio.gen().doubles().min(-180.0).max(180.0).get()))
             .toModel();

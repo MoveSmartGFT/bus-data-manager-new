@@ -47,7 +47,6 @@ public class Route {
     /**
      * Schedules of the route
      */
-    @NotNull
     @Valid
     @ElementCollection
     private List<Schedule> schedules;
@@ -66,7 +65,7 @@ public class Route {
         this.name = name;
         this.stopIds = stopIds;
         this.schedules = schedules;
-        this.status = Status.Enabled;
+        this.status = Status.Disabled;
     }
 
     public Route(String id, String name, List<String> stopIds, List<Schedule> schedules) {
@@ -74,7 +73,7 @@ public class Route {
         this.name = name;
         this.stopIds = stopIds;
         this.schedules = schedules;
-        this.status = Status.Enabled;
+        this.status = Status.Disabled;
     }
 
     /**

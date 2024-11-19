@@ -4,6 +4,7 @@ import static org.instancio.Select.field;
 
 import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import lombok.experimental.UtilityClass;
 import org.instancio.Instancio;
@@ -31,7 +32,7 @@ public class VehicleInstancioModels {
                             + Instancio.gen().string().length(3).get())
             .supply(
                     field(VehicleRequest::location),
-                    () -> Coordinates.of(
+                    () -> CoordinatesDTO.of(
                             Instancio.gen().doubles().min(-90.0).max(90.0).get(),
                             Instancio.gen().doubles().min(-180.0).max(180.0).get()))
             .toModel();
