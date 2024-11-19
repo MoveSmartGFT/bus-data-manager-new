@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,6 +50,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#get(String)
      */
+    @Cacheable(value = "routes", key = "#routeId")
     public Route get(String routeId) {
         log.info("Searching route with id: {}", routeId);
 
@@ -56,6 +60,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#getAll()
      */
+    @Cacheable(value = "routes")
     public List<Route> getAll() {
         log.info("Retrieving all routes");
 
@@ -66,6 +71,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
      * Get
      * @see RouteManagementUseCase#getStopIdsByRouteId(String)
      */
+    @Cacheable(value = "stopsbyroute", key = "#routeId")
     public List<String> getStopIdsByRouteId(String routeId) {
         log.info("Returning stopsIds from routeId: {}", routeId);
         Route route = routeRepository.findById(routeId).orElseThrow(() -> new EntityNotFoundException(ROUTE, routeId));
@@ -76,6 +82,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#update(Route)
      */
+    @CachePut(value = "routes", key = "#route.id")
     public Route update(Route route) {
         log.info("Attempting to update Route with id: {}", route.getId());
 
@@ -93,16 +100,21 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     public String removeStopIdFromRoutes(String stopId) {
         List<Route> routesWithStopId = routeRepository.findByStopIds(stopId);
 
-        routesWithStopId.stream()
-                .peek(route -> route.getStopIds().removeIf(id -> id.equals(stopId)))
-                .forEach(routeRepository::save);
+        routesWithStopId.forEach(route -> removeStopIdFromRoute(route, stopId));
 
         return "Stop with id %s removed from %s routes".formatted(stopId, routesWithStopId.size());
+    }
+
+    @CachePut(value = "routes", key = "#route.id")
+    private Route removeStopIdFromRoute(Route route, String stopId) {
+        route.getStopIds().removeIf(id -> id.equals(stopId));
+        return routeRepository.save(route);
     }
 
     /**
      * @see RouteManagementUseCase#disable(String)
      */
+    @CachePut(value = "routes", key = "#routeId")
     public Route disable(String routeId) {
         log.info("Attempting to disable Route with id: {}", routeId);
 
@@ -120,6 +132,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#enable(String)
      */
+    @CachePut(value = "routes", key = "#routeId")
     public Route enable(String routeId) {
         log.info("Attempting to enable Route with id: {}", routeId);
 
@@ -137,6 +150,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#delete(String)
      */
+    @CacheEvict(value = "routes", key = "#routeId")
     public Route delete(String routeId) {
         log.info("Attempting to delete Route with id: {}", routeId);
 
@@ -151,6 +165,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#update(Route)
      */
+    @CachePut(value = "routes", key = "#routeId")
     public Route updateRouteStops(Route route) {
         log.info("Attempting to update the Stops of the Route with id: {}", route.getId());
 
@@ -173,4 +188,13 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
             }
         }
     }
+
+    /* METHOD TO SIMULATE SLOW SERVICE
+    private void simulateSlowService() {
+        try {
+            Thread.sleep(10000); // Simula 10 segundos de retraso
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
+    }*/
 }

@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,6 +53,7 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#getAll()
      */
+    @Cacheable(value = "stops")
     public List<Stop> getAll() {
         log.info("Retrieving all stops");
 
@@ -117,4 +119,13 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
 
         return stopRepository.save(stop);
     }
+
+    /* METHOD TO SIMULATE SLOW SERVICE
+    private void simulateSlowService() {
+        try {
+            Thread.sleep(10000); // Simula 10 segundos de retraso
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
+    }*/
 }
