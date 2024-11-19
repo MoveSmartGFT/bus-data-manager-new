@@ -1,9 +1,9 @@
-package com.movesmart.busdatamanager.vehicle.it;
+package com.movessmart.busdatamanager.vehicle.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
+import com.movessmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
