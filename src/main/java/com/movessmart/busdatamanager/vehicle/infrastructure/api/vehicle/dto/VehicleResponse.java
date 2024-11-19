@@ -34,7 +34,6 @@ public record VehicleResponse(
                 vehicle.getVehicleHistory().stream()
                         .map(VehicleHistoryDTO::fromVehicleHistory)
                         .collect(Collectors.toList()),
-                vehicle.getStatus()
-                );
+                vehicle.getStatus());
     }
 }

@@ -1,6 +1,5 @@
 package com.movessmart.busdatamanager.vehicle.domain.vehicle;
 
-import com.movessmart.busdatamanager.route.domain.route.Route;
 import com.movessmart.busdatamanager.vehicle.domain.Coordinates;
 import com.movessmart.busdatamanager.vehicle.domain.Event;
 import com.movessmart.busdatamanager.vehicle.domain.VehicleHistory;

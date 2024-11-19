@@ -59,4 +59,16 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
 
         return vehicle;
     }
+
+    /**
+     * @see VehicleManagementUseCase#update(Vehicle)
+     */
+    public Vehicle update(Vehicle vehicle) {
+        log.info("Attempting to update Vehicle with id: {}", vehicle.getPlateNumber());
+
+        get(vehicle.getPlateNumber());
+
+        log.info("Found Vehicle with id: {}", vehicle.getPlateNumber());
+        return vehicleRepository.save(vehicle);
+    }
 }
