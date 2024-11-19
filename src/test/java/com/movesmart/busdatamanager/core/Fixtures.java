@@ -1,4 +1,4 @@
-package com.movesmart.busdatamanager.core;
+package com.movessmart.busdatamanager.core;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 

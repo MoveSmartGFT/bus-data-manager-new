@@ -1,13 +1,12 @@
-package com.movesmart.busdatamanager.vehicle.application.vehicle;
+package com.movessmart.busdatamanager.vehicle.application.vehicle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movessmart.busdatamanager.core.exception.EntityAlreadyExistsException;
-import com.movessmart.busdatamanager.vehicle.application.vehicle.VehicleManagementUseCaseImpl;
+import com.movessmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import org.instancio.Instancio;

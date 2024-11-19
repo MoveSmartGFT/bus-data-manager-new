@@ -1,4 +1,4 @@
-package com.movesmart.busdatamanager.route;
+package com.movessmart.busdatamanager.route;
 
 import static org.instancio.Select.field;
 

@@ -1,4 +1,4 @@
-package com.movesmart.busdatamanager.route.it;
+package com.movessmart.busdatamanager.route.it;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 

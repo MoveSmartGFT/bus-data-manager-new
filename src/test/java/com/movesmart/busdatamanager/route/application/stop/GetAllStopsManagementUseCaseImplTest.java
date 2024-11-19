@@ -1,10 +1,9 @@
-package com.movesmart.busdatamanager.route.application.stop;
+package com.movessmart.busdatamanager.route.application.stop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.movesmart.busdatamanager.route.RouteInstancioModels;
-import com.movessmart.busdatamanager.route.application.stop.StopManagementUseCaseImpl;
+import com.movessmart.busdatamanager.route.RouteInstancioModels;
 import com.movessmart.busdatamanager.route.domain.stop.Stop;
 import com.movessmart.busdatamanager.route.domain.stop.StopRepository;
 import java.util.List;
