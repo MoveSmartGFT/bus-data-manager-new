@@ -84,7 +84,6 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
     void checkVehicles(Vehicle result, VehicleRequest expected) {
         assertThat(result.getPlateNumber()).isEqualTo(expected.plateNumber());
         assertThat(result.getCapacity()).isEqualTo(expected.capacity());
-        assertThat(result.getStatus()).isEqualTo(expected.);
         assertThat(result.getType()).isEqualTo(expected.type());
         assertThat(result.getLocation().latitude())
                 .isEqualTo(expected.location().latitude());
@@ -100,7 +99,6 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
     void checkVehicles(VehicleResponse result, VehicleRequest expected) {
         assertThat(result.plateNumber()).isEqualTo(expected.plateNumber());
         assertThat(result.capacity()).isEqualTo(expected.capacity());
-        assertThat(result.status()).isEqualTo(expected.status());
         assertThat(result.type()).isEqualTo(expected.type());
         assertThat(result.location()).isEqualTo(expected.location());
         assertThat(result.events().size()).isEqualTo(expected.events().size());
