@@ -14,7 +14,7 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager =
-                new CaffeineCacheManager("stop", "stops", "route", "routes", "stopsbyroute");
+                new CaffeineCacheManager("stop", "route", "stopsbyroute");
         cacheManager.setCaffeine(
                 Caffeine.newBuilder().expireAfterWrite(6, TimeUnit.HOURS).maximumSize(1000));
         return cacheManager;

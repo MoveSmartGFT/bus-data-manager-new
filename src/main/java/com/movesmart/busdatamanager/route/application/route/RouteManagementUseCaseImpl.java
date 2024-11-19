@@ -86,6 +86,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
      * @see RouteManagementUseCase#update(Route)
      */
     @CachePut(value = "route", key = "#route.id")
+    @CacheEvict(value = "stopsbyroute", key = "#route.id")
     @Override
     public Route update(Route route) {
         log.info("Attempting to update Route with id: {}", route.getId());
@@ -111,6 +112,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     }
 
     @CachePut(value = "route", key = "#route.id")
+    @CacheEvict(value = "stopsbyroute", key = "#route.id")
     private Route removeStopIdFromRoute(Route route, String stopId) {
         route.getStopIds().removeIf(id -> id.equals(stopId));
 
@@ -158,7 +160,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#delete(String)
      */
-    @CacheEvict(value = "route", key = "#routeId")
+    @CacheEvict(value = "route", key =  "#routeId", allEntries = true)
     @Override
     public Route delete(String routeId) {
         log.info("Attempting to delete Route with id: {}", routeId);
@@ -175,6 +177,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
      * @see RouteManagementUseCase#update(Route)
      */
     @CachePut(value = "route", key = "#route.id")
+    @CacheEvict(value = "stopsbyroute", key = "#route.id")
     @Override
     public Route updateRouteStops(Route route) {
         log.info("Attempting to update the Stops of the Route with id: {}", route.getId());

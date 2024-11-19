@@ -82,7 +82,7 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#delete(String)
      */
-    @CacheEvict(value = "stop", key = "#stopId")
+    @CacheEvict(value = "stop", key = "#stopId", allEntries = true)
     @Override
     public Stop delete(String stopId) {
         log.info("Attempting to delete Stop with id: {}", stopId);
