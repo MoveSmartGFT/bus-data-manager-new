@@ -8,9 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
+import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movessmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movessmart.busdatamanager.core.exception.EntityStatusException;
-import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movessmart.busdatamanager.route.domain.route.RouteManagementUseCase;
 import com.movessmart.busdatamanager.route.domain.stop.Stop;
 import com.movessmart.busdatamanager.route.domain.stop.StopManagementUseCase;

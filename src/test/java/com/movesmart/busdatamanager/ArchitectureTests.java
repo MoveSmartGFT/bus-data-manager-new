@@ -11,11 +11,11 @@ import org.springframework.modulith.core.ApplicationModules;
 
 @AnalyzeClasses(
         packages = {
-            "movesmart.busdatamanager.core",
-            "movesmart.busdatamanager.notification",
-            "movesmart.busdatamanager.passenger",
-            "movesmart.busdatamanager.route",
-            "movesmart.busdatamanager.vehicle"
+            "movessmart.busdatamanager.core",
+            "movessmart.busdatamanager.notification",
+            "movessmart.busdatamanager.passenger",
+            "movessmart.busdatamanager.route",
+            "movessmart.busdatamanager.vehicle"
         })
 class ArchitectureTests {
 

@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
-import com.movessmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
+import com.movessmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.VehicleController;

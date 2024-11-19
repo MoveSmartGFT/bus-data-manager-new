@@ -10,7 +10,7 @@ import org.springframework.modulith.Modulithic;
 @ConfigurationPropertiesScan
 @Modulithic(
         systemName = "Bus Dataset Manager",
-        sharedModules = {"com.movesmart.busdatamanager.core"},
+        sharedModules = {"com.movessmart.busdatamanager.core"},
         useFullyQualifiedModuleNames = true)
 @Generated
 public class BusDataManagerApplication {

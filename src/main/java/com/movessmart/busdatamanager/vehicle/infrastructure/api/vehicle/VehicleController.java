@@ -1,8 +1,8 @@
 package com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle;
 
+import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
