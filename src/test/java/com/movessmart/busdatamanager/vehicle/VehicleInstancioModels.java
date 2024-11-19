@@ -38,8 +38,8 @@ public class VehicleInstancioModels {
                             Instancio.gen().doubles().min(-180.0).max(180.0).get()))
             .toModel();
 
-
-    public static final Model<UpdateVehicleRequest> UPDATE_VEHICLE_REQUEST_MODEL = Instancio.of(UpdateVehicleRequest.class)
+    public static final Model<UpdateVehicleRequest> UPDATE_VEHICLE_REQUEST_MODEL = Instancio.of(
+                    UpdateVehicleRequest.class)
             .supply(
                     field(UpdateVehicleRequest::plateNumber),
                     () -> Instancio.gen().string().digits().length(4).get()

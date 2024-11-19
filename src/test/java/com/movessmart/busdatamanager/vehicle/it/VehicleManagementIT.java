@@ -3,9 +3,6 @@ package com.movessmart.busdatamanager.vehicle.it;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movessmart.busdatamanager.route.RouteInstancioModels;
-import com.movessmart.busdatamanager.route.domain.route.Route;
-import com.movessmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
 import com.movessmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
@@ -21,8 +18,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -75,9 +70,8 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
                 .isEqualTo(HttpStatus.CREATED);
         VehicleResponse secondCreatedVehicle = objectMapper.readValue(
                 createSecondVehicleResponse.getResponse().getContentAsString(), VehicleResponse.class);
-        
-        UpdateVehicleRequest vehicleRequest =
-                Instancio.create(VehicleInstancioModels.UPDATE_VEHICLE_REQUEST_MODEL);
+
+        UpdateVehicleRequest vehicleRequest = Instancio.create(VehicleInstancioModels.UPDATE_VEHICLE_REQUEST_MODEL);
 
         Vehicle firstCreatedVehicle =
                 objectMapper.readValue(createVehicleResponse.getResponse().getContentAsString(), Vehicle.class);
@@ -92,7 +86,7 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
 
         MvcResult vehicleRetrievedUpdatedResponse = getVehicleRequest(firstCreatedVehicle.getPlateNumber());
         assertThat(HttpStatus.valueOf(
-                vehicleRetrievedUpdatedResponse.getResponse().getStatus()))
+                        vehicleRetrievedUpdatedResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
         Vehicle retrievedVehicleUpdated = objectMapper.readValue(
                 vehicleRetrievedUpdatedResponse.getResponse().getContentAsString(), Vehicle.class);

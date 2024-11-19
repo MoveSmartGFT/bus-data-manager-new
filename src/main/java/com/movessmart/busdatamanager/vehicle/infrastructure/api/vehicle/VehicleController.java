@@ -45,7 +45,8 @@ public class VehicleController {
 
     @PutMapping(VEHICLE_ID_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public VehicleResponse update(@PathVariable String plateNumber, @Valid @RequestBody UpdateVehicleRequest vehicleRequest) {
+    public VehicleResponse update(
+            @PathVariable String plateNumber, @Valid @RequestBody UpdateVehicleRequest vehicleRequest) {
         log.info("Requested update vehicle with id {}", plateNumber);
         return VehicleResponse.fromVehicle(vehicleManagementUseCase.update(vehicleRequest.toVehicle(plateNumber)));
     }
