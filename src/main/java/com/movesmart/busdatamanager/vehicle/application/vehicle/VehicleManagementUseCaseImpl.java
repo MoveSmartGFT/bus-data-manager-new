@@ -7,6 +7,8 @@ import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUse
 import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +22,7 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
      * @param vehicle data
      * @return Vehicle
      */
+    @CacheEvict(value = "vehicle")
     @Override
     public Vehicle create(Vehicle vehicle) {
         log.info("Attempting to create Vehicle with plate number: {}", vehicle.getPlateNumber());
@@ -38,6 +41,8 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
     /**
      * @see VehicleManagementUseCase#get(String)
      */
+    @Cacheable(value = "vehicle", key = "#plateNumber")
+    @Override
     public Vehicle get(String plateNumber) {
         log.info("Searching vehicle with plate number: {}", plateNumber);
 
@@ -49,6 +54,8 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
     /**
      * @see VehicleManagementUseCase#delete(String)
      */
+    @CacheEvict(value = "vehicle", key = "#plateNumber")
+    @Override
     public Vehicle delete(String plateNumber) {
         log.info("Attempting to delete vehicle with plate number: {}", plateNumber);
 

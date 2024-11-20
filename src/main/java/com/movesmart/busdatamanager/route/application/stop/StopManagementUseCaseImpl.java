@@ -10,6 +10,9 @@ import jakarta.annotation.Resource;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +27,7 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
      * @param stop data
      * @return Stop
      */
+    @CacheEvict(value = "stop")
     @Override
     public Stop create(Stop stop) {
         log.info("Attempting to create Stop with id: {}", stop.getId());
@@ -43,6 +47,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#get(String)
      */
+    @Cacheable(value = "stop", key = "#stopId")
+    @Override
     public Stop get(String stopId) {
         log.info("Searching stop with id: {}", stopId);
 
@@ -52,6 +58,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#getAll()
      */
+    @Cacheable(value = "stop")
+    @Override
     public List<Stop> getAll() {
         log.info("Retrieving all stops");
 
@@ -61,6 +69,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#update(Stop)
      */
+    @CachePut(value = "stop", key = "#stop.id")
+    @Override
     public Stop update(Stop stop) {
         log.info("Attempting to update Stop with id: {}", stop.getId());
 
@@ -73,6 +83,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#delete(String)
      */
+    @CacheEvict(value = "stop", key = "#stopId", allEntries = true)
+    @Override
     public Stop delete(String stopId) {
         log.info("Attempting to delete Stop with id: {}", stopId);
 
@@ -87,6 +99,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#disable(String)
      */
+    @CachePut(value = "stop", key = "#stopId")
+    @Override
     public Stop disable(String stopId) {
         log.info("Attempting to disable Stop with id: {}", stopId);
 
@@ -104,6 +118,8 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
     /**
      * @see StopManagementUseCase#enable(String)
      */
+    @CachePut(value = "stop", key = "#stopId")
+    @Override
     public Stop enable(String stopId) {
         log.info("Attempting to enable Stop with id: {}", stopId);
 
@@ -117,4 +133,13 @@ public class StopManagementUseCaseImpl implements StopManagementUseCase {
 
         return stopRepository.save(stop);
     }
+
+    /* METHOD TO SIMULATE SLOW SERVICE
+    private void simulateSlowService() {
+        try {
+            Thread.sleep(10000); // Simula 10 segundos de retraso
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
+    }*/
 }
