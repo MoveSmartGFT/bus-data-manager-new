@@ -55,8 +55,7 @@ public class UpdateVehicleControllerTest {
         when(vehicleManagementUseCase.update(any())).thenReturn(vehicle);
 
         mockMvc.perform(put(
-                                VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH,
-                                vehicle.getPlateNumber())
+                VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(newVehicle)))
                 .andExpect(status().isOk())
@@ -72,9 +71,7 @@ public class UpdateVehicleControllerTest {
         when(vehicleManagementUseCase.update(any()))
                 .thenThrow(new EntityNotFoundException("Vehicle", vehicle.getPlateNumber()));
 
-        mockMvc.perform(put(
-                                VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH,
-                                vehicle.getPlateNumber())
+        mockMvc.perform(put(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(newVehicle)))
                 .andExpect(status().isNotFound());
@@ -83,9 +80,7 @@ public class UpdateVehicleControllerTest {
     @Test
     @DisplayName("GIVEN a vehicle update request is received WHEN is a bad request THEN returns status 400")
     void testUpdateVehicleBadRequest() throws Exception {
-        mockMvc.perform(put(
-                                VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH,
-                                vehicle.getPlateNumber())
+        mockMvc.perform(put(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString("Vehicle")))
                 .andExpect(status().isBadRequest());
