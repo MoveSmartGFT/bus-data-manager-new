@@ -1,12 +1,13 @@
-package com.movessmart.busdatamanager.vehicle.it;
+package com.movesmart.busdatamanager.vehicle.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movessmart.busdatamanager.vehicle.VehicleInstancioModels;
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
-import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
-import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
+import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
 import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.AfterEach;
@@ -70,6 +71,31 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         VehicleResponse secondCreatedVehicle = objectMapper.readValue(
                 createSecondVehicleResponse.getResponse().getContentAsString(), VehicleResponse.class);
 
+        UpdateVehicleRequest vehicleRequest = Instancio.create(VehicleInstancioModels.UPDATE_VEHICLE_REQUEST_MODEL);
+
+        Vehicle firstCreatedVehicle =
+                objectMapper.readValue(createVehicleResponse.getResponse().getContentAsString(), Vehicle.class);
+
+        MvcResult updateVehicleRequest = updateVehicleRequest(firstCreatedVehicle.getPlateNumber(), vehicleRequest);
+        assertThat(HttpStatus.valueOf(updateVehicleRequest.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+
+        Vehicle updatedVehicle =
+                objectMapper.readValue(updateVehicleRequest.getResponse().getContentAsString(), Vehicle.class);
+        checkVehicles(updatedVehicle, vehicleRequest.toVehicle(firstCreatedVehicle.getPlateNumber()));
+
+        MvcResult vehicleRetrievedUpdatedResponse = getVehicleRequest(firstCreatedVehicle.getPlateNumber());
+        assertThat(HttpStatus.valueOf(
+                        vehicleRetrievedUpdatedResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+        Vehicle retrievedVehicleUpdated = objectMapper.readValue(
+                vehicleRetrievedUpdatedResponse.getResponse().getContentAsString(), Vehicle.class);
+        checkVehicles(retrievedVehicleUpdated, vehicleRequest.toVehicle(firstCreatedVehicle.getPlateNumber()));
+
+        MvcResult updatedRouteNotFoundResponse = updateVehicleRequest("Vehicle1", vehicleRequest);
+        assertThat(HttpStatus.valueOf(updatedRouteNotFoundResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
         MvcResult deleteVehicleResponse = deleteVehicleRequest(secondCreatedVehicle.plateNumber());
         assertThat(HttpStatus.valueOf(deleteVehicleResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.OK);
@@ -84,7 +110,6 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
     void checkVehicles(Vehicle result, VehicleRequest expected) {
         assertThat(result.getPlateNumber()).isEqualTo(expected.plateNumber());
         assertThat(result.getCapacity()).isEqualTo(expected.capacity());
-        assertThat(result.getStatus()).isEqualTo(expected.status());
         assertThat(result.getType()).isEqualTo(expected.type());
         assertThat(result.getLocation().latitude())
                 .isEqualTo(expected.location().latitude());
@@ -97,10 +122,24 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
                 .isEqualTo(expected.vehicleHistory().size());
     }
 
+    void checkVehicles(Vehicle result, Vehicle expected) {
+        assertThat(result.getPlateNumber()).isEqualTo(expected.getPlateNumber());
+        assertThat(result.getCapacity()).isEqualTo(expected.getCapacity());
+        assertThat(result.getType()).isEqualTo(expected.getType());
+        assertThat(result.getLocation().latitude())
+                .isEqualTo(expected.getLocation().latitude());
+        assertThat(result.getLocation().longitude())
+                .isEqualTo(expected.getLocation().longitude());
+        assertThat(result.getEvents().size()).isEqualTo(expected.getEvents().size());
+        assertThat(result.getSpeed()).isEqualTo(expected.getSpeed());
+        assertThat(result.getDirection()).isEqualTo(expected.getDirection());
+        assertThat(result.getVehicleHistory().size())
+                .isEqualTo(expected.getVehicleHistory().size());
+    }
+
     void checkVehicles(VehicleResponse result, VehicleRequest expected) {
         assertThat(result.plateNumber()).isEqualTo(expected.plateNumber());
         assertThat(result.capacity()).isEqualTo(expected.capacity());
-        assertThat(result.status()).isEqualTo(expected.status());
         assertThat(result.type()).isEqualTo(expected.type());
         assertThat(result.location()).isEqualTo(expected.location());
         assertThat(result.events().size()).isEqualTo(expected.events().size());

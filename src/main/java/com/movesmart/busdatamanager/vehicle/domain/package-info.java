@@ -1,4 +1,4 @@
 @DomainRing
-package com.movessmart.busdatamanager.vehicle.domain;
+package com.movesmart.busdatamanager.vehicle.domain;
 
 import org.jmolecules.architecture.onion.simplified.DomainRing;

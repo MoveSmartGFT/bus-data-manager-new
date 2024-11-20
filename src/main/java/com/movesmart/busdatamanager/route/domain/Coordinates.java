@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.route.domain;
+package com.movesmart.busdatamanager.route.domain;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

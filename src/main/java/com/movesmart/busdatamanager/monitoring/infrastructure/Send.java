@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.monitoring.infrastructure;
+package com.movesmart.busdatamanager.monitoring.infrastructure;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

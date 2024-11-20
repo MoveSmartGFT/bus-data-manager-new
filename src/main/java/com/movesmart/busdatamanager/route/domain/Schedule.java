@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.route.domain;
+package com.movesmart.busdatamanager.route.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;

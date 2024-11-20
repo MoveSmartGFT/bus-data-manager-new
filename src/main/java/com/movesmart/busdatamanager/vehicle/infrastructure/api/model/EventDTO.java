@@ -1,6 +1,6 @@
-package com.movessmart.busdatamanager.vehicle.infrastructure.api.model;
+package com.movesmart.busdatamanager.vehicle.infrastructure.api.model;
 
-import com.movessmart.busdatamanager.vehicle.domain.Event;
+import com.movesmart.busdatamanager.vehicle.domain.Event;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;

@@ -1,7 +1,7 @@
-package com.movessmart.busdatamanager.route.infrastructure.api.route.dto;
+package com.movesmart.busdatamanager.route.infrastructure.api.route.dto;
 
-import com.movessmart.busdatamanager.route.domain.route.Route;
-import com.movessmart.busdatamanager.route.infrastructure.api.model.ScheduleDTO;
+import com.movesmart.busdatamanager.route.domain.route.Route;
+import com.movesmart.busdatamanager.route.infrastructure.api.model.ScheduleDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 

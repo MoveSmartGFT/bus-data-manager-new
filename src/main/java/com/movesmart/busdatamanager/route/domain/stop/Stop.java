@@ -1,6 +1,6 @@
-package com.movessmart.busdatamanager.route.domain.stop;
+package com.movesmart.busdatamanager.route.domain.stop;
 
-import com.movessmart.busdatamanager.route.domain.Coordinates;
+import com.movesmart.busdatamanager.route.domain.Coordinates;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Id;
 import jakarta.validation.Valid;

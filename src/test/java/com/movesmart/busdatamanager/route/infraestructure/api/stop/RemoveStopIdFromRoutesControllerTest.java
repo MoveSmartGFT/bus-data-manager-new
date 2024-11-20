@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.route.infraestructure.api.stop;
+package com.movesmart.busdatamanager.route.infraestructure.api.stop;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -6,12 +6,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.movessmart.busdatamanager.core.Fixtures;
-import com.movessmart.busdatamanager.route.RouteInstancioModels;
-import com.movessmart.busdatamanager.route.domain.route.RouteManagementUseCase;
-import com.movessmart.busdatamanager.route.domain.stop.Stop;
-import com.movessmart.busdatamanager.route.domain.stop.StopManagementUseCase;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.StopController;
+import com.movesmart.busdatamanager.core.Fixtures;
+import com.movesmart.busdatamanager.route.RouteInstancioModels;
+import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
+import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.BeforeEach;

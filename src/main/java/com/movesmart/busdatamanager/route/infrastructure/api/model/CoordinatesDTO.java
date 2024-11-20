@@ -1,6 +1,6 @@
-package com.movessmart.busdatamanager.route.infrastructure.api.model;
+package com.movesmart.busdatamanager.route.infrastructure.api.model;
 
-import com.movessmart.busdatamanager.route.domain.Coordinates;
+import com.movesmart.busdatamanager.route.domain.Coordinates;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

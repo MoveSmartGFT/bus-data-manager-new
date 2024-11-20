@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
-public class DeleteVehicleManagementUseCaseImplTest {
+public class UpdateVehicleManagementUseCaseImplTest {
 
     @Mock
     private VehicleRepository vehicleRepository;
@@ -31,21 +31,22 @@ public class DeleteVehicleManagementUseCaseImplTest {
     private final Vehicle vehicle = Instancio.create(VehicleInstancioModels.VEHICLE_MODEL);
 
     @Test
-    @DisplayName("GIVEN a vehicle plate number THEN is deleted and returned")
-    void testDeleteVehicle() {
+    @DisplayName("GIVEN a vehicle THEN is updated and returned")
+    void testUpdateVehicle() {
         when(vehicleRepository.findById(vehicle.getPlateNumber())).thenReturn(Optional.of(vehicle));
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
 
-        Vehicle vehicleRetrieved = vehicleManagementUseCase.delete(vehicle.getPlateNumber());
+        Vehicle vehicleRetrieved = vehicleManagementUseCase.update(vehicle);
 
         assertThat(vehicleRetrieved).isEqualTo(vehicle);
     }
 
     @Test
-    @DisplayName("GIVEN a vehicle to delete WHEN it does not exist THEN an exception is thrown")
-    void testDeleteVehicleDoesNotExist() {
+    @DisplayName("GIVEN a vehicle WHEN it does not exist THEN an exception is thrown")
+    void testUpdateVehicleDoesNotExist() {
         when(vehicleRepository.findById(vehicle.getPlateNumber())).thenReturn(Optional.empty());
 
-        Throwable throwable = catchThrowable(() -> vehicleManagementUseCase.delete(vehicle.getPlateNumber()));
+        Throwable throwable = catchThrowable(() -> vehicleManagementUseCase.get(vehicle.getPlateNumber()));
 
         assertThat(throwable)
                 .isInstanceOf(EntityNotFoundException.class)

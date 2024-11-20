@@ -1,12 +1,12 @@
-package com.movessmart.busdatamanager.route.it;
+package com.movesmart.busdatamanager.route.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movessmart.busdatamanager.route.RouteInstancioModels;
-import com.movessmart.busdatamanager.route.domain.stop.Stop;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
+import com.movesmart.busdatamanager.route.RouteInstancioModels;
+import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
 import java.util.List;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.AfterEach;

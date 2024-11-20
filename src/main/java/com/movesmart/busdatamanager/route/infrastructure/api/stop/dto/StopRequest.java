@@ -1,7 +1,7 @@
-package com.movessmart.busdatamanager.route.infrastructure.api.stop.dto;
+package com.movesmart.busdatamanager.route.infrastructure.api.stop.dto;
 
-import com.movessmart.busdatamanager.route.domain.stop.Stop;
-import com.movessmart.busdatamanager.route.infrastructure.api.model.CoordinatesDTO;
+import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.infrastructure.api.model.CoordinatesDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.vehicle.infraestructure.api.vehicle;
+package com.movesmart.busdatamanager.vehicle.infraestructure.api.vehicle;
 
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,14 +7,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movessmart.busdatamanager.core.Fixtures;
-import com.movessmart.busdatamanager.core.exception.EntityNotFoundException;
-import com.movessmart.busdatamanager.vehicle.VehicleInstancioModels;
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
-import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.VehicleController;
-import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
-import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
+import com.movesmart.busdatamanager.core.Fixtures;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.VehicleController;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

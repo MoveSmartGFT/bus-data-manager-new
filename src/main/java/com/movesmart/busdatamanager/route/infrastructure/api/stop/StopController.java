@@ -1,9 +1,9 @@
-package com.movessmart.busdatamanager.route.infrastructure.api.stop;
+package com.movesmart.busdatamanager.route.infrastructure.api.stop;
 
-import com.movessmart.busdatamanager.route.domain.route.RouteManagementUseCase;
-import com.movessmart.busdatamanager.route.domain.stop.StopManagementUseCase;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.StopResponse;
+import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
+import com.movesmart.busdatamanager.route.domain.stop.StopManagementUseCase;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

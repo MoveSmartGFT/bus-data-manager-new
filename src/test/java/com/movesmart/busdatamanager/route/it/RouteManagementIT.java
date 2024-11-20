@@ -1,17 +1,17 @@
-package com.movessmart.busdatamanager.route.it;
+package com.movesmart.busdatamanager.route.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movessmart.busdatamanager.route.RouteInstancioModels;
-import com.movessmart.busdatamanager.route.domain.route.Route;
-import com.movessmart.busdatamanager.route.domain.stop.Stop;
-import com.movessmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
-import com.movessmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
+import com.movesmart.busdatamanager.route.RouteInstancioModels;
+import com.movesmart.busdatamanager.route.domain.route.Route;
+import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.CreateRouteRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.route.dto.UpdateRouteRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopRequest;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.UpdateRouteStopsRequest;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

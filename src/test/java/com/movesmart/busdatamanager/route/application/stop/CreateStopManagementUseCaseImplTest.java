@@ -1,14 +1,14 @@
-package com.movessmart.busdatamanager.route.application.stop;
+package com.movesmart.busdatamanager.route.application.stop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.movessmart.busdatamanager.core.exception.EntityAlreadyExistsException;
-import com.movessmart.busdatamanager.route.RouteInstancioModels;
-import com.movessmart.busdatamanager.route.domain.stop.Stop;
-import com.movessmart.busdatamanager.route.domain.stop.StopRepository;
+import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.route.RouteInstancioModels;
+import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.domain.stop.StopRepository;
 import java.util.Optional;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

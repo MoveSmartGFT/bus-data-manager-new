@@ -1,6 +1,6 @@
-package com.movessmart.busdatamanager.route.infrastructure.api.model;
+package com.movesmart.busdatamanager.route.infrastructure.api.model;
 
-import com.movessmart.busdatamanager.route.domain.Schedule;
+import com.movesmart.busdatamanager.route.domain.Schedule;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;

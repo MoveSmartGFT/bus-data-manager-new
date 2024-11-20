@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.vehicle.domain.vehicle;
+package com.movesmart.busdatamanager.vehicle.domain.vehicle;
 
 public interface VehicleManagementUseCase {
     String VEHICLE = "Vehicle";
@@ -23,4 +23,11 @@ public interface VehicleManagementUseCase {
      * @return Vehicle
      */
     Vehicle delete(String plateNumber);
+
+    /**
+     * Updates a Vehicle
+     * @param vehicle new vehicle
+     * @return Vehicle
+     */
+    Vehicle update(Vehicle vehicle);
 }

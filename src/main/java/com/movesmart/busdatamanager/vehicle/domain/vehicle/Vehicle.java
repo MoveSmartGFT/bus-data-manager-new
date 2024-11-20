@@ -1,8 +1,8 @@
-package com.movessmart.busdatamanager.vehicle.domain.vehicle;
+package com.movesmart.busdatamanager.vehicle.domain.vehicle;
 
-import com.movessmart.busdatamanager.vehicle.domain.Coordinates;
-import com.movessmart.busdatamanager.vehicle.domain.Event;
-import com.movessmart.busdatamanager.vehicle.domain.VehicleHistory;
+import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
+import com.movesmart.busdatamanager.vehicle.domain.Event;
+import com.movesmart.busdatamanager.vehicle.domain.VehicleHistory;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Id;
 import jakarta.validation.Valid;
@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
+import org.jmolecules.ddd.annotation.ValueObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -43,12 +44,6 @@ public class Vehicle {
     @NotNull
     @Positive
     private Integer capacity;
-
-    /**
-     * Status of the vehicle
-     */
-    @NotBlank
-    private String status;
 
     /**
      * Type of vehicle
@@ -91,12 +86,17 @@ public class Vehicle {
     private List<VehicleHistory> vehicleHistory;
 
     /**
+     * Status of the vehicle
+     */
+    @NotNull
+    private Status status;
+
+    /**
      * Creator of the vehicle
      */
     public Vehicle(
             String plateNumber,
             Integer capacity,
-            String status,
             String type,
             Coordinates location,
             List<Event> events,
@@ -105,12 +105,43 @@ public class Vehicle {
             List<VehicleHistory> vehicleHistory) {
         this.plateNumber = plateNumber;
         this.capacity = capacity;
-        this.status = status;
+        this.status = Status.InService;
         this.type = type;
         this.location = location;
         this.events = events;
         this.speed = speed;
         this.direction = direction;
         this.vehicleHistory = vehicleHistory;
+    }
+
+    /**
+     * Vehicle in service
+     */
+    public void setVehicleInService() {
+        this.status = Status.InService;
+    }
+
+    /**
+     * Vehicle out of service
+     */
+    public void setVehicleOutOfService() {
+        this.status = Status.OutOfService;
+    }
+
+    /**
+     * Vehicle in maintenance
+     */
+    public void setVehicleInMaitenance() {
+        this.status = Status.InMaintenance;
+    }
+
+    /**
+     * Possible status of the vehicle
+     */
+    @ValueObject
+    public enum Status {
+        InService,
+        OutOfService,
+        InMaintenance
     }
 }

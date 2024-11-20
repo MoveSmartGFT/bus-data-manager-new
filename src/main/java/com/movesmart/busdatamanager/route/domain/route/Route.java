@@ -1,6 +1,6 @@
-package com.movessmart.busdatamanager.route.domain.route;
+package com.movesmart.busdatamanager.route.domain.route;
 
-import com.movessmart.busdatamanager.route.domain.Schedule;
+import com.movesmart.busdatamanager.route.domain.Schedule;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;

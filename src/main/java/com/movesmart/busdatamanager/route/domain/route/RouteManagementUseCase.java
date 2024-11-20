@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.route.domain.route;
+package com.movesmart.busdatamanager.route.domain.route;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
 @InfrastructureRing
-package com.movessmart.busdatamanager.route.infrastructure;
+package com.movesmart.busdatamanager.route.infrastructure;
 
 import org.jmolecules.architecture.onion.simplified.InfrastructureRing;

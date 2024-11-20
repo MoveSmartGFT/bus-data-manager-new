@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.vehicle.domain.vehicle;
+package com.movesmart.busdatamanager.vehicle.domain.vehicle;
 
 import lombok.Generated;
 import org.springframework.data.mongodb.repository.MongoRepository;

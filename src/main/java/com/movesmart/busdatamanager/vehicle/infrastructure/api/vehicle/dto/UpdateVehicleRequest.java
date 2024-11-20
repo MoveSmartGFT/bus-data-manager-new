@@ -10,10 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Generated;
 
-@Generated
-public record VehicleRequest(
+public record UpdateVehicleRequest(
         @NotBlank
                 @Pattern(
                         regexp = "^\\d{4}[A-Z]{3}$",
@@ -26,7 +24,7 @@ public record VehicleRequest(
         @NotNull double speed,
         @NotBlank String direction,
         @Valid List<VehicleHistoryDTO> vehicleHistory) {
-    public Vehicle toVehicle() {
+    public Vehicle toVehicle(String plateNumber) {
         return new Vehicle(
                 plateNumber,
                 capacity,

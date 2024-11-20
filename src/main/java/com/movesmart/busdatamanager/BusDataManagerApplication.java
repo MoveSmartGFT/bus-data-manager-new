@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager;
+package com.movesmart.busdatamanager;
 
 import lombok.Generated;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +11,7 @@ import org.springframework.modulith.Modulithic;
 @ConfigurationPropertiesScan
 @Modulithic(
         systemName = "Bus Dataset Manager",
-        sharedModules = {"com.movessmart.busdatamanager.core"},
+        sharedModules = {"com.movesmart.busdatamanager.core"},
         useFullyQualifiedModuleNames = true)
 @Generated
 @EnableCaching

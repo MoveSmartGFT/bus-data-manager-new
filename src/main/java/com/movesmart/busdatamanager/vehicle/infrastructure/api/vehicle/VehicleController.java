@@ -1,8 +1,9 @@
-package com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle;
+package com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle;
 
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
-import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
-import com.movessmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,13 @@ public class VehicleController {
     public VehicleResponse delete(@PathVariable String plateNumber) {
         log.info("Requested delete vehicle with plate number {}", plateNumber);
         return VehicleResponse.fromVehicle(vehicleManagementUseCase.delete(plateNumber));
+    }
+
+    @PutMapping(VEHICLE_ID_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public VehicleResponse update(
+            @PathVariable String plateNumber, @Valid @RequestBody UpdateVehicleRequest vehicleRequest) {
+        log.info("Requested update vehicle with id {}", plateNumber);
+        return VehicleResponse.fromVehicle(vehicleManagementUseCase.update(vehicleRequest.toVehicle(plateNumber)));
     }
 }

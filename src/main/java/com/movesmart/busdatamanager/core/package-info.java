@@ -1,4 +1,4 @@
 @ApplicationModule(type = ApplicationModule.Type.OPEN)
-package com.movessmart.busdatamanager.core;
+package com.movesmart.busdatamanager.core;
 
 import org.springframework.modulith.ApplicationModule;

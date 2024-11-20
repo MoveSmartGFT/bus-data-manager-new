@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.vehicle.domain;
+package com.movesmart.busdatamanager.vehicle.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

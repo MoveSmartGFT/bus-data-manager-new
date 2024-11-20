@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.route.infraestructure.api.stop;
+package com.movesmart.busdatamanager.route.infraestructure.api.stop;
 
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,14 +7,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movessmart.busdatamanager.core.Fixtures;
-import com.movessmart.busdatamanager.core.exception.EntityNotFoundException;
-import com.movessmart.busdatamanager.route.RouteInstancioModels;
-import com.movessmart.busdatamanager.route.application.stop.StopManagementUseCaseImpl;
-import com.movessmart.busdatamanager.route.domain.route.RouteManagementUseCase;
-import com.movessmart.busdatamanager.route.domain.stop.Stop;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.StopController;
-import com.movessmart.busdatamanager.route.infrastructure.api.stop.dto.StopResponse;
+import com.movesmart.busdatamanager.core.Fixtures;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.route.RouteInstancioModels;
+import com.movesmart.busdatamanager.route.application.stop.StopManagementUseCaseImpl;
+import com.movesmart.busdatamanager.route.domain.route.RouteManagementUseCase;
+import com.movesmart.busdatamanager.route.domain.stop.Stop;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.StopController;
+import com.movesmart.busdatamanager.route.infrastructure.api.stop.dto.StopResponse;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

@@ -1,8 +1,8 @@
-package com.movessmart.busdatamanager.core.infrastructure.api;
+package com.movesmart.busdatamanager.core.infrastructure.api;
 
-import com.movessmart.busdatamanager.core.exception.EntityAlreadyExistsException;
-import com.movessmart.busdatamanager.core.exception.EntityNotFoundException;
-import com.movessmart.busdatamanager.core.exception.EntityStatusException;
+import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.route.domain.stop;
+package com.movesmart.busdatamanager.route.domain.stop;
 
 import java.util.List;
 

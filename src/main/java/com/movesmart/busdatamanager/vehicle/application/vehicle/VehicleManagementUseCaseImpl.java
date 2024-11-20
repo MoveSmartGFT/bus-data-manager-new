@@ -1,10 +1,10 @@
-package com.movessmart.busdatamanager.vehicle.application.vehicle;
+package com.movesmart.busdatamanager.vehicle.application.vehicle;
 
-import com.movessmart.busdatamanager.core.exception.EntityAlreadyExistsException;
-import com.movessmart.busdatamanager.core.exception.EntityNotFoundException;
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
-import com.movessmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
+import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -65,5 +65,17 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
         vehicleRepository.delete(vehicle);
 
         return vehicle;
+    }
+
+    /**
+     * @see VehicleManagementUseCase#update(Vehicle)
+     */
+    public Vehicle update(Vehicle vehicle) {
+        log.info("Attempting to update Vehicle with id: {}", vehicle.getPlateNumber());
+
+        get(vehicle.getPlateNumber());
+
+        log.info("Found Vehicle with id: {}", vehicle.getPlateNumber());
+        return vehicleRepository.save(vehicle);
     }
 }

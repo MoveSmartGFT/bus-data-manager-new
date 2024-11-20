@@ -1,4 +1,4 @@
-package com.movessmart.busdatamanager.core.exception;
+package com.movesmart.busdatamanager.core.exception;
 
 import lombok.Generated;
 import lombok.Getter;

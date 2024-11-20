@@ -3,18 +3,17 @@ package com.movesmart.busdatamanager.vehicle.infraestructure.api.vehicle;
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.core.Fixtures;
-import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.VehicleController;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
 import net.javacrumbs.jsonunit.core.Option;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -29,7 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(InstancioExtension.class)
-public class CreateVehicleControllerTest {
+public class UpdateVehicleControllerTest {
 
     private MockMvc mockMvc;
 
@@ -48,38 +47,42 @@ public class CreateVehicleControllerTest {
     }
 
     @Test
-    @DisplayName("WHEN a vehicle creation request is received THEN returns vehicle object and status 201")
-    void testVehicleCreate() throws Exception {
-        VehicleResponse vehicleResponse = VehicleResponse.fromVehicle(vehicle);
+    @DisplayName(
+            "GIVEN a vehicle update request is received WHEN the vehicle exists THEN returns vehicle object updated and status 200")
+    void testUpdate() throws Exception {
+        VehicleRequest newVehicle = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
 
-        when(vehicleManagementUseCase.create(any())).thenReturn(vehicle);
+        when(vehicleManagementUseCase.update(any())).thenReturn(vehicle);
 
-        mockMvc.perform(post(VehicleController.VEHICLE_PATH)
+        mockMvc.perform(put(
+                VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(vehicleRequest)))
-                .andExpect(status().isCreated())
+                        .content(objectMapper.writeValueAsString(newVehicle)))
+                .andExpect(status().isOk())
                 .andExpect(json().when(Option.TREATING_NULL_AS_ABSENT)
-                        .isEqualTo(objectMapper.writeValueAsString(vehicleResponse)));
+                        .isEqualTo(objectMapper.writeValueAsString(vehicle)));
     }
 
     @Test
-    @DisplayName("WHEN a vehicle creation request is received WHEN vehicle already exists THEN returns status 409")
-    void testVehicleCreateConflict() throws Exception {
-        when(vehicleManagementUseCase.create(any()))
-                .thenThrow(new EntityAlreadyExistsException("Vehicle", vehicle.getPlateNumber()));
+    @DisplayName("GIVEN a vehicle update request is received WHEN the vehicle does not exist THEN returns status 404")
+    void testUpdateVehicleDoesNotExist() throws Exception {
+        VehicleRequest newVehicle = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
 
-        mockMvc.perform(post(VehicleController.VEHICLE_PATH)
+        when(vehicleManagementUseCase.update(any()))
+                .thenThrow(new EntityNotFoundException("Vehicle", vehicle.getPlateNumber()));
+
+        mockMvc.perform(put(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(vehicleRequest)))
-                .andExpect(status().isConflict());
+                        .content(objectMapper.writeValueAsString(newVehicle)))
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("WHEN a vehicle creation request is received WHEN is a bad request THEN returns status 400")
-    void testVehicleCreateBadRequest() throws Exception {
-        mockMvc.perform(post(VehicleController.VEHICLE_PATH)
+    @DisplayName("GIVEN a vehicle update request is received WHEN is a bad request THEN returns status 400")
+    void testUpdateVehicleBadRequest() throws Exception {
+        mockMvc.perform(put(VehicleController.VEHICLE_PATH + VehicleController.VEHICLE_ID_PATH, vehicle.getPlateNumber())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content("Vehicle"))
+                        .content(objectMapper.writeValueAsString("Vehicle")))
                 .andExpect(status().isBadRequest());
     }
 }
