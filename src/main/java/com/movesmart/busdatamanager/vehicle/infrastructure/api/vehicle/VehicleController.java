@@ -55,8 +55,10 @@ public class VehicleController {
 
     @PatchMapping(VEHICLE_ID_PATH + VEHICLE_CHANGE_STATUS_PATH)
     @ResponseStatus(code = HttpStatus.OK)
-    public VehicleResponse changeStatus(@PathVariable String plateNumber, @RequestBody @Valid ChangeStatusVehicleRequest changeStatusRequest) {
+    public VehicleResponse changeStatus(
+            @PathVariable String plateNumber, @RequestBody @Valid ChangeStatusVehicleRequest changeStatusRequest) {
         log.info("Requested change status of the vehicle with plateNumber {}", plateNumber);
-        return VehicleResponse.fromVehicle(vehicleManagementUseCase.changeStatus(plateNumber, changeStatusRequest.status()));
+        return VehicleResponse.fromVehicle(
+                vehicleManagementUseCase.changeStatus(plateNumber, changeStatusRequest.status()));
     }
 }

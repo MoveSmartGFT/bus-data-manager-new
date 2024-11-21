@@ -1,9 +1,8 @@
 package com.movesmart.busdatamanager.vehicle.domain.vehicle;
 
+import java.util.Optional;
 import lombok.Generated;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.Optional;
 
 @Generated
 public interface VehicleRepository extends MongoRepository<Vehicle, String> {

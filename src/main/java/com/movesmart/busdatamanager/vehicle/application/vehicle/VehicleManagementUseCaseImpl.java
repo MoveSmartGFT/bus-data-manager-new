@@ -85,7 +85,7 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
     /**
      * @see VehicleManagementUseCase#changeStatus(String, Vehicle.Status)
      */
-    @CachePut(value = "vehicle", key = "#plateNumber")
+    @CacheEvict(value = "vehicle", key = "#plateNumber", allEntries = true)
     @Override
     public Vehicle changeStatus(String plateNumber, Vehicle.Status newStatus) {
         log.info("Attempting to change the status of the Vehicle with id: {}", plateNumber);
