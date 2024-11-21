@@ -91,7 +91,7 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
                 .isEqualTo(HttpStatus.OK);
         Vehicle retrievedVehicleUpdated = objectMapper.readValue(
                 vehicleRetrievedUpdatedResponse.getResponse().getContentAsString(), Vehicle.class);
-        checkVehicles(retrievedVehicleUpdated, retrievedVehicleUpdated);
+        checkVehicles(retrievedVehicleUpdated, vehicleRequest.toVehicle(firstVehicleRequest.plateNumber()));
 
         MvcResult updatedRouteNotFoundResponse = updateVehicleRequest("Vehicle1", vehicleRequest);
         assertThat(HttpStatus.valueOf(updatedRouteNotFoundResponse.getResponse().getStatus()))
