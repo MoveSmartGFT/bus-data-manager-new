@@ -1,6 +1,7 @@
 package com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle;
 
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.ChangeStatusVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class VehicleController {
     public static final String VEHICLE_PATH = "/api/v1/vehicle"; // NOSONAR
     public static final String VEHICLE_ID_PATH = "/{plateNumber}"; // NOSONAR
+    public static final String VEHICLE_CHANGE_STATUS_PATH = "/status"; // NOSONAR
 
     private final VehicleManagementUseCase vehicleManagementUseCase;
 
@@ -49,5 +51,12 @@ public class VehicleController {
             @PathVariable String plateNumber, @Valid @RequestBody UpdateVehicleRequest vehicleRequest) {
         log.info("Requested update vehicle with id {}", plateNumber);
         return VehicleResponse.fromVehicle(vehicleManagementUseCase.update(vehicleRequest.toVehicle(plateNumber)));
+    }
+
+    @PatchMapping(VEHICLE_ID_PATH + VEHICLE_CHANGE_STATUS_PATH)
+    @ResponseStatus(code = HttpStatus.OK)
+    public VehicleResponse changeStatus(@PathVariable String plateNumber, @RequestBody @Valid ChangeStatusVehicleRequest changeStatusRequest) {
+        log.info("Requested change status of the vehicle with plateNumber {}", plateNumber);
+        return VehicleResponse.fromVehicle(vehicleManagementUseCase.changeStatus(plateNumber, changeStatusRequest.status()));
     }
 }

@@ -2,6 +2,7 @@ package com.movesmart.busdatamanager.vehicle.application.vehicle;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
@@ -79,5 +80,36 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
 
         log.info("Found Vehicle with id: {}", vehicle.getPlateNumber());
         return vehicleRepository.save(vehicle);
+    }
+
+    /**
+     * @see VehicleManagementUseCase#changeStatus(String, Vehicle.Status)
+     */
+    @CachePut(value = "vehicle", key = "#plateNumber")
+    @Override
+    public Vehicle changeStatus(String plateNumber, Vehicle.Status newStatus) {
+        log.info("Attempting to change the status of the Vehicle with id: {}", plateNumber);
+
+        Vehicle vehicle = vehicleRepository
+                .findById(plateNumber)
+                .orElseThrow(() -> new EntityNotFoundException(VEHICLE, plateNumber));
+
+        if (vehicle.getStatus() == newStatus) {
+            throw new EntityStatusException("Vehicle", plateNumber, newStatus.toString());
+        }
+
+        log.info("Changing status of Vehicle with plate number: {} to {}", plateNumber, newStatus);
+
+        updateVehicleStatus(vehicle, newStatus);
+
+        return vehicleRepository.save(vehicle);
+    }
+
+    private void updateVehicleStatus(Vehicle vehicle, Vehicle.Status newStatus) {
+        switch (newStatus) {
+            case InService -> vehicle.setVehicleInService();
+            case OutOfService -> vehicle.setVehicleOutOfService();
+            case InMaintenance -> vehicle.setVehicleInMaitenance();
+        }
     }
 }

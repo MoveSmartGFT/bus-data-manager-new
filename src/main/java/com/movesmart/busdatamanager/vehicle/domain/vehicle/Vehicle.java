@@ -114,6 +114,11 @@ public class Vehicle {
         this.vehicleHistory = vehicleHistory;
     }
 
+    public Vehicle(String plateNumber, @Valid Status status) {
+        this.plateNumber = plateNumber;
+        this.status = status;
+    }
+
     /**
      * Vehicle in service
      */
