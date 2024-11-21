@@ -60,6 +60,6 @@ public class VehicleInstancioModels {
                             + Instancio.gen().string().upperCase().length(3).get())
             .supply(
                     field(ChangeStatusVehicleRequest::status),
-                    () -> Instancio.gen().enumOf(Vehicle.Status.class).get()) // Generate a valid status from the enum
+                    () -> Instancio.gen().enumOf(Vehicle.Status.class).get())
             .toModel();
 }
