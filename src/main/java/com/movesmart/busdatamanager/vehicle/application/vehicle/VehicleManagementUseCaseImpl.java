@@ -8,6 +8,7 @@ import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +55,7 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
     /**
      * @see VehicleManagementUseCase#delete(String)
      */
-    @CacheEvict(value = "vehicle", key = "#plateNumber")
+    @CacheEvict(value = "vehicle", key = "#plateNumber", allEntries = true)
     @Override
     public Vehicle delete(String plateNumber) {
         log.info("Attempting to delete vehicle with plate number: {}", plateNumber);
@@ -70,6 +71,7 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
     /**
      * @see VehicleManagementUseCase#update(Vehicle)
      */
+    @CachePut(value = "vehicle", key = "#vehicle.plateNumber")
     public Vehicle update(Vehicle vehicle) {
         log.info("Attempting to update Vehicle with id: {}", vehicle.getPlateNumber());
 
