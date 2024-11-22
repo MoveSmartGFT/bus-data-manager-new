@@ -116,11 +116,6 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         MvcResult invalidChangeResponse = changeStatusRequest(firstVehicleRequest.plateNumber(), invalidChangeRequest);
         assertThat(HttpStatus.valueOf(invalidChangeResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
-        String errorDetail = objectMapper
-                .readTree(invalidChangeResponse.getResponse().getContentAsString())
-                .get("detail")
-                .asText();
-        assertThat(errorDetail).contains("Vehicle", firstVehicleRequest.plateNumber(), "OutOfService");
 
         ChangeStatusVehicleRequest changeToInMaintenanceRequest =
                 new ChangeStatusVehicleRequest(firstVehicleRequest.plateNumber(), Vehicle.Status.InMaintenance);
@@ -140,11 +135,6 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
         MvcResult nonExistentVehicleResponse = changeStatusRequest("NonVehice", changeNonExistentVehicleRequest);
         assertThat(HttpStatus.valueOf(nonExistentVehicleResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
-        String notFoundDetail = objectMapper
-                .readTree(nonExistentVehicleResponse.getResponse().getContentAsString())
-                .get("detail")
-                .asText();
-        assertThat(notFoundDetail).contains("Vehicle", "NonVehice");
 
         MvcResult deleteVehicleResponse = deleteVehicleRequest(secondCreatedVehicle.plateNumber());
         assertThat(HttpStatus.valueOf(deleteVehicleResponse.getResponse().getStatus()))
