@@ -161,7 +161,7 @@ public class RouteManagementUseCaseImpl implements RouteManagementUseCase {
     /**
      * @see RouteManagementUseCase#delete(String)
      */
-    @CacheEvict(value = "route", key =  "#routeId", allEntries = true)
+    @CacheEvict(value = "route", key = "#routeId", allEntries = true)
     @Override
     public Route delete(String routeId) {
         log.info("Attempting to delete Route with id: {}", routeId);

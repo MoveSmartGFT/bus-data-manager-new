@@ -2,9 +2,12 @@ package com.movesmart.busdatamanager.vehicle.application.vehicle;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -79,5 +82,38 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
 
         log.info("Found Vehicle with id: {}", vehicle.getPlateNumber());
         return vehicleRepository.save(vehicle);
+    }
+
+    /**
+     * @see VehicleManagementUseCase#changeStatus(String, Vehicle.Status)
+     */
+    @CacheEvict(value = "vehicle", key = "#plateNumber", allEntries = true)
+    @Override
+    public Vehicle changeStatus(String plateNumber, Vehicle.Status newStatus) {
+        log.info("Attempting to change the status of the Vehicle with id: {}", plateNumber);
+
+        Vehicle vehicle = vehicleRepository
+                .findById(plateNumber)
+                .orElseThrow(() -> new EntityNotFoundException(VEHICLE, plateNumber));
+
+        if (vehicle.getStatus() == newStatus) {
+            throw new EntityStatusException("Vehicle", plateNumber, newStatus.toString());
+        }
+
+        log.info("Changing status of Vehicle with plate number: {} to {}", plateNumber, newStatus);
+
+        updateVehicleStatus(vehicle, newStatus);
+
+        return vehicleRepository.save(vehicle);
+    }
+
+    private void updateVehicleStatus(Vehicle vehicle, Vehicle.Status newStatus) {
+        Map<Vehicle.Status, Runnable> statusChangeMap = new HashMap<>();
+        statusChangeMap.put(Vehicle.Status.InService, vehicle::setVehicleInService);
+        statusChangeMap.put(Vehicle.Status.OutOfService, vehicle::setVehicleOutOfService);
+        statusChangeMap.put(Vehicle.Status.InMaintenance, vehicle::setVehicleInMaintenance);
+
+        Runnable statusChangeAction = statusChangeMap.get(newStatus);
+        statusChangeAction.run();
     }
 }

@@ -13,8 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager =
-                new CaffeineCacheManager("stop", "route", "stopsbyroute", "vehicle");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("stop", "route", "stopsbyroute", "vehicle");
         cacheManager.setCaffeine(
                 Caffeine.newBuilder().expireAfterWrite(6, TimeUnit.HOURS).maximumSize(1000));
         return cacheManager;

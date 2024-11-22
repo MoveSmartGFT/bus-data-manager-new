@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.ChangeStatusVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleResponse;
@@ -37,6 +38,7 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
     @Transactional
     @Test
     void vehicleIT() throws Exception {
+
         VehicleRequest firstVehicleRequest = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
         VehicleRequest secondVehicleRequest = Instancio.create(VehicleInstancioModels.VEHICLE_REQUEST_MODEL);
 
@@ -95,6 +97,43 @@ public class VehicleManagementIT extends EndPointVehicleInventory {
 
         MvcResult updatedRouteNotFoundResponse = updateVehicleRequest("Vehicle1", vehicleRequest);
         assertThat(HttpStatus.valueOf(updatedRouteNotFoundResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        ChangeStatusVehicleRequest changeToOutOfServiceRequest =
+                new ChangeStatusVehicleRequest(firstVehicleRequest.plateNumber(), Vehicle.Status.OutOfService);
+        MvcResult changeToOutOfServiceResponse =
+                changeStatusRequest(firstVehicleRequest.plateNumber(), changeToOutOfServiceRequest);
+        assertThat(HttpStatus.valueOf(changeToOutOfServiceResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+
+        MvcResult retrieveVehicleOutOfServiceResponse = getVehicleRequest(firstVehicleRequest.plateNumber());
+        Vehicle vehicleOutOfService = objectMapper.readValue(
+                retrieveVehicleOutOfServiceResponse.getResponse().getContentAsString(), Vehicle.class);
+        assertThat(vehicleOutOfService.getStatus()).isEqualTo(Vehicle.Status.OutOfService);
+
+        ChangeStatusVehicleRequest invalidChangeRequest =
+                new ChangeStatusVehicleRequest(firstVehicleRequest.plateNumber(), Vehicle.Status.OutOfService);
+        MvcResult invalidChangeResponse = changeStatusRequest(firstVehicleRequest.plateNumber(), invalidChangeRequest);
+        assertThat(HttpStatus.valueOf(invalidChangeResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        ChangeStatusVehicleRequest changeToInMaintenanceRequest =
+                new ChangeStatusVehicleRequest(firstVehicleRequest.plateNumber(), Vehicle.Status.InMaintenance);
+        MvcResult changeToInMaintenanceResponse =
+                changeStatusRequest(firstVehicleRequest.plateNumber(), changeToInMaintenanceRequest);
+        assertThat(HttpStatus.valueOf(
+                        changeToInMaintenanceResponse.getResponse().getStatus()))
+                .isEqualTo(HttpStatus.OK);
+
+        MvcResult retrieveVehicleInMaintenanceResponse = getVehicleRequest(firstVehicleRequest.plateNumber());
+        Vehicle vehicleInMaintenance = objectMapper.readValue(
+                retrieveVehicleInMaintenanceResponse.getResponse().getContentAsString(), Vehicle.class);
+        assertThat(vehicleInMaintenance.getStatus()).isEqualTo(Vehicle.Status.InMaintenance);
+
+        ChangeStatusVehicleRequest changeNonExistentVehicleRequest =
+                new ChangeStatusVehicleRequest("NonVehice", Vehicle.Status.InService);
+        MvcResult nonExistentVehicleResponse = changeStatusRequest("NonVehice", changeNonExistentVehicleRequest);
+        assertThat(HttpStatus.valueOf(nonExistentVehicleResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
         MvcResult deleteVehicleResponse = deleteVehicleRequest(secondCreatedVehicle.plateNumber());

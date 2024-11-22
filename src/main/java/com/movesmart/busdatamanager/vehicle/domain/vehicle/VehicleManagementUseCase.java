@@ -30,4 +30,11 @@ public interface VehicleManagementUseCase {
      * @return Vehicle
      */
     Vehicle update(Vehicle vehicle);
+
+    /**
+     * Updates the status of a Vehicle
+     * @param plateNumber to change the status
+     * @return Vehicle
+     */
+    Vehicle changeStatus(String plateNumber, Vehicle.Status newStatus);
 }
