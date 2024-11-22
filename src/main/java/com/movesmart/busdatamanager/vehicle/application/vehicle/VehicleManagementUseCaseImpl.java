@@ -6,6 +6,8 @@ import com.movesmart.busdatamanager.core.exception.EntityStatusException;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleManagementUseCase;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -106,10 +108,12 @@ public class VehicleManagementUseCaseImpl implements VehicleManagementUseCase {
     }
 
     private void updateVehicleStatus(Vehicle vehicle, Vehicle.Status newStatus) {
-        switch (newStatus) {
-            case InService -> vehicle.setVehicleInService();
-            case OutOfService -> vehicle.setVehicleOutOfService();
-            case InMaintenance -> vehicle.setVehicleInMaitenance();
-        }
+        Map<Vehicle.Status, Runnable> statusChangeMap = new HashMap<>();
+        statusChangeMap.put(Vehicle.Status.InService, vehicle::setVehicleInService);
+        statusChangeMap.put(Vehicle.Status.OutOfService, vehicle::setVehicleOutOfService);
+        statusChangeMap.put(Vehicle.Status.InMaintenance, vehicle::setVehicleInMaintenance);
+
+        Runnable statusChangeAction = statusChangeMap.get(newStatus);
+        statusChangeAction.run();
     }
 }

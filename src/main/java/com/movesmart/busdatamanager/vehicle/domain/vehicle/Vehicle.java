@@ -136,7 +136,7 @@ public class Vehicle {
     /**
      * Vehicle in maintenance
      */
-    public void setVehicleInMaitenance() {
+    public void setVehicleInMaintenance() {
         this.status = Status.InMaintenance;
     }
 

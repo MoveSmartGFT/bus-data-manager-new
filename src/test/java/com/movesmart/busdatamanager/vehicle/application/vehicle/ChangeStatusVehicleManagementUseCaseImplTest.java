@@ -47,7 +47,7 @@ public class ChangeStatusVehicleManagementUseCaseImplTest {
     @Test
     @DisplayName("GIVEN a vehicle to change the status WHEN transitioning to InService THEN status is updated")
     void testChangeStatusToInService() {
-        vehicle.setVehicleInMaitenance();
+        vehicle.setVehicleInMaintenance();
         when(vehicleRepository.findById(vehicle.getPlateNumber())).thenReturn(Optional.of(vehicle));
         when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
 
@@ -72,6 +72,21 @@ public class ChangeStatusVehicleManagementUseCaseImplTest {
         assertThat(updatedVehicle).isEqualTo(vehicle);
         verify(vehicleRepository).save(vehicle);
         assertThat(vehicle.getStatus()).isEqualTo(Vehicle.Status.InMaintenance);
+    }
+
+    @Test
+    @DisplayName("GIVEN a vehicle to change the status WHEN transitioning to OutOfService THEN status is updated")
+    void testChangeStatusToOutOfService() {
+        vehicle.setVehicleInService();
+        when(vehicleRepository.findById(vehicle.getPlateNumber())).thenReturn(Optional.of(vehicle));
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
+
+        Vehicle updatedVehicle =
+                vehicleManagementUseCase.changeStatus(vehicle.getPlateNumber(), Vehicle.Status.OutOfService);
+
+        assertThat(updatedVehicle).isEqualTo(vehicle);
+        verify(vehicleRepository).save(vehicle);
+        assertThat(vehicle.getStatus()).isEqualTo(Vehicle.Status.OutOfService);
     }
 
     @Test
