@@ -196,33 +196,55 @@ classDiagram
 
 ```
 
-### Queue communication map
+### Vehicle position update flow
 
 ```mermaid
 sequenceDiagram
-    actor VehicleSender
-    actor EventTrigger
-    
+    actor Vehicle
     participant eventQueue
-    participant monitoringReceiver
-    participant vehicleReceiver
-    participant routerReceiver
-    participant notificationReceiver
+    participant monitoringModule
+
+
+    Vehicle ->> +eventQueue: Send vehicle position
+    eventQueue ->> +monitoringModule: Receive updated vehicle position
+```
+
+### Stop arrival flow
+
+```mermaid
+sequenceDiagram
+    actor Vehicle
+    participant vehicleModule
     participant database
+    participant eventQueue
+    participant appVehicleListener
+    actor AppUser
+
+    Vehicle ->> +vehicleModule: Vehicle arrives at stop
+    vehicleModule ->> +eventQueue: Update current stop
+    eventQueue ->> appVehicleListener: getCurrentStop
+    alt next Stop is desired Stop
+        appVehicleListener ->> +AppUser: send notification
+    end
+    vehicleModule ->> +database: Update vehicle capacity
+    database -->> +vehicleModule: vehicle updated
+    AppUser ->> +vehicleModule: request vehicle status
+    vehicleModule -->> +AppUser: vehicle status retrieved
+```
+
+### Accident flow
+
+```mermaid
+sequenceDiagram
+    actor EventTrigger
+    participant notificationModule
+    participant eventQueue
     participant passengers
 
 
-    VehicleSender ->> +eventQueue: Vehicle arrives at stop
-    VehicleSender ->> +eventQueue: Update vehicle position
-    VehicleSender ->> +eventQueue: Update vehicle capacity
-    
-    eventQueue ->> +monitoringReceiver: Receive updated vehicle position
-    eventQueue ->> +vehicleReceiver: Update capacity of vehicle
-    
-    EventTrigger ->> +eventQueue: Vehicle has accident
-    eventQueue ->> notificationReceiver: Create new notification
-    #-accidentes
-    #-cuando bus llega a una parada
-    #bus a punto de llegar a parada (alerta a usuario)
-    #-bus actualiza qué tan ocupado está
+    EventTrigger ->> +notificationModule: Vehicle has accident
+    notificationModule ->> +notificationModule: create Notification
+    notificationModule ->> +eventQueue: Send notification to queue
+    eventQueue ->> +passengers: Send notification to subscribed passengers
+    notificationModule ->> +notificationModule: Update notification feed
 ```
