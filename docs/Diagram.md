@@ -196,29 +196,43 @@ classDiagram
 
 ```
 
-### Queue communication map
+### Vehicle position update flow
+
+```mermaid
+sequenceDiagram
+    actor Vehicle
+    participant eventQueue
+    participant monitoringModule
+
+
+    Vehicle ->> +eventQueue: Send vehicle position
+    eventQueue ->> +monitoringModule: Receive updated vehicle position
+```
+
+### Stop arrival flow
 
 ```mermaid
 sequenceDiagram
     actor Vehicle
     participant vehicleModule
+    participant database
     participant eventQueue
-    participant monitoringModule
-
+    participant appVehicleListener
+    actor AppUser
 
     Vehicle ->> +vehicleModule: Vehicle arrives at stop
     vehicleModule ->> +eventQueue: Update current stop
-    vehicleModule ->> +eventQueue: Update vehicle capacity
-    eventQueue ->> +vehicleModule: Update capacity of vehicle
-
-    vehicleModule ->> +eventQueue: Update vehicle position
-    eventQueue ->> +monitoringModule: Receive updated vehicle position
-    
-    #-accidentes
-    #-cuando bus llega a una parada
-    #-bus a punto de llegar a parada (alerta a usuario)
-    #-bus actualiza qué tan ocupado está
+    eventQueue ->> appVehicleListener: getCurrentStop
+    alt next Stop is desired Stop
+        appVehicleListener ->> +AppUser: send notification
+    end
+    vehicleModule ->> +database: Update vehicle capacity
+    database -->> +vehicleModule: vehicle updated
+    AppUser ->> +vehicleModule: request vehicle status
+    vehicleModule -->> +AppUser: vehicle status retrieved
 ```
+
+### Accident flow
 
 ```mermaid
 sequenceDiagram
@@ -232,6 +246,5 @@ sequenceDiagram
     notificationModule ->> +notificationModule: create Notification
     notificationModule ->> +eventQueue: Send notification to queue
     eventQueue ->> +passengers: Send notification to subscribed passengers
-    eventQueue ->> +notificationModule: Send notification to notification module to process
     notificationModule ->> +notificationModule: Update notification feed
 ```
