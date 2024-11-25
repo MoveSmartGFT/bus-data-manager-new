@@ -33,7 +33,7 @@
 		<instancio-junit.version>5.0.2</instancio-junit.version>
 		<json-unit.version>4.0.0</json-unit.version>
 		<jacoco.version>0.8.12</jacoco.version>
-		<hypersistence-tsid.version>2.1.2</hypersistence-tsid.version>
+		<hypersistence-tsid.version>2.1.3</hypersistence-tsid.version>
 	</properties>
 	<dependencies>
 		<dependency>
