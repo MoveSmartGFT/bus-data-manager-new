@@ -83,7 +83,7 @@ public class Vehicle {
      */
     @Valid
     @ElementCollection
-    private List<VehicleHistory> vehicleHistory;
+    private List<String> vehicleHistory;
 
     /**
      * Status of the vehicle
@@ -102,7 +102,7 @@ public class Vehicle {
             List<Event> events,
             double speed,
             String direction,
-            List<VehicleHistory> vehicleHistory) {
+            List<String> vehicleHistory) {
         this.plateNumber = plateNumber;
         this.capacity = capacity;
         this.status = Status.InService;

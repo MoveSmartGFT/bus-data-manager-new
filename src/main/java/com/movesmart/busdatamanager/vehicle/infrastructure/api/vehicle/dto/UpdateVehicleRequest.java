@@ -23,7 +23,7 @@ public record UpdateVehicleRequest(
         @Valid List<EventDTO> events,
         @NotNull double speed,
         @NotBlank String direction,
-        @Valid List<VehicleHistoryDTO> vehicleHistory) {
+        @Valid List<String> vehicleHistory) {
     public Vehicle toVehicle(String plateNumber) {
         return new Vehicle(
                 plateNumber,
@@ -33,6 +33,6 @@ public record UpdateVehicleRequest(
                 events.stream().map(EventDTO::toEvent).collect(Collectors.toList()),
                 speed,
                 direction,
-                vehicleHistory.stream().map(VehicleHistoryDTO::toVehicleHistory).collect(Collectors.toList()));
+                vehicleHistory);
     }
 }
