@@ -31,9 +31,6 @@ public class CreateStopManagementUseCaseImplTest {
 
     private final Stop stop = Instancio.create(RouteInstancioModels.STOP_MODEL);
 
-    // -----------------------------------------------------------------------------------------------------------------
-    // CREATE METHOD
-
     @Test
     @DisplayName("GIVEN a stop to create THEN returns stop object")
     void testStopCreate() {

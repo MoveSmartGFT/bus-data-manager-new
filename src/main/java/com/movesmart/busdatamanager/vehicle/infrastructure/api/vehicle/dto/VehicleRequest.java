@@ -3,7 +3,6 @@ package com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.EventDTO;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.VehicleHistoryDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +24,7 @@ public record VehicleRequest(
         @Valid List<EventDTO> events,
         @NotNull double speed,
         @NotBlank String direction,
-        @Valid List<VehicleHistoryDTO> vehicleHistory) {
+        @Valid List<String> vehicleHistory) {
     public Vehicle toVehicle() {
         return new Vehicle(
                 plateNumber,
@@ -35,6 +34,6 @@ public record VehicleRequest(
                 events.stream().map(EventDTO::toEvent).collect(Collectors.toList()),
                 speed,
                 direction,
-                vehicleHistory.stream().map(VehicleHistoryDTO::toVehicleHistory).collect(Collectors.toList()));
+                vehicleHistory);
     }
 }

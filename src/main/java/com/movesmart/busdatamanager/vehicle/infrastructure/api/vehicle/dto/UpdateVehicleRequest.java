@@ -3,14 +3,15 @@ package com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.EventDTO;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.VehicleHistoryDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Generated;
 
+@Generated
 public record UpdateVehicleRequest(
         @NotBlank
                 @Pattern(
@@ -23,7 +24,7 @@ public record UpdateVehicleRequest(
         @Valid List<EventDTO> events,
         @NotNull double speed,
         @NotBlank String direction,
-        @Valid List<VehicleHistoryDTO> vehicleHistory) {
+        @Valid List<String> vehicleHistory) {
     public Vehicle toVehicle(String plateNumber) {
         return new Vehicle(
                 plateNumber,
@@ -33,6 +34,6 @@ public record UpdateVehicleRequest(
                 events.stream().map(EventDTO::toEvent).collect(Collectors.toList()),
                 speed,
                 direction,
-                vehicleHistory.stream().map(VehicleHistoryDTO::toVehicleHistory).collect(Collectors.toList()));
+                vehicleHistory);
     }
 }
