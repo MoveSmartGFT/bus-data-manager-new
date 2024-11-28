@@ -1,4 +1,4 @@
-package com.movesmart.busdatamanager.vehicle.domain;
+package com.movesmart.busdatamanager.vehicle.domain.vehicleHistory;
 
 import io.hypersistence.tsid.TSID;
 import jakarta.validation.constraints.NotBlank;
@@ -28,10 +28,11 @@ public class VehicleHistory {
 
     private LocalDateTime endTime;
 
-    public VehicleHistory(String routeId, String driverId, LocalDateTime startTime) {
+    public VehicleHistory(String routeId, String driverId, LocalDateTime startTime, LocalDateTime endTime) {
         this.id = TSID.Factory.getTsid().toString();
         this.routeId = routeId;
         this.driverId = driverId;
         this.startTime = startTime;
+        this.endTime = endTime;
     }
 }

@@ -4,10 +4,12 @@ import static org.instancio.Select.field;
 
 import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
+import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.ChangeStatusVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicleHistory.dto.VehicleHistoryRequest;
 import lombok.experimental.UtilityClass;
 import org.instancio.Instancio;
 import org.instancio.Model;
@@ -62,4 +64,10 @@ public class VehicleInstancioModels {
                     field(ChangeStatusVehicleRequest::status),
                     () -> Instancio.gen().enumOf(Vehicle.Status.class).get())
             .toModel();
+
+    public static final Model<VehicleHistory> VEHICLE_HISTORY_MODEL =
+            Instancio.of(VehicleHistory.class).toModel();
+
+    public static final Model<VehicleHistoryRequest> VEHICLE_HISTORY_REQUEST_MODEL =
+            Instancio.of(VehicleHistoryRequest.class).toModel();
 }

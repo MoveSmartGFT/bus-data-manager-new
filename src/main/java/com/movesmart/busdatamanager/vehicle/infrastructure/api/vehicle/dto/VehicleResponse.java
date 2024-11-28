@@ -3,7 +3,6 @@ package com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.CoordinatesDTO;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.EventDTO;
-import com.movesmart.busdatamanager.vehicle.infrastructure.api.model.VehicleHistoryDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

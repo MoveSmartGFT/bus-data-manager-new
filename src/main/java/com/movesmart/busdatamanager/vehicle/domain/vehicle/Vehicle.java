@@ -2,7 +2,6 @@ package com.movesmart.busdatamanager.vehicle.domain.vehicle;
 
 import com.movesmart.busdatamanager.vehicle.domain.Coordinates;
 import com.movesmart.busdatamanager.vehicle.domain.Event;
-import com.movesmart.busdatamanager.vehicle.domain.VehicleHistory;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Id;
 import jakarta.validation.Valid;
