@@ -195,6 +195,27 @@ classDiagram
     Notification --> Action
 
 ```
+### Vehicle start route flow
+
+```mermaid
+sequenceDiagram
+    actor Vehicle
+    participant eventQueue
+    participant vehicleModule
+    participant vehicleHistoryModule
+
+
+    Vehicle ->> +eventQueue: Start route
+    eventQueue ->> +vehicleHistoryModule: receiver consumes event
+    vehicleHistoryModule ->> +vehicleHistoryModule: create new VehicleHistory
+    vehicleHistoryModule ->> +eventQueue: VehicleHistory created
+    eventQueue ->> +vehicleModule: receiver consumes event
+    vehicleModule ->> +vehicleModule: update Vehicle with new VehicleHistoryId
+    Vehicle ->> +eventQueue: Finish route
+    eventQueue ->> +vehicleHistoryModule: update VehicleHistory
+    vehicleHistoryModule ->> +vehicleHistoryModule: update VehicleHistory with endTime
+
+```
 
 ### Vehicle position update flow
 
