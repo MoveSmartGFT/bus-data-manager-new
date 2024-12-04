@@ -58,7 +58,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Founded stop
+          description: Stop found
           content:
             application/json:
               schema:
@@ -106,7 +106,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Successfully deleted stop
+          description: Deleted stop
           content:
             application/json:
               schema:
@@ -424,7 +424,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Founded vehicle
+          description: Vehicle found
           content:
             application/json:
               schema:
@@ -472,7 +472,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Successfully deleted vehicle
+          description: Deleted vehicle
           content:
             application/json:
               schema:
