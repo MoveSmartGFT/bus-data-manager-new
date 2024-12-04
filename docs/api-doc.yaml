@@ -3,10 +3,16 @@ info:
   title: MoveSmart Bus Data Manager API
   description: API para la gestión de rutas y paradas de autobuses en MoveSmart
   version: 1.0.0
+tags:
+  - name: Route
+  - name: Stop
+  - name: Vehicle
 paths:
   /api/v1/stops:
     post:
-      summary: Crear una nueva parada
+      tags:
+        - Stop
+      summary: Create a new stop
       requestBody:
         required: true
         content:
@@ -15,16 +21,23 @@ paths:
               $ref: '#/components/schemas/StopRequest'
       responses:
         '201':
-          description: Parada creada exitosamente
+          description: Created stop
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stop'
+        '409':
+          description: Stop with ID {stopId} already exists
+        '400':
+          description: Bad Request
+
     get:
-      summary: Obtener todas las paradas
+      tags:
+        - Stop
+      summary: Get all stops
       responses:
         '200':
-          description: Lista de paradas
+          description: Stop list
           content:
             application/json:
               schema:
@@ -34,7 +47,9 @@ paths:
 
   /api/v1/stops/{stopId}:
     get:
-      summary: Obtener una parada por ID
+      tags:
+        - Stop
+      summary: Get a stop by ID
       parameters:
         - in: path
           name: stopId
@@ -43,13 +58,18 @@ paths:
             type: string
       responses:
         '200':
-          description: Parada encontrada
+          description: Stop found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stop'
+        '404':
+          description: Stop with ID {stopId} does not exist
+
     put:
-      summary: Actualizar una parada por ID
+      tags:
+        - Stop
+      summary: Update a stop by ID
       parameters:
         - in: path
           name: stopId
@@ -63,16 +83,67 @@ paths:
             schema:
               $ref: '#/components/schemas/StopRequest'
       responses:
-        '200':
-          description: Parada actualizada
+        '201':
+          description: Stop updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stop'
+        '404':
+          description: Stop with ID {stopId} does not exist
+        '400':
+          description: Bad Request
+
+    delete:
+      tags:
+        - Stop
+      summary: Delete a stop by ID
+      parameters:
+        - in: path
+          name: stopId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted stop
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stop'
+        '404':
+          description: Stop with ID {stopId} does not exist
+
+  /api/v1/{stopId}/routes:
+    patch:
+      tags:
+        - Stop
+      summary: Remove a stop ID from all routes
+      parameters:
+        - in: path
+          name: stopId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stop ID removed from routes
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Stop with id {stopId} removed from {n} routes"
+        '404':
+          description: Stop with ID {stopId} does not exist
+        '400':
+          description: Bad Request
+
 
   /api/v1/stops/{stopId}/enable:
     patch:
-      summary: Activar una stop por ID
+      tags:
+        - Stop
+      summary: Enable a stop by ID
       parameters:
         - in: path
           name: stopId
@@ -81,19 +152,21 @@ paths:
             type: string
       responses:
         '200':
-          description: Parada activada
+          description: Stop enabled
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stop'
         '400':
-          description: Parada con ID {stopId} no existe
+          description: Stop with ID {stopId} does not exist
         '409':
-          description: Solicitud inválida
+          description: Stop with ID {stopId} is already enabled
 
   /api/v1/stops/{stopId}/disable:
     patch:
-      summary: Desactivar una stop por ID
+      tags:
+        - Stop
+      summary: Disable a stop by ID
       parameters:
         - in: path
           name: stopId
@@ -102,20 +175,21 @@ paths:
             type: string
       responses:
         '200':
-          description: Parada activada
+          description: Stop disabled
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stop'
         '400':
-          description: Parada con ID {stopId} no existe
+          description: Stop with ID {stopId} does not exist
         '409':
-          description: Solicitud inválida
-
+          description: Stop with ID {stopId} is already disabled
 
   /api/v1/routes:
     post:
-      summary: Crear una nueva ruta
+      tags:
+        - Route
+      summary: Create a new route
       requestBody:
         required: true
         content:
@@ -124,16 +198,21 @@ paths:
               $ref: '#/components/schemas/Route'
       responses:
         '201':
-          description: Ruta creada exitosamente
+          description: Created route
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+        '400':
+          description: Bad Request
+
     get:
-      summary: Obtener todas las rutas
+      tags:
+        - Route
+      summary: Get all routes
       responses:
         '200':
-          description: Lista de rutas
+          description: List of routes
           content:
             application/json:
               schema:
@@ -143,7 +222,9 @@ paths:
 
   /api/v1/routes/{routeId}:
     get:
-      summary: Obtener una ruta por ID
+      tags:
+        - Route
+      summary: Get a route by ID
       parameters:
         - in: path
           name: routeId
@@ -152,13 +233,18 @@ paths:
             type: string
       responses:
         '200':
-          description: Ruta encontrada
+          description: Route found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+        '404':
+          description: Route with ID {routeId} does not exist
+
     put:
-      summary: Actualizar una ruta por ID
+      tags:
+        - Route
+      summary: Update a route by ID
       parameters:
         - in: path
           name: routeId
@@ -173,30 +259,20 @@ paths:
               $ref: '#/components/schemas/UpdateRouteRequest'
       responses:
         '200':
-          description: Ruta actualizada
+          description: Route updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
-    delete:
-      summary: Eliminar una ruta por ID
-      parameters:
-        - in: path
-          name: routeId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Ruta eliminada
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Route'
+        '404':
+          description: Route with ID {routeId} does not exist
+        '400':
+          description: Bad Request
 
-  /api/v1/routes/{routeId}/disable:
-    patch:
-      summary: Desactivar una ruta por ID
+    delete:
+      tags:
+        - Route
+      summary: Delete a route by ID
       parameters:
         - in: path
           name: routeId
@@ -205,15 +281,19 @@ paths:
             type: string
       responses:
         '200':
-          description: Ruta desactivada
+          description: Route deleted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+        '404':
+          description: Route with ID {routeId} does not exist
 
   /api/v1/routes/{routeId}/enable:
     patch:
-      summary: Activar una ruta por ID
+      tags:
+        - Route
+      summary: Enable a route by ID
       parameters:
         - in: path
           name: routeId
@@ -222,15 +302,21 @@ paths:
             type: string
       responses:
         '200':
-          description: Ruta activada
+          description: Route enabled
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+        '400':
+          description: Route with ID {routeId} does not exist
+        '409':
+          description: Route with ID {routeId} is already enabled
 
-  /api/v1/routes/{routeId}/stops:
-    get:
-      summary: Obtener los IDs de paradas de una ruta por su ID
+  /api/v1/routes/{routeId}/disable:
+    patch:
+      tags:
+        - Route
+      summary: Disable a route by ID
       parameters:
         - in: path
           name: routeId
@@ -239,13 +325,192 @@ paths:
             type: string
       responses:
         '200':
-          description: Lista de IDs de paradas
+          description: Route disabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          description: Route with ID {routeId} does not exist
+        '409':
+          description: Route with ID {routeId} is already disabled
+
+  /api/v1/routes/{routeId}/stops:
+    get:
+      tags:
+        - Route
+      summary: Get the stop IDs of a route by its ID
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of stop IDs associated with the specified route
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
+        '404':
+          description: Route with ID {routeId} does not exist
+        '400':
+          description: Bad Request
+
+    patch:
+      tags:
+        - Route
+      summary: Update the list of stops for a route
+      parameters:
+        - in: path
+          name: routeId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRouteStopsRequest'
+      responses:
+        '200':
+          description: Updated route object with new stops
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteResponse'
+        '400':
+          description: Invalid request format
+        '404':
+          description: One or more stops do not exist, or the route ID was not found
+
+  /api/v1/vehicle:
+    post:
+      tags:
+        - Vehicle
+      summary: Create a new vehicle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleRequest'
+      responses:
+        '201':
+          description: Created vehicle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '409':
+          description: Vehicle with ID {plateNumber} already exists
+        '400':
+          description: Bad Request
+
+  /api/v1/vehicle/{plateNumber}:
+    get:
+      tags:
+        - Vehicle
+      summary: Get a vehicle by ID
+      parameters:
+        - in: path
+          name: plateNumber
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Vehicle found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '404':
+          description: Vehicle with ID {plateNumber} does not exist
+
+    put:
+      tags:
+        - Vehicle
+      summary: Update a vehicle by ID
+      parameters:
+        - in: path
+          name: plateNumber
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleRequest'
+      responses:
+        '201':
+          description: Vehicle updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '404':
+          description: Vehicle with ID {plateNumber} does not exist
+        '400':
+          description: Bad Request
+
+    delete:
+      tags:
+        - Vehicle
+      summary: Delete a vehicle by ID
+      parameters:
+        - in: path
+          name: plateNumber
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted vehicle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stop'
+        '404':
+          description: Vehicle with ID {plateNumber} does not exist
+
+  /api/v1/vehicle/{plateNumber}/status:
+    patch:
+      tags:
+        - Vehicle
+      summary: Change the status of a vehicle
+      parameters:
+        - in: path
+          name: plateNumber
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeStatusVehicleRequest'
+      responses:
+        '200':
+          description: Vehicle updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+
+        '404':
+          description: Vehicle not found.
+        '409':
+          description: Vehicle is alrrady {the requested status}.
+        '400':
+          description: Invalid request format.
 
 components:
   schemas:
@@ -268,6 +533,25 @@ components:
           $ref: '#/components/schemas/Coordinates'
 
     Route:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        stopIds:
+          type: array
+          items:
+            type: string
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        status:
+          type: string
+          enum: [Enabled, Disabled]
+
+    RouteResponse:
       type: object
       properties:
         id:
@@ -324,3 +608,95 @@ components:
           format: date-time
         frequencyInMinutes:
           type: integer
+
+    UpdateRouteStopsRequest:
+      type: object
+      properties:
+        stopIds:
+          type: array
+          description: List of stop IDs to update in the route
+          items:
+            type: string
+      required:
+        - stopIds
+
+    Vehicle:
+      type: object
+      properties:
+        plateNumber:
+          type: string
+        capacity:
+          type: integer
+        type:
+          type: string
+        location:
+          $ref: '#/components/schemas/Coordinates'
+          description: Current coordinates of the vehicle
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+        speed:
+          type: number
+          format: double
+        direction:
+          type: string
+        vehicleHistory:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          description: Current status of the vehicle
+          enum: [InService, OutOfService, InMaintenance]
+
+    Event:
+      type: object
+      properties:
+        time:
+          type: string
+          format: date-time
+        details:
+          type: string
+        maintenance:
+          type: boolean
+        notification:
+          type: string
+
+    VehicleRequest:
+      type: object
+      properties:
+        plateNumber:
+          type: string
+          pattern: '^\\d{4}[A-Z]{3}$'
+        capacity:
+          type: integer
+        type:
+          type: string
+        location:
+          $ref: '#/components/schemas/Coordinates'
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+        speed:
+          type: number
+          format: double
+        direction:
+          type: string
+        vehicleHistory:
+          type: array
+          items:
+            type: string
+
+    ChangeStatusVehicleRequest:
+      type: object
+      properties:
+        plateNumber:
+          type: string
+        status:
+          $ref: '#/components/schemas/VehicleStatus'
+    VehicleStatus:
+      type: string
+      enum: [InService, OutOfService, InMaintenance]
+
