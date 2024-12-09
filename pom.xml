@@ -30,7 +30,7 @@
 		<java.version>17</java.version>
 		<spring-modulith.version>1.3.0-RC1</spring-modulith.version>
 		<jmolecules-bom.version>2023.2.1</jmolecules-bom.version>
-		<instancio-junit.version>5.0.2</instancio-junit.version>
+		<instancio-junit.version>5.2.0</instancio-junit.version>
 		<json-unit.version>4.0.0</json-unit.version>
 		<jacoco.version>0.8.12</jacoco.version>
 		<hypersistence-tsid.version>2.1.3</hypersistence-tsid.version>
