@@ -4,27 +4,33 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import lombok.Generated;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
+@Slf4j
+@Component
 @Generated
 public class Send {
 
     private static final String QUEUE_NAME = "hello";
+    private final ConnectionFactory factory;
 
-    public static void main(String[] argv) throws Exception {
-
-        String uri = "";
-
-        ConnectionFactory factory = new ConnectionFactory();
+    public Send() throws Exception {
+        String uri = "amqps://niduuxqx:64q4XK7jFyAF_cigL6W2SXwevqZsx0hJ@kangaroo.rmq.cloudamqp.com/niduuxqx";
+        factory = new ConnectionFactory();
         factory.setUri(uri);
         factory.setConnectionTimeout(30000);
+    }
 
+    public void sendMessage(String message) {
         try (Connection connection = factory.newConnection();
-                Channel channel = connection.createChannel()) {
+             Channel channel = connection.createChannel()) {
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            String message = "Hello world";
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-            System.out.println(" [x] Sent '" + message + "'");
+            log.info("Message sent: {}", message);
+        } catch (Exception e) {
+            log.error("Failed to send message: {}", message, e);
         }
     }
 }

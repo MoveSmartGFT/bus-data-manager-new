@@ -35,4 +35,11 @@ public class VehicleHistory {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+    public VehicleHistory(String routeId, String driverId, LocalDateTime startTime) {
+        this.id = TSID.Factory.getTsid().toString();
+        this.routeId = routeId;
+        this.driverId = driverId;
+        this.startTime = startTime;
+    }
 }

@@ -10,9 +10,8 @@ import lombok.Generated;
 public record VehicleHistoryRequest(
         @NotBlank String routeId,
         @NotNull String driverId,
-        LocalDateTime startTime,
-        LocalDateTime endTime) {
+        LocalDateTime startTime) {
     public VehicleHistory toVehicleHistory() {
-        return new VehicleHistory(routeId, driverId, startTime, endTime);
+        return new VehicleHistory(routeId, driverId, startTime);
     }
 }

@@ -51,21 +51,11 @@ public class VehicleHistoryManagementIT extends EndPointVehicleHistoryInventory 
         MvcResult createSecondVehicleResponse = createVehicleHistoryRequest(secondVehicleHistoryRequest);
         assertThat(HttpStatus.valueOf(createSecondVehicleResponse.getResponse().getStatus()))
                 .isEqualTo(HttpStatus.CREATED);
-        VehicleResponse secondCreatedVehicle = objectMapper.readValue(
-                createSecondVehicleResponse.getResponse().getContentAsString(), VehicleResponse.class);
     }
 
     void checkVehicleHistories(VehicleHistoryResponse result, VehicleHistoryRequest expected) {
         assertThat(result.routeId()).isEqualTo(expected.routeId());
         assertThat(result.driverId()).isEqualTo(expected.driverId());
         assertThat(result.startTime()).isEqualTo(expected.startTime());
-        assertThat(result.endTime()).isEqualTo(expected.endTime());
     }
-
-    //    void checkVehicleHistories(VehicleHistory result, VehicleHistoryRequest expected) {
-    //        assertThat(result.getRouteId()).isEqualTo(expected.routeId());
-    //        assertThat(result.getDriverId()).isEqualTo(expected.driverId());
-    //        assertThat(result.getStartTime()).isEqualTo(expected.startTime());
-    //        assertThat(result.getEndTime()).isEqualTo(expected.endTime());
-    //    }
 }
