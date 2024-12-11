@@ -20,7 +20,6 @@ public class VehicleHistoryController {
     public static final String VEHICLE_HISTORY_PATH = "/api/v1/vehicle-history"; // NOSONAR
 
     private final VehicleHistoryManagmentUseCase vehicleHistoryManagementUseCase;
-    private final Send send;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -28,9 +27,6 @@ public class VehicleHistoryController {
         log.info("VehicleHistory creation is requested");
 
         VehicleHistory createdVehicleHistory = vehicleHistoryManagementUseCase.create(vehicleHistoryRequest.toVehicleHistory());
-
-        String message = String.format("VehicleHistory created with ID: %s", createdVehicleHistory.getId());
-        send.sendMessage(message);
 
         return VehicleHistoryResponse.fromVehicleHistory(createdVehicleHistory);
 
