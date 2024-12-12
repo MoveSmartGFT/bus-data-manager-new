@@ -70,4 +70,10 @@ public class VehicleInstancioModels {
 
     public static final Model<VehicleHistoryRequest> VEHICLE_HISTORY_REQUEST_MODEL =
             Instancio.of(VehicleHistoryRequest.class).toModel();
+
+    public static Model<VehicleHistoryRequest> getCreateVehicleHistoryRequestModelWithVehicle(String vehicleId) {
+        return Instancio.of(VehicleHistoryRequest.class)
+                .set(field(VehicleHistoryRequest::vehicleId), vehicleId)
+                .toModel();
+    }
 }

@@ -6,7 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.monitoring.infrastructure.Send;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistoryRepository;
 import java.util.Optional;
@@ -26,6 +29,9 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
     @Mock
     private VehicleHistoryRepository vehicleHistoryRepository;
 
+    @Mock
+    private VehicleRepository vehicleRepository;
+
     @InjectMocks
     private VehicleHistoryManagementUseCaseImpl vehicleHistoryManagementUseCaseImpl;
 
@@ -35,6 +41,7 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
     @DisplayName("GIVEN a vehicleHistory to create THEN returns vehicleHistory object")
     void testVehicleHistoryCreate() {
         when(vehicleHistoryRepository.findById(vehicleHistory.getId())).thenReturn(Optional.empty());
+        when(vehicleRepository.existsById(vehicleHistory.getVehicleId())).thenReturn(true);
         when(vehicleHistoryRepository.save(any())).thenReturn(vehicleHistory);
 
         VehicleHistory vehicleHistoryCreated = vehicleHistoryManagementUseCaseImpl.create(vehicleHistory);
@@ -52,5 +59,19 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
         assertThat(throwable)
                 .isInstanceOf(EntityAlreadyExistsException.class)
                 .hasMessageContainingAll("VehicleHistory", vehicleHistory.getId());
+    }
+
+    @Test
+    @DisplayName(
+            "GIVEN a vehicleHistory to create WHEN the vehicle associated does not exist THEN throws EntityNotFoundException")
+    void testVehicleHistoryNonExistingRoute() {
+        when(vehicleHistoryRepository.findById(vehicleHistory.getId())).thenReturn(Optional.empty());
+        when(vehicleRepository.existsById(vehicleHistory.getVehicleId())).thenReturn(false);
+
+        Throwable throwable = catchThrowable(() -> vehicleHistoryManagementUseCaseImpl.create(vehicleHistory));
+
+        assertThat(throwable)
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContainingAll("Vehicle", vehicleHistory.getVehicleId());
     }
 }

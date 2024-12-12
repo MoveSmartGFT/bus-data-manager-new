@@ -24,7 +24,7 @@ public class Send {
 
     public void sendMessage(String message) {
         try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
+                Channel channel = connection.createChannel()) {
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());

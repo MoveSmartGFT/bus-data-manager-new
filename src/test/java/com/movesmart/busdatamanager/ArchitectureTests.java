@@ -15,7 +15,7 @@ import org.springframework.modulith.core.ApplicationModules;
             "movessmart.busdatamanager.passenger",
             "movessmart.busdatamanager.route",
             "movessmart.busdatamanager.vehicle",
-            "movessmart.busdatamanager.vehicleHistory"
+            "movessmart.busdatamanager.vehicleHistory",
         })
 class ArchitectureTests {
 

@@ -1,7 +1,5 @@
 package com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicleHistory;
 
-import com.movesmart.busdatamanager.monitoring.infrastructure.Send;
-import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistoryManagmentUseCase;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicleHistory.dto.VehicleHistoryRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicleHistory.dto.VehicleHistoryResponse;
@@ -25,10 +23,7 @@ public class VehicleHistoryController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public VehicleHistoryResponse create(@Valid @RequestBody VehicleHistoryRequest vehicleHistoryRequest) {
         log.info("VehicleHistory creation is requested");
-
-        VehicleHistory createdVehicleHistory = vehicleHistoryManagementUseCase.create(vehicleHistoryRequest.toVehicleHistory());
-
-        return VehicleHistoryResponse.fromVehicleHistory(createdVehicleHistory);
-
+        return VehicleHistoryResponse.fromVehicleHistory(
+                vehicleHistoryManagementUseCase.create(vehicleHistoryRequest.toVehicleHistory()));
     }
 }
