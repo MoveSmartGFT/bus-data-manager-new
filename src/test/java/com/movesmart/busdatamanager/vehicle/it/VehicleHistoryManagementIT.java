@@ -3,7 +3,6 @@ package com.movesmart.busdatamanager.vehicle.it;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movesmart.busdatamanager.monitoring.infrastructure.Send;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.Vehicle;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
@@ -13,7 +12,6 @@ import jakarta.transaction.Transactional;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,7 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class VehicleHistoryManagementIT extends EndPointVehicleHistoryInventory {
+public class VehicleHistoryManagementIT extends EndPointVehicleInventory {
     @Autowired
     private ObjectMapper objectMapper;
 

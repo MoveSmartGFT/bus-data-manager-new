@@ -3,11 +3,12 @@ package com.movesmart.busdatamanager.vehicle.application.vehicleHistory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
-import com.movesmart.busdatamanager.monitoring.infrastructure.Send;
+import com.movesmart.busdatamanager.vehicle.Send;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
@@ -18,6 +19,7 @@ import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,6 +34,9 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
     @Mock
     private VehicleRepository vehicleRepository;
 
+    @Mock
+    private Send send;
+
     @InjectMocks
     private VehicleHistoryManagementUseCaseImpl vehicleHistoryManagementUseCaseImpl;
 
@@ -44,7 +49,15 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
         when(vehicleRepository.existsById(vehicleHistory.getVehicleId())).thenReturn(true);
         when(vehicleHistoryRepository.save(any())).thenReturn(vehicleHistory);
 
+        ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+
         VehicleHistory vehicleHistoryCreated = vehicleHistoryManagementUseCaseImpl.create(vehicleHistory);
+
+        assertThat(vehicleHistoryCreated).isEqualTo(vehicleHistory);
+        verify(send).sendMessage(messageCaptor.capture());
+        String capturedMessage = messageCaptor.getValue();
+        assertThat(capturedMessage)
+                .isEqualTo(String.format("VehicleHistory created with ID: %s", vehicleHistory.getId()));
 
         assertThat(vehicleHistoryCreated).isEqualTo(vehicleHistory);
     }

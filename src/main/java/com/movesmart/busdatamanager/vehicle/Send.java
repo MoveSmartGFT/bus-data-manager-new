@@ -1,8 +1,9 @@
-package com.movesmart.busdatamanager.monitoring.infrastructure;
+package com.movesmart.busdatamanager.vehicle;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.AllArgsConstructor;
 import lombok.Generated;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @Generated
+@AllArgsConstructor
 public class Send {
 
     private static final String QUEUE_NAME = "hello";

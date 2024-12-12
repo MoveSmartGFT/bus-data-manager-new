@@ -2,6 +2,7 @@ package com.movesmart.busdatamanager.vehicle.application.vehicleHistory;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.vehicle.Send;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistoryManagmentUseCase;
@@ -21,7 +22,8 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
 
     @Resource
     private final VehicleRepository vehicleRepository;
-    // private final Send send;
+
+    private final Send send;
 
     /**
      * @param vehicleHistory data
@@ -40,8 +42,8 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
         checkVehicleExist(vehicleHistory.getVehicleId());
 
         VehicleHistory savedVehicleHistory = vehicleHistoryRepository.save(vehicleHistory);
-        // String message = String.format("VehicleHistory created with ID: %s", savedVehicleHistory.getId());
-        // send.sendMessage(message);
+        String message = String.format("VehicleHistory created with ID: %s", savedVehicleHistory.getId());
+        send.sendMessage(message);
 
         log.info("VehicleHistory successfully created with id: {}", savedVehicleHistory.getId());
 
