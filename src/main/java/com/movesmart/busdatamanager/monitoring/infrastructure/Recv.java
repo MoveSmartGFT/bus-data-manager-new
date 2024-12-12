@@ -9,7 +9,7 @@ public class Recv {
     private static final String QUEUE_NAME = "hello";
 
     public static void main(String[] argv) throws Exception {
-        String uri = "amqps://niduuxqx:64q4XK7jFyAF_cigL6W2SXwevqZsx0hJ@kangaroo.rmq.cloudamqp.com/niduuxqx";
+        String uri = "";
 
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUri(uri);
