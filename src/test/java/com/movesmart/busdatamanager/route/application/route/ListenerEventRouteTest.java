@@ -1,11 +1,13 @@
 package com.movesmart.busdatamanager.route.application.route;
 
-import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.when;
+
 import com.movesmart.busdatamanager.core.infrastructure.api.RouteValidationEvent;
 import com.movesmart.busdatamanager.route.RouteInstancioModels;
 import com.movesmart.busdatamanager.route.domain.route.Route;
 import com.movesmart.busdatamanager.route.domain.route.RouteRepository;
-import org.assertj.core.api.Assertions;
+import java.util.Optional;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(InstancioExtension.class)
 @ExtendWith(MockitoExtension.class)
@@ -75,4 +71,3 @@ public class ListenerEventRouteTest {
         assertThat(event.isValidated()).isFalse();
     }
 }
-
