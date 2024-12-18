@@ -18,7 +18,7 @@ public class Send {
     private final ConnectionFactory factory;
 
     public Send() throws Exception {
-        String uri = "";
+        String uri = "amqps://niduuxqx:64q4XK7jFyAF_cigL6W2SXwevqZsx0hJ@kangaroo.rmq.cloudamqp.com/niduuxqx";
         factory = new ConnectionFactory();
         factory.setUri(uri);
         factory.setConnectionTimeout(30000);
