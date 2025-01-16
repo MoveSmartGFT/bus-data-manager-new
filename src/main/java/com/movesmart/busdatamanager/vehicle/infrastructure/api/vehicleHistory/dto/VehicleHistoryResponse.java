@@ -8,6 +8,7 @@ import lombok.Generated;
 @Generated
 public record VehicleHistoryResponse(
         @NotBlank String id,
+        @NotBlank String vehicleId,
         @NotBlank String routeId,
         @NotBlank String driverId,
         @NotBlank LocalDateTime startTime,
@@ -15,6 +16,7 @@ public record VehicleHistoryResponse(
     public static VehicleHistoryResponse fromVehicleHistory(VehicleHistory vehicleHistory) {
         return new VehicleHistoryResponse(
                 vehicleHistory.getId(),
+                vehicleHistory.getVehicleId(),
                 vehicleHistory.getRouteId(),
                 vehicleHistory.getDriverId(),
                 vehicleHistory.getStartTime(),

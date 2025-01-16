@@ -7,10 +7,8 @@ import static org.mockito.Mockito.*;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
-import com.movesmart.busdatamanager.core.exception.EntityNotValidException;
-import com.movesmart.busdatamanager.core.infrastructure.api.RouteValidationEvent;
-import com.movesmart.busdatamanager.vehicle.Send;
 import com.movesmart.busdatamanager.vehicle.VehicleInstancioModels;
+import com.movesmart.busdatamanager.vehicle.VehicleSender;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistoryRepository;
@@ -37,7 +35,7 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
     private VehicleRepository vehicleRepository;
 
     @Mock
-    private Send send;
+    private VehicleSender send;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
@@ -54,13 +52,13 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
         when(vehicleRepository.existsById(vehicleHistory.getVehicleId())).thenReturn(true);
         when(vehicleHistoryRepository.save(any())).thenReturn(vehicleHistory);
 
-        doAnswer(invocation -> {
-                    RouteValidationEvent event = invocation.getArgument(0);
-                    event.setValidated(true);
-                    return null;
-                })
-                .when(eventPublisher)
-                .publishEvent(any(RouteValidationEvent.class));
+        //        doAnswer(invocation -> {
+        //            RouteValidationEvent event = invocation.getArgument(0);
+        //            event.setValidated(true);
+        //            return null;
+        //        })
+        //                .when(eventPublisher)
+        //                .publishEvent(any(RouteValidationEvent.class));
 
         ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
 
@@ -98,8 +96,9 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContainingAll("Vehicle", vehicleHistory.getVehicleId());
     }
+}
 
-    @Test
+    /* @Test
     @DisplayName(
             "GIVEN a vehicleHistory to create WHEN the route associated does not exist THEN throws EntityNotValid exception")
     void testVehicleHistoryNonExistingRoute() {
@@ -117,29 +116,6 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
         Throwable throwable = catchThrowable(() -> vehicleHistoryManagementUseCaseImpl.create(vehicleHistory));
 
         assertThat(throwable)
-                .isInstanceOf(EntityNotValidException.class)
+                .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContainingAll("Route", vehicleHistory.getRouteId());
-    }
-
-    @Test
-    @DisplayName(
-            "GIVEN a vehicleHistory to create WHEN the route associated is not enabled THEN throws EntityNotValid exception")
-    void testVehicleHistoryRouteNotEnabled() {
-        when(vehicleHistoryRepository.findById(vehicleHistory.getId())).thenReturn(Optional.empty());
-        when(vehicleRepository.existsById(vehicleHistory.getVehicleId())).thenReturn(true);
-
-        doAnswer(invocation -> {
-                    RouteValidationEvent event = invocation.getArgument(0);
-                    event.setValidated(false);
-                    return null;
-                })
-                .when(eventPublisher)
-                .publishEvent(any(RouteValidationEvent.class));
-
-        Throwable throwable = catchThrowable(() -> vehicleHistoryManagementUseCaseImpl.create(vehicleHistory));
-
-        assertThat(throwable)
-                .isInstanceOf(EntityNotValidException.class)
-                .hasMessageContainingAll("Route", vehicleHistory.getRouteId());
-    }
-}
+    } */

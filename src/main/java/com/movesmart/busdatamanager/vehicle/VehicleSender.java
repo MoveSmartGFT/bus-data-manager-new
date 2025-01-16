@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Generated
 @AllArgsConstructor
-public class Send {
+public class VehicleSender {
 
     private static final String QUEUE_NAME = "hello";
     private final ConnectionFactory factory;
 
-    public Send() throws Exception {
-        String uri = "";
+    public VehicleSender() throws Exception {
+        String uri = "amqps://niduuxqx:64q4XK7jFyAF_cigL6W2SXwevqZsx0hJ@kangaroo.rmq.cloudamqp.com/niduuxqx";
         factory = new ConnectionFactory();
         factory.setUri(uri);
         factory.setConnectionTimeout(30000);

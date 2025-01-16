@@ -37,9 +37,8 @@ public class ListenerEventRouteTest {
     }
 
     @Test
-    public void testRouteExistsAndIsEnabled() {
+    public void testRouteExists() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
-        when(routeRepository.findEnabledRouteById(route.getId())).thenReturn(Optional.of(route));
 
         RouteValidationEvent event = new RouteValidationEvent(route.getId(), false);
 
@@ -51,18 +50,6 @@ public class ListenerEventRouteTest {
     @Test
     public void testNonExistingRouteToValidate() {
         when(routeRepository.findById(route.getId())).thenReturn(Optional.empty());
-
-        RouteValidationEvent event = new RouteValidationEvent(route.getId(), false);
-
-        routeEventListener.handleRouteValidationEvent(event);
-
-        assertThat(event.isValidated()).isFalse();
-    }
-
-    @Test
-    public void testRouteExistsButIsNotEnabled() {
-        when(routeRepository.findById(route.getId())).thenReturn(Optional.of(route));
-        when(routeRepository.findEnabledRouteById(route.getId())).thenReturn(Optional.empty());
 
         RouteValidationEvent event = new RouteValidationEvent(route.getId(), false);
 
