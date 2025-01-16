@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Generated
 @AllArgsConstructor
-public class Send {
+public class VehicleSender {
 
     private static final String QUEUE_NAME = "hello";
     private final ConnectionFactory factory;
 
-    public Send() throws Exception {
+    public VehicleSender() throws Exception {
         String uri = "";
         factory = new ConnectionFactory();
         factory.setUri(uri);

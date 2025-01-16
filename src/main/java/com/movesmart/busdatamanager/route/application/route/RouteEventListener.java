@@ -19,12 +19,6 @@ public class RouteEventListener {
         log.info("Validating route with id {}", event.getRouteId());
 
         var routeExists = routeRepository.findById(event.getRouteId());
-
-        if (routeExists.isEmpty()) {
-            event.setValidated(false);
-        }
-
-        boolean isEnabled = routeRepository.findEnabledRouteById(event.getRouteId()).isPresent();
-        event.setValidated(isEnabled);
+        event.setValidated(routeExists.isPresent());
     }
 }

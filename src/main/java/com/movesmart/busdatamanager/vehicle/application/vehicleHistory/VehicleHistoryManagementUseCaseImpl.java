@@ -2,9 +2,7 @@ package com.movesmart.busdatamanager.vehicle.application.vehicleHistory;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
 import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
-import com.movesmart.busdatamanager.core.exception.EntityNotValidException;
-import com.movesmart.busdatamanager.core.infrastructure.api.RouteValidationEvent;
-import com.movesmart.busdatamanager.vehicle.Send;
+import com.movesmart.busdatamanager.vehicle.VehicleSender;
 import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistoryManagmentUseCase;
@@ -26,7 +24,7 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
     @Resource
     private final VehicleRepository vehicleRepository;
 
-    private final Send send;
+    private final VehicleSender send;
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -34,7 +32,7 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
      * @param vehicleHistory data
      * @return VehicleHistory
      */
-    @CacheEvict(value = "VehicleHistory")
+    @CacheEvict(value = "VehicleHistory", beforeInvocation = true)
     @Override
     public VehicleHistory create(VehicleHistory vehicleHistory) {
         log.info("Attempting to create vehicleHistory with id: {}", vehicleHistory.getId());
@@ -45,7 +43,7 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
         }
 
         checkVehicleExist(vehicleHistory.getVehicleId());
-        validateRoute(vehicleHistory.getRouteId());
+        // checkRouteExist(vehicleHistory.getRouteId());
 
         VehicleHistory savedVehicleHistory = vehicleHistoryRepository.save(vehicleHistory);
         String message = String.format("VehicleHistory created with ID: %s", savedVehicleHistory.getId());
@@ -63,12 +61,14 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
         }
     }
 
-    private void validateRoute(String routeId) {
-        RouteValidationEvent event = new RouteValidationEvent(routeId, false);
-        eventPublisher.publishEvent(event);
+    /*    private void checkRouteExist(String routeId) {
+            RouteValidationEvent event = new RouteValidationEvent(routeId, false);
+            eventPublisher.publishEvent(event);
 
-        if (!event.isValidated()) {
-            throw new EntityNotValidException("Route", routeId);
+            if (!event.isValidated()) {
+                throw new EntityNotFoundException("Route", routeId);
+            }
         }
-    }
+
+     */
 }
