@@ -730,24 +730,18 @@ components:
       properties:
         id:
           type: string
-          description: Unique identifier of the vehicle history entry
         routeId:
           type: string
-          description: ID of the route associated with this history
         vehicleId:
           type: string
-          description: ID of the vehicle associated with this history
         driverId:
           type: string
-          description: ID of the driver associated with this history
         startTime:
           type: string
           format: date-time
-          description: Start time of the route for the vehicle
         endTime:
           type: string
           format: date-time
-          description: End time of the route for the vehicle
           nullable: true
 
     VehicleHistoryRequest:
@@ -755,17 +749,13 @@ components:
       properties:
         routeId:
           type: string
-          description: ID of the route associated with this history
         vehicleId:
           type: string
-          description: ID of the vehicle associated with this history
         driverId:
           type: string
-          description: ID of the driver associated with this history
         startTime:
           type: string
           format: date-time
-          description: Start time of the route for the vehicle
       required:
         - routeId
         - vehicleId
