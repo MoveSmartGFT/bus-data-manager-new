@@ -7,6 +7,8 @@ tags:
   - name: Route
   - name: Stop
   - name: Vehicle
+  - name: VehicleHistory
+
 paths:
   /api/v1/stops:
     post:
@@ -512,6 +514,29 @@ paths:
         '400':
           description: Invalid request format.
 
+  /api/v1/vehicleHistory:
+    post:
+      tags:
+        - VehicleHistory
+      summary: Create a new vehicleHistory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleHistoryRequest'
+      responses:
+        '201':
+          description: Created vehicleHistory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleHistory'
+        '409':
+          description: VehicleHistory with ID {id} already exists
+        '400':
+          description: Bad Request
+
 components:
   schemas:
     Stop:
@@ -700,3 +725,49 @@ components:
       type: string
       enum: [InService, OutOfService, InMaintenance]
 
+    VehicleHistory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the vehicle history entry
+        routeId:
+          type: string
+          description: ID of the route associated with this history
+        vehicleId:
+          type: string
+          description: ID of the vehicle associated with this history
+        driverId:
+          type: string
+          description: ID of the driver associated with this history
+        startTime:
+          type: string
+          format: date-time
+          description: Start time of the route for the vehicle
+        endTime:
+          type: string
+          format: date-time
+          description: End time of the route for the vehicle
+          nullable: true
+
+    VehicleHistoryRequest:
+      type: object
+      properties:
+        routeId:
+          type: string
+          description: ID of the route associated with this history
+        vehicleId:
+          type: string
+          description: ID of the vehicle associated with this history
+        driverId:
+          type: string
+          description: ID of the driver associated with this history
+        startTime:
+          type: string
+          format: date-time
+          description: Start time of the route for the vehicle
+      required:
+        - routeId
+        - vehicleId
+        - driverId
+        - startTime

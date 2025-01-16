@@ -52,13 +52,15 @@ public class CreateVehicleHistoryManagementUseCaseImplTest {
         when(vehicleRepository.existsById(vehicleHistory.getVehicleId())).thenReturn(true);
         when(vehicleHistoryRepository.save(any())).thenReturn(vehicleHistory);
 
-        //        doAnswer(invocation -> {
-        //            RouteValidationEvent event = invocation.getArgument(0);
-        //            event.setValidated(true);
-        //            return null;
-        //        })
-        //                .when(eventPublisher)
-        //                .publishEvent(any(RouteValidationEvent.class));
+        /*        doAnswer(invocation -> {
+                    RouteValidationEvent event = invocation.getArgument(0);
+                    event.setValidated(true);
+                    return null;
+                })
+                        .when(eventPublisher)
+                        .publishEvent(any(RouteValidationEvent.class));
+
+         */
 
         ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
 

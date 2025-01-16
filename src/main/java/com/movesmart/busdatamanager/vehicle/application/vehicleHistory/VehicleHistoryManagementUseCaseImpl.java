@@ -61,12 +61,14 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
         }
     }
 
-    //    private void checkRouteExist(String routeId) {
-    //        RouteValidationEvent event = new RouteValidationEvent(routeId, false);
-    //        eventPublisher.publishEvent(event);
-    //
-    //        if (!event.isValidated()) {
-    //            throw new EntityNotFoundException("Route", routeId);
-    //        }
-    //    }
+    /*    private void checkRouteExist(String routeId) {
+            RouteValidationEvent event = new RouteValidationEvent(routeId, false);
+            eventPublisher.publishEvent(event);
+
+            if (!event.isValidated()) {
+                throw new EntityNotFoundException("Route", routeId);
+            }
+        }
+
+     */
 }
