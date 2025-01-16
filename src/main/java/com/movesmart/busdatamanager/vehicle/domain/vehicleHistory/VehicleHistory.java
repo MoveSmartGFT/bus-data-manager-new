@@ -21,6 +21,9 @@ public class VehicleHistory {
     private String routeId;
 
     @NotBlank
+    private String vehicleId;
+
+    @NotBlank
     private String driverId;
 
     @NotNull
@@ -28,11 +31,26 @@ public class VehicleHistory {
 
     private LocalDateTime endTime;
 
-    public VehicleHistory(String routeId, String driverId, LocalDateTime startTime, LocalDateTime endTime) {
+    public VehicleHistory(
+            String id,
+            String routeId,
+            String vehicleId,
+            String driverId,
+            LocalDateTime startTime,
+            LocalDateTime endTime) {
         this.id = TSID.Factory.getTsid().toString();
         this.routeId = routeId;
+        this.vehicleId = vehicleId;
         this.driverId = driverId;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public VehicleHistory(String routeId, String driverId, String vehicleId, LocalDateTime startTime) {
+        this.id = TSID.Factory.getTsid().toString();
+        this.routeId = routeId;
+        this.driverId = driverId;
+        this.vehicleId = vehicleId;
+        this.startTime = startTime;
     }
 }

@@ -1,6 +1,11 @@
 package com.movesmart.busdatamanager.vehicle.application.vehicleHistory;
 
 import com.movesmart.busdatamanager.core.exception.EntityAlreadyExistsException;
+import com.movesmart.busdatamanager.core.exception.EntityNotFoundException;
+import com.movesmart.busdatamanager.core.exception.EntityNotValidException;
+import com.movesmart.busdatamanager.core.infrastructure.api.RouteValidationEvent;
+import com.movesmart.busdatamanager.vehicle.Send;
+import com.movesmart.busdatamanager.vehicle.domain.vehicle.VehicleRepository;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistory;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistoryManagmentUseCase;
 import com.movesmart.busdatamanager.vehicle.domain.vehicleHistory.VehicleHistoryRepository;
@@ -8,6 +13,7 @@ import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +22,13 @@ import org.springframework.stereotype.Service;
 public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagmentUseCase {
     @Resource
     private final VehicleHistoryRepository vehicleHistoryRepository;
+
+    @Resource
+    private final VehicleRepository vehicleRepository;
+
+    private final Send send;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * @param vehicleHistory data
@@ -31,10 +44,31 @@ public class VehicleHistoryManagementUseCaseImpl implements VehicleHistoryManagm
             throw new EntityAlreadyExistsException(VEHICLE_HISTORY, vehicleHistory.getId());
         }
 
+        checkVehicleExist(vehicleHistory.getVehicleId());
+        validateRoute(vehicleHistory.getRouteId());
+
         VehicleHistory savedVehicleHistory = vehicleHistoryRepository.save(vehicleHistory);
+        String message = String.format("VehicleHistory created with ID: %s", savedVehicleHistory.getId());
+        send.sendMessage(message);
 
         log.info("VehicleHistory successfully created with id: {}", savedVehicleHistory.getId());
 
         return savedVehicleHistory;
+    }
+
+    private void checkVehicleExist(String vehicleId) {
+        if (!vehicleRepository.existsById(vehicleId)) {
+            log.warn("Vehicle with id: {} does not exists", vehicleId);
+            throw new EntityNotFoundException("Vehicle", vehicleId);
+        }
+    }
+
+    private void validateRoute(String routeId) {
+        RouteValidationEvent event = new RouteValidationEvent(routeId, false);
+        eventPublisher.publishEvent(event);
+
+        if (!event.isValidated()) {
+            throw new EntityNotValidException("Route", routeId);
+        }
     }
 }

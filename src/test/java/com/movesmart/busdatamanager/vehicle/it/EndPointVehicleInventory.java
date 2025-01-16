@@ -7,6 +7,8 @@ import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.VehicleCo
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.ChangeStatusVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.UpdateVehicleRequest;
 import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicle.dto.VehicleRequest;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicleHistory.VehicleHistoryController;
+import com.movesmart.busdatamanager.vehicle.infrastructure.api.vehicleHistory.dto.VehicleHistoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -65,6 +67,14 @@ public abstract class EndPointVehicleInventory {
                                 plateNumber)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(vehicle)))
+                .andReturn();
+    }
+
+    protected MvcResult createVehicleHistoryRequest(VehicleHistoryRequest vehicleHistoryRequest) throws Exception {
+        return this.mockMvc
+                .perform(post(VehicleHistoryController.VEHICLE_HISTORY_PATH)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(vehicleHistoryRequest)))
                 .andReturn();
     }
 }

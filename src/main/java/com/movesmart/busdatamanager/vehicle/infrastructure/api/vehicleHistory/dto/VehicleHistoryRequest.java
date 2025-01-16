@@ -8,11 +8,8 @@ import lombok.Generated;
 
 @Generated
 public record VehicleHistoryRequest(
-        @NotBlank String routeId,
-        @NotNull String driverId,
-        LocalDateTime startTime,
-        LocalDateTime endTime) {
+        @NotBlank String routeId, @NotNull String driverId, @NotNull String vehicleId, LocalDateTime startTime) {
     public VehicleHistory toVehicleHistory() {
-        return new VehicleHistory(routeId, driverId, startTime, endTime);
+        return new VehicleHistory(routeId, driverId, vehicleId, startTime);
     }
 }
